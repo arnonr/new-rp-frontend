@@ -14,7 +14,8 @@ export default defineConfig({
       //   "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
     },
   },
-  base: "/",
+//   base: "/",
+  base: "/rp/",
   build: {
     chunkSizeWarningLimit: 3000,
   },
