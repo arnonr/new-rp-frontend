@@ -63,10 +63,11 @@
         <label for="abstract" class="required form-label"
           >บทคัดย่อ (Abstract)</label
         >
-        <textarea
-          ref="froalaTextareaAbstract"
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.abstract"
           v-model="item.abstract"
-        ></textarea>
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
@@ -95,7 +96,11 @@
         <label for="history" class="required form-label"
           >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ</label
         >
-        <textarea ref="froalaTextareaHistory" v-model="item.history"></textarea>
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.history"
+          v-model="item.history"
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
@@ -103,15 +108,20 @@
           >วัตถุประสงค์ของโครงการวิจัย</label
         >
 
-        <textarea
-          ref="froalaTextareaObjective"
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.objective"
           v-model="item.objective"
-        ></textarea>
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
         <label for="scope" class="required form-label">ขอบเขตของการวิจัย</label>
-        <textarea ref="froalaTextareaScope" v-model="item.scope"></textarea>
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.scope"
+          v-model="item.scope"
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
@@ -122,10 +132,11 @@
           ต้องเขียนแสดงรายละเอียดจากผลการวิจัยเรื่องนั้นๆ
           ไม่ใช่การเขียนเอกสารอ้างอิงหรือบรรณานุกรม</label
         >
-        <textarea
-          ref="froalaTextareaReviewLiterature"
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.review_literature"
           v-model="item.review_literature"
-        ></textarea>
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
@@ -133,35 +144,40 @@
           >ระเบียบวิธีวิจัย ให้อธิบายขั้นตอนในการดำเนินการทดลอง หรือทดสอบ
           โดยอธิบาย วิธีวิเคราะห์ข้อมูล อย่างละเอียด</label
         >
-        <textarea ref="froalaTextareaMethod" v-model="item.method"></textarea>
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.method"
+          v-model="item.method"
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
         <label for="benefit" class="required form-label"
           >ประโยชน์ที่คาดว่าจะได้รับ</label
         >
-        <textarea ref="froalaTextareaBenefit" v-model="item.benefit"></textarea>
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.benefit"
+          v-model="item.benefit"
+        ></froala>
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
         <label for="location" class="required form-label"
           >สถานที่ทำการทดลอง และ/หรือเก็บข้อมูล</label
         >
-        <textarea ref="froalaTextareaLocation" v-model="item.location"></textarea>
+        <froala
+          :tag="'textarea'"
+          :config="froalaConfig.location"
+          v-model="item.location"
+        ></froala>
       </div>
     </div>
   </tab-content>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  toRefs,
-  onBeforeUnmount,
-  getCurrentInstance,
-} from "vue";
+import { defineComponent, ref, onMounted, toRefs, onBeforeUnmount } from "vue";
 // Import Vue-select
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
@@ -207,40 +223,15 @@ export default defineComponent({
     const { item } = toRefs(props);
     const tags = ref<string[]>([]);
 
-    const instance: any = getCurrentInstance();
-    const FroalaEditor =
-      instance.appContext.config.globalProperties.$FroalaEditor;
-
-    const froalaTextareaAbstract = ref<any>(null);
-    const froalaTextareaHistory = ref<any>(null);
-    const froalaTextareaObjective = ref<any>(null);
-    const froalaTextareaReviewLiterature = ref<any>(null);
-    const froalaTextareaMethod = ref<any>(null);
-    const froalaTextareaBenefit = ref<any>(null);
-    const froalaTextareaLocation = ref<any>(null);
-    const froalaTextareaScope = ref<any>(null);
-
-    let froalaInstanceAbstract: any = null;
-    let froalaInstanceHistory: any = null;
-    let froalaInstanceObjective: any = null;
-    let froalaInstanceReviewLiterature: any = null;
-    let froalaInstanceMethod: any = null;
-    let froalaInstanceBenefit: any = null;
-    let froalaInstanceLocation: any = null;
-    let froalaInstanceScope: any = null;
-
     let froalaConfig: any = {
-      abstract: { ...useFroalaConfigData().froala_config, height: 600 },
-      history: { ...useFroalaConfigData().froala_config, height: 600 },
-      objective: { ...useFroalaConfigData().froala_config, height: 600 },
-      review_literature: {
-        ...useFroalaConfigData().froala_config,
-        height: 600,
-      },
-      method: { ...useFroalaConfigData().froala_config, height: 600 },
-      benefit: { ...useFroalaConfigData().froala_config, height: 600 },
-      location: { ...useFroalaConfigData().froala_config, height: 600 },
-      scope: { ...useFroalaConfigData().froala_config, height: 600 },
+      abstract: useFroalaConfigData().froala_config,
+      history: useFroalaConfigData().froala_config,
+      objective: useFroalaConfigData().froala_config,
+      review_literature: useFroalaConfigData().froala_config,
+      method: useFroalaConfigData().froala_config,
+      benefit: useFroalaConfigData().froala_config,
+      location: useFroalaConfigData().froala_config,
+      scope: useFroalaConfigData().froala_config,
     };
 
     let textEditor = [
@@ -256,12 +247,20 @@ export default defineComponent({
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
-        initialized: function () {
-          this.html.set(item.value[x]);
-          //   froalaInstance.html.set(item.value[x]);
-        },
-        contentChanged: function () {
+        keyup: function (inputEvent: any) {
           item.value[x] = this.html.get();
+        },
+        click: function (clickEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        "commands.after": function (cmd: any, param1: any, param2: any) {
+          item.value[x] = this.html.get();
+        },
+        "paste.after": function (pasteEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        initialized: function () {
+          this.html.insert(item.value[x]);
         },
       };
     });
@@ -304,66 +303,9 @@ export default defineComponent({
       } else {
         tags.value = [];
       }
-
-      froalaInstanceAbstract = new FroalaEditor(froalaTextareaAbstract.value, {
-        ...froalaConfig.abstract,
-      });
-      froalaInstanceHistory = new FroalaEditor(froalaTextareaHistory.value, {
-        ...froalaConfig.history,
-      });
-      froalaInstanceObjective = new FroalaEditor(
-        froalaTextareaObjective.value,
-        {
-          ...froalaConfig.objective,
-        }
-      );
-      froalaInstanceReviewLiterature = new FroalaEditor(
-        froalaTextareaReviewLiterature.value,
-        {
-          ...froalaConfig.review_literature,
-        }
-      );
-      froalaInstanceMethod = new FroalaEditor(froalaTextareaMethod.value, {
-        ...froalaConfig.method,
-      });
-      froalaInstanceBenefit = new FroalaEditor(froalaTextareaBenefit.value, {
-        ...froalaConfig.benefit,
-      });
-      froalaInstanceLocation = new FroalaEditor(froalaTextareaLocation.value, {
-        ...froalaConfig.location,
-      });
-      froalaInstanceScope = new FroalaEditor(froalaTextareaScope.value, {
-        ...froalaConfig.scope,
-      });
     });
 
-    onBeforeUnmount(() => {
-      if (froalaInstanceAbstract) {
-        froalaInstanceAbstract.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceHistory) {
-        froalaInstanceHistory.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceObjective) {
-        froalaInstanceObjective.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceReviewLiterature) {
-        froalaInstanceReviewLiterature.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceMethod) {
-        froalaInstanceMethod.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceBenefit) {
-        froalaInstanceBenefit.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-      if (froalaInstanceLocation) {
-        froalaInstanceLocation.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-
-      if (froalaInstanceScope) {
-        froalaInstanceScope.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-    });
+    onBeforeUnmount(() => {});
 
     // Return
     return {
@@ -372,14 +314,6 @@ export default defineComponent({
       tags,
       handleChangeTag,
       onTab1Validate,
-      froalaTextareaAbstract,
-      froalaTextareaHistory,
-      froalaTextareaObjective,
-      froalaTextareaReviewLiterature,
-      froalaTextareaMethod,
-      froalaTextareaBenefit,
-      froalaTextareaLocation,
-      froalaTextareaScope,
     };
   },
 });

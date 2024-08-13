@@ -66,11 +66,11 @@ export default () => {
     imagePaste: false,
     imagePasteProcess: false,
     imageResize: true,
-    crossDomain: false,
+    crossDomain: true,
     pasteAllowedStyleProps: ["*"],
     pasteAllowLocalImages: true,
     htmlAllowComments: true,
-    htmlExecuteScripts: true,
+    htmlExecuteScripts: false,
     fontSizeSelection: true,
     fontSizeDefaultSelection: "18",
     fontFamily: {

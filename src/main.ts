@@ -21,11 +21,14 @@ import "@/core/plugins/prismjs";
 
 import FroalaEditor from "froala-editor";
 import "froala-editor/js/plugins.pkgd.min.js";
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import "froala-editor/css/froala_style.min.css";
-
+import "froala-editor/js/third_party/embedly.min";
 import "froala-editor/js/third_party/font_awesome.min";
 import "froala-editor/js/third_party/image_tui.min";
+// Import Froala Editor css files.
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import "froala-editor/css/froala_style.min.css";
+import VueFroala from "vue-froala-wysiwyg";
+
 
 declare global {
   interface Window {
@@ -48,12 +51,11 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(ElementPlus);
+app.use(VueFroala);
 
 app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
 });
-
-app.config.globalProperties.$FroalaEditor = FroalaEditor;
 
 ApiService.init(app);
 initApexCharts(app);

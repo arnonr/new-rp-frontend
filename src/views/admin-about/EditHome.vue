@@ -19,7 +19,11 @@
             <label for="paper_type_id" class="required form-label"
               >รายละเอียด</label
             >
-            <textarea ref="froalaTextarea" v-model="item.detail"></textarea>
+            <froala
+              :tag="'textarea'"
+              :config="froalaConfig.detail"
+              v-model="item.detail"
+            ></froala>
           </div>
 
           <div class="mb-7 col-12 col-lg-12 text-center">
@@ -42,14 +46,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  onUnmounted,
-  watch,
-  getCurrentInstance,
-} from "vue";
+import { defineComponent, ref, onMounted, onUnmounted, watch } from "vue";
 import ApiService from "@/core/services/ApiService";
 
 // Use Toast Composables
@@ -74,7 +71,7 @@ import useFroalaConfigData from "@/composables/useFroalaConfigData";
 import * as Yup from "yup";
 
 export default defineComponent({
-  name: "edit-about",
+  name: "edit-home",
   components: {
     Preloader,
   },
@@ -86,26 +83,28 @@ export default defineComponent({
 
     const item = ref<any>({ detail: "" });
 
-    const instance: any = getCurrentInstance();
-    const FroalaEditor =
-      instance.appContext.config.globalProperties.$FroalaEditor;
-
-    const froalaTextarea = ref<any>(null);
-    let froalaInstance: any = null;
     let froalaConfig: any = {
-      detail: { ...useFroalaConfigData().froala_config, height: 600 },
+      detail: useFroalaConfigData().froala_config,
     };
 
     let textEditor = ["detail"];
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
-        initialized: function () {
-          // this.html.insert(item.value[x]);
-          froalaInstance.html.set(item.value[x]);
+        keyup: function (inputEvent: any) {
+          item.value[x] = this.html.get();
         },
-        contentChanged: function () {
-          item.value[x] = froalaInstance.html.get();
+        click: function (clickEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        "commands.after": function (cmd: any, param1: any, param2: any) {
+          item.value[x] = this.html.get();
+        },
+        "paste.after": function (pasteEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        initialized: function () {
+          this.html.insert(item.value[x]);
         },
       };
     });
@@ -154,17 +153,9 @@ export default defineComponent({
 
     onMounted(async () => {
       await fetchItem();
-
-      froalaInstance = new FroalaEditor(froalaTextarea.value, {
-        ...froalaConfig.detail,
-      });
     });
 
-    onUnmounted(() => {
-      if (froalaInstance) {
-        froalaInstance.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
-      }
-    });
+    onUnmounted(() => {});
 
     // Watch
 
@@ -180,7 +171,7 @@ export default defineComponent({
       isLoading,
       item,
       onSubmit,
-      froalaTextarea,
+      froalaConfig,
     };
   },
 });
