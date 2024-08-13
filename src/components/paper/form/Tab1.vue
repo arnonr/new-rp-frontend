@@ -250,19 +250,24 @@ export default defineComponent({
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
-        keyup: function (inputEvent: any) {
-          item.value[x] = this.html.get();
-        },
-        click: function (clickEvent: any) {
-          item.value[x] = this.html.get();
-        },
-        "commands.after": function (cmd: any, param1: any, param2: any) {
-          item.value[x] = this.html.get();
-        },
-        "paste.after": function (pasteEvent: any) {
-          item.value[x] = this.html.get();
-        },
-        initialized: function () {
+        // keyup: function (this: any, inputEvent: any) {
+        //   item.value[x] = this.html.get();
+        // },
+        // click: function (this: any, clickEvent: any) {
+        //   item.value[x] = this.html.get();
+        // },
+        // "commands.after": function (
+        //   this: any,
+        //   cmd: any,
+        //   param1: any,
+        //   param2: any
+        // ) {
+        //   item.value[x] = this.html.get();
+        // },
+        // "paste.after": function (this: any, pasteEvent: any) {
+        //   item.value[x] = this.html.get();
+        // },
+        initialized: function (this: any) {
           this.html.insert(item.value[x]);
         },
       };

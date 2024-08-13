@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" style="font-family: THSarabunNew">
     <div>
       <h6 class="py-5 px-5 rounded">คณะผู้วิจัย</h6>
       <div class="table-responsive">
@@ -38,9 +38,7 @@
 
     <div>
       <hr class="my-6" />
-      <h6 class="py-5 px-5 rounded">
-        ขั้นตอนและระยะเวลาของแผนดำเนินงาน
-      </h6>
+      <h6 class="py-5 px-5 rounded">ขั้นตอนและระยะเวลาของแผนดำเนินงาน</h6>
 
       <div class="table-responsive">
         <table class="table table-bordered">

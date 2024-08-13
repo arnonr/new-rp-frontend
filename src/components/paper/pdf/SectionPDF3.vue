@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" style="font-family: THSarabunNew">
     <div>
       <hr class="my-6" />
 

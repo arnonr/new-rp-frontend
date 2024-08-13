@@ -1,6 +1,6 @@
 <template>
   <!--begin::Wrapper-->
-  <div class="container mt-5">
+  <div class="container mt-5"> 
     <!-- Search -->
     <div class="card shadow-sm my-6">
       <SearchComponent :search="search" @search="fetchItems" @clear="onClear" />

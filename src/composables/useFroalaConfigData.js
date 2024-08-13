@@ -1,6 +1,6 @@
 export default () => {
   const froala_config = {
-    height: 300,
+    height: 600,
     // inlineMode: false,
     pastePlain: false,
     pasteDeniedTags: [],
@@ -13,6 +13,7 @@ export default () => {
       "redo",
       "fullscreen",
       "|",
+      "fontFamily",
       "fontSize",
       "textColor",
       "backgroundColor",
@@ -72,6 +73,15 @@ export default () => {
     htmlExecuteScripts: true,
     fontSizeSelection: true,
     fontSizeDefaultSelection: "18",
+    fontFamily: {
+      "THSarabunNew,sans-serif": "THSarabunNew",
+      "Arial,Helvetica,sans-serif": "Arial",
+      //   defaultSelection: "THSarabunNew",
+      //   list: {
+      //     "THSarabunNew,sans-serif": "TH Sarabun New",
+      //   },
+    },
+    fontDefaultSelection: "THSarabunNew",
   };
 
   return {

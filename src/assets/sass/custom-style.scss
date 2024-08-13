@@ -1,8 +1,23 @@
+@font-face {
+  font-family: "THSarabunNew";
+  src: url("@/assets/fonts/THSarabunNew.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "THSarabunNew";
+  src: url("@/assets/fonts/THSarabunNew-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 html,
 body {
-  font-size: 16px !important;
+  font-size: 20px !important;
   font-weight: 400;
-  font-family: Prompt, Helvetica, "sans-serif";
+  //   font-family: Prompt, Helvetica, "sans-serif";
+  font-family: "THSarabunNew", Arial, sans-serif; /* ใส่ฟอนต์ที่คุณต้องการ */
 }
 
 .scrolltop {
@@ -82,4 +97,8 @@ body {
 .table td,
 .table th {
   vertical-align: middle;
+}
+
+.fr-box .fr-element {
+  font-family: "THSarabunNew", Arial, sans-serif !important; /* ใส่ฟอนต์ที่คุณต้องการ */
 }

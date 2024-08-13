@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" style="font-family: THSarabunNew">
     <div>
       <h6 class="py-5 px-5 bg-warning rounded">คณะผู้วิจัย</h6>
       <div class="table-responsive">
