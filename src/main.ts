@@ -20,6 +20,17 @@ import { initKtIcon } from "@/core/plugins/keenthemes";
 import "@/core/plugins/prismjs";
 
 import FroalaEditor from "froala-editor";
+import "froala-editor/js/plugins.pkgd.min.js";
+
+//Import third party plugins
+import "froala-editor/js/third_party/embedly.min";
+import "froala-editor/js/third_party/font_awesome.min";
+// import "froala-editor/js/third_party/spell_checker.min";
+import "froala-editor/js/third_party/image_tui.min";
+
+// Import Froala Editor css files.
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import "froala-editor/css/froala_style.min.css";
 
 declare global {
   interface Window {
@@ -27,23 +38,17 @@ declare global {
   }
 }
 
-window.FroalaEditor = FroalaEditor;
+// window.FroalaEditor = FroalaEditor;
 
-import "froala-editor/js/plugins.pkgd.min.js";
-//Import third party plugins
-import "froala-editor/js/third_party/embedly.min";
-import "froala-editor/js/third_party/font_awesome.min";
-// import "froala-editor/js/third_party/spell_checker.min";
-import "froala-editor/js/third_party/image_tui.min";
-// Import Froala Editor css files.
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import "froala-editor/css/froala_style.min.css";
 import VueFroala from "vue-froala-wysiwyg";
-if (window.FroalaEditor) {
-  import("@wiris/mathtype-froala3");
-} else {
-  console.error("FroalaEditor is not loaded");
-}
+import("@wiris/mathtype-froala3");
+// if (window.FroalaEditor) {
+//   import("@wiris/mathtype-froala3");
+// } else {
+//   console.error("FroalaEditor is not loaded");
+// }
+
+window.FroalaEditor = FroalaEditor;
 
 import { abilitiesPlugin } from "@casl/vue";
 import ability from "./services/ability";
