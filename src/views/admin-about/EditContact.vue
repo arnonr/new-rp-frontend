@@ -91,7 +91,9 @@ export default defineComponent({
     const item = ref<any>({ detail: "" });
 
     let froalaConfig: any = {
-      detail: { ...useFroalaConfigData().froala_config, height: 800 },
+      detail: {
+        height: 600,
+      },
     };
 
     let textEditor = ["detail"];
