@@ -25,6 +25,11 @@
           <td class="text-center">{{ it.rp_no }}</td>
 
           <td>{{ it.title_th }}</td>
+          <td>
+            {{
+              it.user.prefix_name + it.user.firstname + " " + it.user.surname
+            }}
+          </td> 
           <td>{{ it.department?.name }}</td>
           <td class="text-center">{{ it.paper_type?.name }}</td>
           <td class="text-center">
@@ -204,6 +209,7 @@ export default defineComponent({
       { column_name: "created_at", title: "วันที่เสนอ", sort: true },
       { column_name: "rp_no", title: "รหัส", sort: true },
       { column_name: "title_th", title: "ชื่อโครงการ (TH)", sort: true },
+      { column_name: "fullname", title: "ผู้ส่ง", sort: true },
       { column_name: "department_id", title: "หน่วยงาน", sort: true },
       { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
       { column_name: "status_id", title: "สถานะ", sort: true },
