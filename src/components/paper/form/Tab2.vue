@@ -473,12 +473,10 @@
         <label for="references" class="required form-label"
           >รายการเอกสารอ้างอิงหรือบรรณานุกรม</label
         >
-
-        <froala
-          :tag="'textarea'"
-          :config="froalaConfig.references"
+        <textarea
+          ref="froalaTextareaReferences"
           v-model="item.references"
-        ></froala>
+        ></textarea>
         <div class="d-block mt-1" v-if="errors.references.error == 1">
           <span role="alert" class="text-danger">{{
             errors.references.text
@@ -512,7 +510,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  reactive,
+  toRefs,
+  getCurrentInstance,
+  onBeforeUnmount,
+} from "vue";
 import ApiService from "@/core/services/ApiService";
 // Import Vue-select
 import vSelect from "vue-select";
@@ -621,28 +627,27 @@ export default defineComponent({
       return `${day} ${month} ${year}`;
     };
 
+    const instance: any = getCurrentInstance();
+    const FroalaEditor =
+      instance.appContext.config.globalProperties.$FroalaEditor;
+
+    const froalaTextareaReferences = ref<any>(null);
+    let froalaInstanceReferences: any = null;
+
     let froalaConfig: any = {
       references: useFroalaConfigData().froala_config,
+      height: 600,
     };
 
     let textEditor = ["references"];
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
-        keyup: function (inputEvent: any) {
-          item.value[x] = this.html.get();
-        },
-        click: function (clickEvent: any) {
-          item.value[x] = this.html.get();
-        },
-        "commands.after": function (cmd: any, param1: any, param2: any) {
-          item.value[x] = this.html.get();
-        },
-        "paste.after": function (pasteEvent: any) {
-          item.value[x] = this.html.get();
-        },
         initialized: function () {
-          this.html.insert(item.value[x]);
+          this.html.set(item.value[x]);
+        },
+        contentChanged: function () {
+          item.value[x] = this.html.get();
         },
       };
     });
@@ -763,6 +768,19 @@ export default defineComponent({
         perPage: 500,
       });
       fetchFileAttach();
+
+      froalaInstanceReferences = new FroalaEditor(
+        froalaTextareaReferences.value,
+        {
+          ...froalaConfig.references,
+        }
+      );
+    });
+
+    onBeforeUnmount(() => {
+      if (froalaInstanceReferences) {
+        froalaInstanceReferences.destroy(); // ทำลาย Froala Editor ก่อนที่จะลบคอมโพเนนต์
+      }
     });
 
     const onIncreaseBudget = (type: any) => {
@@ -848,6 +866,7 @@ export default defineComponent({
       onDecreaseResearcher,
       onIncreaseMethodList,
       onDecreaseMethodList,
+      froalaTextareaReferences,
     };
   },
 });
