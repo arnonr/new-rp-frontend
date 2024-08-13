@@ -14,15 +14,15 @@ export default defineConfig({
       //   "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
     },
   },
-//   base: "/",
+  //   base: "/",
   base: "/rp/",
   build: {
     chunkSizeWarningLimit: 3000,
   },
   optimizeDeps: {
     include: [
-    //   "froala-editor",
-    //   "@wiris/mathtype-froala3",
+      "froala-editor",
+      //   "@wiris/mathtype-froala3",
       "pdfmake/build/pdfmake",
       "pdfmake/build/vfs_fonts",
     ],

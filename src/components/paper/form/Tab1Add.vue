@@ -260,8 +260,13 @@ export default defineComponent({
         // "paste.after": function (pasteEvent: any) {
         //   item.value[x] = this.html.get();
         // },
+        "paste.after": function () {
+            console.log("FREEDOM")
+        //   this.destroy();
+        //   this.init();
+        },
         initialized: function () {
-          this.html.insert(item.value[x]);
+          this.html.set(item.value[x]);
         },
       };
     });
