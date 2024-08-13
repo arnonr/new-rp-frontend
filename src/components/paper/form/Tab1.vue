@@ -179,13 +179,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  toRefs,
-  onBeforeUnmount,
-} from "vue";
+import { defineComponent, ref, onMounted, toRefs, onBeforeUnmount } from "vue";
 import ApiService from "@/core/services/ApiService";
 // Import Vue-select
 import vSelect from "vue-select";
@@ -328,6 +322,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-
-</style>
+<style></style>
