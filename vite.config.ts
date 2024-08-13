@@ -18,6 +18,9 @@ export default defineConfig({
   base: "/rp/",
   build: {
     chunkSizeWarningLimit: 3000,
+    rollupOptions: {
+      external: ["froala-editor"],
+    },
   },
   optimizeDeps: {
     include: [
