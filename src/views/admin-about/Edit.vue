@@ -103,18 +103,18 @@ export default defineComponent({
 
       textEditor.forEach((x: any) => {
         froalaConfig[x]["events"] = {
-        //   keyup: function (inputEvent: any) {
-        //     item.value[x] = this.html.get();
-        //   },
-        //   click: function (clickEvent: any) {
-        //     item.value[x] = this.html.get();
-        //   },
-        //   "commands.after": function (cmd: any, param1: any, param2: any) {
-        //     item.value[x] = this.html.get();
-        //   },
-        //   "paste.after": function (pasteEvent: any) {
-        //     item.value[x] = this.html.get();
-        //   },
+          keyup: function (inputEvent: any) {
+            item.value[x] = this.html.get();
+          },
+          click: function (clickEvent: any) {
+            item.value[x] = this.html.get();
+          },
+          "commands.after": function (cmd: any, param1: any, param2: any) {
+            item.value[x] = this.html.get();
+          },
+          "paste.after": function (pasteEvent: any) {
+            item.value[x] = this.html.get();
+          },
           initialized: function () {
             // this.html.insert(item.value[x]);
             this.html.set(item.value[x]);
@@ -126,11 +126,11 @@ export default defineComponent({
     reloadFroala();
 
     const reloadEditor = () => {
-    //   if (froalaEditor.value) {
-    //     froalaEditor.value.destroy(); // ทำลาย Froala Editor
-    //     froalaEditor.value = null; // รีเซ็ตค่า
-    //     froalaEditor.value = new FroalaEditor(froalaEditor.value.$el, config); // สร้าง Froala Editor ใหม่
-    //   }
+      //   if (froalaEditor.value) {
+      //     froalaEditor.value.destroy(); // ทำลาย Froala Editor
+      //     froalaEditor.value = null; // รีเซ็ตค่า
+      //     froalaEditor.value = new FroalaEditor(froalaEditor.value.$el, config); // สร้าง Froala Editor ใหม่
+      //   }
     };
 
     // Variable

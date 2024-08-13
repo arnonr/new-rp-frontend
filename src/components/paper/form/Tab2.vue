@@ -629,18 +629,18 @@ export default defineComponent({
 
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
-        // keyup: function (inputEvent: any) {
-        //   item.value[x] = this.html.get();
-        // },
-        // click: function (clickEvent: any) {
-        //   item.value[x] = this.html.get();
-        // },
-        // "commands.after": function (cmd: any, param1: any, param2: any) {
-        //   item.value[x] = this.html.get();
-        // },
-        // "paste.after": function (pasteEvent: any) {
-        //   item.value[x] = this.html.get();
-        // },
+        keyup: function (inputEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        click: function (clickEvent: any) {
+          item.value[x] = this.html.get();
+        },
+        "commands.after": function (cmd: any, param1: any, param2: any) {
+          item.value[x] = this.html.get();
+        },
+        "paste.after": function (pasteEvent: any) {
+          item.value[x] = this.html.get();
+        },
         initialized: function () {
           this.html.insert(item.value[x]);
         },
@@ -873,5 +873,4 @@ p[data-f-id="pbf"] {
 .fr-second-toolbar {
   border: 1px solid #ffc600;
 }
-
 </style>
