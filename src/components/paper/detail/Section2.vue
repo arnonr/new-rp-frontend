@@ -1,9 +1,9 @@
 <template>
-  <div class="row" style="font-family: THSarabunNew">
+  <div class="row">
     <div>
       <h6 class="py-5 px-5 bg-warning rounded">คณะผู้วิจัย</h6>
       <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-border-black">
           <thead>
             <tr>
               <th class="text-center">ลำดับ</th>
@@ -43,7 +43,7 @@
       </h6>
 
       <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-border-black">
           <thead>
             <tr>
               <th class="text-center">ลำดับ</th>

@@ -14,10 +14,10 @@
 
 html,
 body {
-  font-size: 20px !important;
+  //   font-size: 20px !important;
   font-weight: 400;
   //   font-family: Prompt, Helvetica, "sans-serif";
-  font-family: "THSarabunNew", Arial, sans-serif; /* ใส่ฟอนต์ที่คุณต้องการ */
+  font-family: "Sarabun", Arial, sans-serif; /* ใส่ฟอนต์ที่คุณต้องการ */
 }
 
 .scrolltop {
@@ -100,9 +100,27 @@ body {
 }
 
 .fr-box .fr-element {
-  font-family: "THSarabunNew", Arial, sans-serif !important; /* ใส่ฟอนต์ที่คุณต้องการ */
+  font-family: "Sarabun", Arial, sans-serif !important; /* ใส่ฟอนต์ที่คุณต้องการ */
+  font-size: 18px; /* กำหนดขนาดฟอนต์ที่ต้องการ */
 }
 
-.fr-wrapper > a[href*="froala.com/wysiwyg-editor?k=u"] {
+
+div > a[href="https://www.froala.com/wysiwyg-editor?k=u"]
+{
+  opacity: 0;
+  margin-top: -45px !important;
+}
+
+p[data-f-id="pbf"] {
   display: none !important;
+}
+
+.table-border-black,
+.table-border-black th,
+.table-border-black td,
+.table-border-black thead,
+.table-border-black tbody,
+.table-border-black tfoot {
+  border-color: black !important;
+  border-width: 1px !important; /* ปรับความหนาของเส้นขอบตามต้องการ */
 }

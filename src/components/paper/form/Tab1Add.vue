@@ -260,6 +260,7 @@ export default defineComponent({
           item.value[x] = this.html.get();
         },
         initialized: function () {
+        //   this.$el.css("font-size", "16px"); // ตั้งค่าขนาดฟอนต์เริ่มต้น
           this.html.insert(item.value[x]);
         },
       };

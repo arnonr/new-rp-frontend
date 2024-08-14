@@ -1,5 +1,5 @@
 <template>
-  <div class="row" style="font-family: THSarabunNew">
+  <div class="row">
     <div class="col-md-12 mt-10">
       <div class="d-block d-md-flex align-items-baseline">
         <div class="fw-bold flex-shrink-0 me-5">ชื่อโครงการ (ภาษาไทย)</div>

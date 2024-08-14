@@ -1,6 +1,6 @@
 <template>
   <!--begin::Footer-->
-  <div v-if="footerDisplay" id="kt_app_footer" class="app-footer bg-warning">
+  <div v-if="footerDisplay" id="kt_app_footer" class="app-footer bg-warning mt-10">
     <!--begin::Footer container-->
     <div
       class="app-container d-flex flex-column flex-md-row flex-center flex-md-stack py-3"
