@@ -98,6 +98,7 @@ export default () => {
       "60",
       "72",
     ],
+    tabSpaces: 4,
   };
 
   return {
