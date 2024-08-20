@@ -41,11 +41,11 @@
         <h4 class="card-title">โครงการวิจัย</h4>
         <div class="card-toolbar">
           <button
-            class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5"
+            class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5 disabled"
             @click="goToAddPage"
           >
             <i class="bi bi-file-earmark-plus-fill fs-4"></i>
-            <span class="d-none d-lg-inline-block ms-2">เสนอโครงการวิจัย</span>
+            <span class="d-none d-lg-inline-block ms-2">เสนอโครงการวิจัย (ปิดรับ)</span>
           </button>
         </div>
       </div>
