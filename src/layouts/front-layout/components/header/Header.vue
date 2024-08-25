@@ -52,12 +52,12 @@
                 >เข้าสู่ระบบ</router-link
               >
             </li>
-            <li class="nav-item" v-else>
+            <li class="nav-item">
               <router-link to="/reviewer-sign-in" class="nav-link text-hover-white"
                 >เข้าสู่ระบบ (สำหรับกรรมการ)</router-link
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!userData.id">
               <router-link to="/document" class="nav-link text-hover-white"
                 >เอกสาร</router-link
               >
