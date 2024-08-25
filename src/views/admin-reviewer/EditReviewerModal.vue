@@ -21,7 +21,7 @@
 
         <div class="modal-body">
           <div class="form row">
-            <div class="mb-7 col-12 col-lg-12">
+            <!-- <div class="mb-7 col-12 col-lg-12">
               <label class="form-label required">ตำแหน่งทางวิชาการ</label>
               <input
                 type="text"
@@ -30,14 +30,14 @@
                 aria-label="ตำแหน่งทางวิชาการ"
                 v-model="item_edit.position"
               />
-            </div>
+            </div> -->
             <div class="mb-7 col-12 col-lg-12">
-              <label class="form-label required">คำนำหน้า</label>
+              <label class="form-label required">ตำแหน่งทางวิชาการ</label>
               <input
                 type="text"
                 class="form-control"
-                placeholder="คำนำหน้า"
-                aria-label="คำนำหน้า"
+                placeholder="ตำแหน่งทางวิชาการ"
+                aria-label="ตำแหน่งทางวิชาการ"
                 v-model="item_edit.prefix_name"
               />
             </div>

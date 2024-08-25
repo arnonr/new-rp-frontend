@@ -16,11 +16,11 @@
         </div>
       </div>
       <div class="card-body row">
-        <div class="col-md-12 px-5 py-3">
+        <!-- <div class="col-md-12 px-5 py-3">
           <span class="fw-bold">ตำแหน่งทางวิชาการ : </span>
           <span class="fst-italic">{{ user_item.position }}</span>
-        </div>
-        <div class="separator separator-dotted my-2"></div>
+        </div> -->
+        <!-- <div class="separator separator-dotted my-2"></div> -->
         <div class="col-md-12 px-5 py-3">
           <span class="fw-bold">ชื่อ-นามสกุล : </span>
           <span class="fst-italic"

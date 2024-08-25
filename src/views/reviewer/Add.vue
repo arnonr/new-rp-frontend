@@ -24,13 +24,13 @@
           <div class="form row">
             <div class="mb-7 col-12 col-lg-12">
               <label for="prefix_name" class="required form-label"
-                >คำนำหน้า</label
+                >ตำแหน่งทางวิชาการ</label
               >
               <input
                 type="text"
                 class="form-control"
-                :placeholder="`คำนำหน้า`"
-                :aria-label="`คำนำหน้า`"
+                :placeholder="`ตำแหน่งทางวิชาการ`"
+                :aria-label="`ตำแหน่งทางวิชาการ`"
                 v-model="item.prefix_name"
               />
             </div>

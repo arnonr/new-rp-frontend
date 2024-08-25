@@ -279,7 +279,7 @@ export default defineComponent({
     const validationResearcherSchema = Yup.object().shape({
       prefix_name: Yup.string()
         .required("${path} จำเป็นต้องระบุ")
-        .label("คำนำหน้า"),
+        .label("ตำแหน่งทางวิชาการ"),
       firstname: Yup.string().required("${path} จำเป็นต้องระบุ").label("ชื่อ"),
       surname: Yup.string().required("${path} จำเป็นต้องระบุ").label("นามสกุล"),
       department_id: Yup.object().nullable().label("หน่วยงาน"),
