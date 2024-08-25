@@ -22,6 +22,16 @@
         <div class="modal-body">
           <div class="form row">
             <div class="mb-7 col-12 col-lg-12">
+              <label class="form-label required">ตำแหน่งทางวิชาการ</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="ตำแหน่งทางวิชาการ"
+                aria-label="ตำแหน่งทางวิชาการ"
+                v-model="item_edit.position"
+              />
+            </div>
+            <div class="mb-7 col-12 col-lg-12">
               <label class="form-label required">คำนำหน้า</label>
               <input
                 type="text"
@@ -75,17 +85,50 @@
             </div>
 
             <div class="mb-7 col-12 col-lg-12">
-              <label for="" class="form-label">สถานะ</label>
-              <v-select
-                id="slt-is-active"
-                name="slt-is-active"
-                label="name_th"
-                placeholder="สถานะ"
-                :options="selectOptions.statuses"
-                v-model="item_edit.is_active"
+              <label class="form-label required"
+                >ที่อยู่ตามบัตรประชาชน (โปรดระบุข้อมูลให้ครบถ้วน บ้านเลขที่
+                จังหวัด อำเภอ ตำบล รหัสไปรษณีย์)</label
+              >
+              <input
+                type="text"
                 class="form-control"
-                :clearable="true"
-              ></v-select>
+                placeholder="โปรดระบุข้อมูลให้ครบถ้วน บ้านเลขที่ จังหวัด อำเภอ ตำบล รหัสไปรษณีย์"
+                aria-label="ที่อยู่ตามบัตรประชาชน"
+                v-model="item_edit.position"
+              />
+            </div>
+
+            <div class="mb-7 col-12 col-lg-12">
+              <label class="form-label required">ชื่อธนาคาร</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="ชื่อธนาคาร"
+                v-model="item_edit.name_bank"
+              />
+            </div>
+
+            <div class="mb-7 col-12 col-lg-12">
+              <label class="form-label required">ชื่อบัญชีธนาคาร</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="ชื่อบัญชีธนาคาร"
+                v-model="item_edit.name_account_bank"
+              />
+            </div>
+
+            <div class="mb-7 col-12 col-lg-12">
+              <label class="form-label required">เลขที่บัญชีธนาคาร</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="เลขที่บัญชีธนาคาร"
+                v-model="item_edit.no_account_bank"
+              />
             </div>
           </div>
 
@@ -179,11 +222,7 @@ export default defineComponent({
       isLoading.value = true;
 
       let data_item = {
-        prefix_name: item_edit.value.prefix_name,
-        firstname: item_edit.value.firstname,
-        surname: item_edit.value.surname,
-        email: item_edit.value.email,
-        organization_name: item_edit.value.organization_name,
+        ...item_edit.value,
         is_active: item_edit.value.is_active?.id,
       };
 

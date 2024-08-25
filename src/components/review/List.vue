@@ -1,32 +1,38 @@
 <template>
   <div>
-    <div class="row g-3">
-      <div
-        v-for="(it, idx) in items"
-        :key="idx"
-        class="col-12 col-md-12 col-lg-4 p-5"
-      >
-        <div
-          class="card h-100 border border-dotted"
-          :class="`border-${convertStatus(it.status_id).bg_bs_color}`"
-        >
-          <div class="card-body p-5">
-            <h6 class="card-title">{{ it.title_th }}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">{{ it.rp_no }}</h6>
-            <p class="card-text">
-              <strong>วันที่เสนอ:</strong> {{ convertDate(it.sended_at) }}<br />
-              <strong>หน่วยงาน:</strong> {{ it.department?.name }}<br />
-              <strong>ประเภททุนวิจัย:</strong> {{ it.paper_type?.name }}
-            </p>
-            <div class="mb-2">
-              <span
-                class="badge p-2 text-white"
-                :style="`background-color: ${
-                  convertStatus(it.status_id).bg_color
-                };`"
-                >{{ convertStatus(it.status_id).name_th }}</span
-              >
-            </div>
+    <table class="table table-bordered table-striped fs-8" style="width: 100%">
+      <thead class="bg-warning">
+        <tr>
+          <th
+            class="text-center text-white cursor-pointer"
+            v-for="(hc, idx) in headerColumn"
+            :key="idx"
+            @click="hc.sort == true ? handleSort(hc.column_name) : undefined"
+          >
+            <span>{{ hc.title }}</span>
+            <i
+              :class="getSortIcon(hc.column_name)"
+              class="sort-icon ms-2 text-grey"
+            ></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody v-if="items.length != 0">
+        <tr v-for="(it, idx) in items" :key="idx">
+          <td class="text-center">{{ it.paper.rp_no }}</td>
+          <td>{{ it.paper.title_th }}</td>
+          <td>{{ it.paper.paper_type.name }}</td>
+          <td class="text-center">
+            <span
+              class="badge p-2 text-white"
+              :style="`background-color: ${
+                convertStatus(it.review_status).bg_color
+              };`"
+              >{{ convertStatus(it.review_status).name_th }}</span
+            >
+          </td>
+
+          <td class="text-center">
             <div class="dropdown">
               <button
                 class="btn btn-primary btn-sm dropdown-toggle"
@@ -46,7 +52,7 @@
                     class="dropdown-item cursor-pointer"
                     @click="
                       handleDetail({
-                        id: it.id,
+                        id: it.paper_id,
                       })
                     "
                     >รายละเอียด</a
@@ -56,76 +62,40 @@
                   <a
                     class="dropdown-item cursor-pointer"
                     @click="
-                      handleHistoryDetail({
-                        id: it.id,
-                      })
-                    "
-                    >ประวัติการดำเนินการ/รายละเอียดที่ต้องแก้ไข</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 1 || it.status_id == 3"
-                    @click="
                       handleEdit({
                         id: it.id,
                       })
                     "
-                    >แก้ไขข้อมูล</a
-                  >
+                    >ประเมิน
+                  </a>
                 </li>
-
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 2"
-                    @click="
-                      handleReject({
-                        id: it.id,
-                      })
-                    "
-                    >ส่งกลับให้แก้ไข</a
-                  >
-                </li>
-
-                <li>
+                <!-- <li>
                   <a
                     class="dropdown-item cursor-pointer"
                     @click="
-                      handleManageReview({
+                      handleHistoryDetail({
                         id: it.id,
                       })
                     "
-                    >รายการกรรมการ</a
+                    >ประวัติการประเมิน</a
                   >
-                </li>
-
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 2"
-                    @click="
-                      handleApprove({
-                        id: it.id,
-                      })
-                    "
-                    >ยกเลิก/ตอบรับข้อเสนอ</a
-                  >
-                </li>
+                </li> -->
               </ul>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </td>
+        </tr>
+      </tbody>
 
-    <div v-if="items.length === 0" class="text-center mt-3">
-      <span>ไม่พบข้อมูล</span>
-    </div>
-
-    <div class="col-12 mt-4">
-      <div class="tp-pagination">
+      <tbody v-else>
+        <tr>
+          <td colspan="10">
+            <div class="text-center"><span>ไม่พบข้อมูล</span></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-xxl-12">
+      <div class="tp-pagination mt-30">
         <BlogPagination
           :perPage="paginationData.perPage"
           :totalItems="paginationData.totalItems"
@@ -151,11 +121,11 @@ dayjs.extend(buddhistEra);
 // Import Pagination
 import BlogPagination from "@/components/common/pagination/BlogPagination.vue";
 // Composable
-import useStatusData from "@/composables/useStatusData";
+import useStatusData from "@/composables/useReviewStatusData";
 import useDateData from "@/composables/useDateData";
 
 export default defineComponent({
-  name: "admin-list-paper",
+  name: "list-review-paper",
   components: {
     BlogPagination,
   },
@@ -186,12 +156,13 @@ export default defineComponent({
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     const headerColumn = [
-      { column_name: "created_at", title: "วันที่เสนอ", sort: true },
-      { column_name: "rp_no", title: "รหัส", sort: true },
-      { column_name: "title_th", title: "ชื่อโครงการ (TH)", sort: true },
-      { column_name: "department_id", title: "หน่วยงาน", sort: true },
-      { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
-      { column_name: "status_id", title: "สถานะ", sort: true },
+      //   { column_name: "sended_at", title: "วันที่เสนอ", sort: true },
+      { column_name: "paper.rp_no", title: "รหัสโครงการ", sort: true },
+      { column_name: "paper.title_th", title: "ชื่อโครงการ (TH)", sort: true },
+      { column_name: "paper.paper_type.name", title: "ประเภท", sort: true },
+      //   { column_name: "department_id", title: "หน่วยงาน", sort: true },
+      //   { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
+      { column_name: "review_status", title: "สถานะ", sort: true },
       { column_name: "manage", title: "จัดการข้อมูล", sort: false },
     ];
 
@@ -205,28 +176,12 @@ export default defineComponent({
       emit("edit", item);
     };
 
-    const handleReject = (item: any) => {
-      emit("reject", item);
-    };
-
-    const handleApprove = (item: any) => {
-      emit("approve", item);
-    };
-
-    const handleCancel = (item: any) => {
-      emit("cancel", item);
-    };
-
-    const handleManageReview = (item: any) => {
-      emit("manage-review", item);
+    const handleSort = (key: any) => {
+      emit("sort", key);
     };
 
     const handleHistoryDetail = (item: any) => {
       emit("history-detail", item);
-    };
-
-    const handleSort = (key: any) => {
-      emit("sort", key);
     };
 
     const convertStatus = (status: any) => {
@@ -234,7 +189,6 @@ export default defineComponent({
       return {
         name_th: findStatus.name_th,
         bg_color: findStatus.bg_color,
-        bg_bs_color: findStatus.bg_bs_color,
       };
     };
 
@@ -257,10 +211,6 @@ export default defineComponent({
       items,
       handleDetail,
       handleEdit,
-      handleReject,
-      handleApprove,
-      handleCancel,
-      handleManageReview,
       handleHistoryDetail,
       convertDate: useDateData().convertDate,
       convertStatus,

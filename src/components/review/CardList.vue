@@ -8,23 +8,22 @@
       >
         <div
           class="card h-100 border border-dotted"
-          :class="`border-${convertStatus(it.status_id).bg_bs_color}`"
+          :class="`border-${convertStatus(it.review_status).bg_bs_color}`"
         >
           <div class="card-body p-5">
-            <h6 class="card-title">{{ it.title_th }}</h6>
+            <h6 class="card-title">{{ it.paper.title_th }}</h6>
             <h6 class="card-subtitle mb-2 text-muted">{{ it.rp_no }}</h6>
             <p class="card-text">
-              <strong>วันที่เสนอ:</strong> {{ convertDate(it.sended_at) }}<br />
-              <strong>หน่วยงาน:</strong> {{ it.department?.name }}<br />
-              <strong>ประเภททุนวิจัย:</strong> {{ it.paper_type?.name }}
+              <strong>ประเภททุนวิจัย:</strong> {{ it.paper.paper_type.name
+              }}<br />
             </p>
             <div class="mb-2">
               <span
                 class="badge p-2 text-white"
                 :style="`background-color: ${
-                  convertStatus(it.status_id).bg_color
+                  convertStatus(it.review_status).bg_color
                 };`"
-                >{{ convertStatus(it.status_id).name_th }}</span
+                >{{ convertStatus(it.review_status).name_th }}</span
               >
             </div>
             <div class="dropdown">
@@ -35,10 +34,8 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i
-                  class="bi bi-pencil-square fs-4 d-sm-inline-block d-lg-none"
-                ></i>
-                <span class="d-none d-lg-inline-block">จัดการ</span>
+                <i class="bi bi-pencil-square"></i>
+                <span>จัดการ</span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li>
@@ -46,72 +43,23 @@
                     class="dropdown-item cursor-pointer"
                     @click="
                       handleDetail({
-                        id: it.id,
+                        id: it.paper_id,
                       })
                     "
-                    >รายละเอียด</a
                   >
+                    รายละเอียด
+                  </a>
                 </li>
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
-                    @click="
-                      handleHistoryDetail({
-                        id: it.id,
-                      })
-                    "
-                    >ประวัติการดำเนินการ/รายละเอียดที่ต้องแก้ไข</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 1 || it.status_id == 3"
                     @click="
                       handleEdit({
                         id: it.id,
                       })
                     "
-                    >แก้ไขข้อมูล</a
-                  >
-                </li>
-
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 2"
-                    @click="
-                      handleReject({
-                        id: it.id,
-                      })
-                    "
-                    >ส่งกลับให้แก้ไข</a
-                  >
-                </li>
-
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    @click="
-                      handleManageReview({
-                        id: it.id,
-                      })
-                    "
-                    >รายการกรรมการ</a
-                  >
-                </li>
-
-                <li>
-                  <a
-                    class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 2"
-                    @click="
-                      handleApprove({
-                        id: it.id,
-                      })
-                    "
-                    >ยกเลิก/ตอบรับข้อเสนอ</a
-                  >
+                    >ประเมิน
+                  </a>
                 </li>
               </ul>
             </div>
@@ -151,11 +99,11 @@ dayjs.extend(buddhistEra);
 // Import Pagination
 import BlogPagination from "@/components/common/pagination/BlogPagination.vue";
 // Composable
-import useStatusData from "@/composables/useStatusData";
+import useStatusData from "@/composables/useReviewStatusData";
 import useDateData from "@/composables/useDateData";
 
 export default defineComponent({
-  name: "admin-list-paper",
+  name: "card-list-review-paper",
   components: {
     BlogPagination,
   },
@@ -186,12 +134,13 @@ export default defineComponent({
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     const headerColumn = [
-      { column_name: "created_at", title: "วันที่เสนอ", sort: true },
-      { column_name: "rp_no", title: "รหัส", sort: true },
-      { column_name: "title_th", title: "ชื่อโครงการ (TH)", sort: true },
-      { column_name: "department_id", title: "หน่วยงาน", sort: true },
-      { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
-      { column_name: "status_id", title: "สถานะ", sort: true },
+      //   { column_name: "sended_at", title: "วันที่เสนอ", sort: true },
+      { column_name: "paper.rp_no", title: "รหัสโครงการ", sort: true },
+      { column_name: "paper.title_th", title: "ชื่อโครงการ (TH)", sort: true },
+      { column_name: "paper.paper_type.name", title: "ประเภท", sort: true },
+      //   { column_name: "department_id", title: "หน่วยงาน", sort: true },
+      //   { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
+      { column_name: "review_status", title: "สถานะ", sort: true },
       { column_name: "manage", title: "จัดการข้อมูล", sort: false },
     ];
 
@@ -205,28 +154,12 @@ export default defineComponent({
       emit("edit", item);
     };
 
-    const handleReject = (item: any) => {
-      emit("reject", item);
-    };
-
-    const handleApprove = (item: any) => {
-      emit("approve", item);
-    };
-
-    const handleCancel = (item: any) => {
-      emit("cancel", item);
-    };
-
-    const handleManageReview = (item: any) => {
-      emit("manage-review", item);
+    const handleSort = (key: any) => {
+      emit("sort", key);
     };
 
     const handleHistoryDetail = (item: any) => {
       emit("history-detail", item);
-    };
-
-    const handleSort = (key: any) => {
-      emit("sort", key);
     };
 
     const convertStatus = (status: any) => {
@@ -257,10 +190,6 @@ export default defineComponent({
       items,
       handleDetail,
       handleEdit,
-      handleReject,
-      handleApprove,
-      handleCancel,
-      handleManageReview,
       handleHistoryDetail,
       convertDate: useDateData().convertDate,
       convertStatus,

@@ -94,9 +94,7 @@
                   <div class="form">
                     <div class="mb-7 col-12 col-lg-12">
                       <div class="row">
-                        <div
-                          class="col-md-12 table-responsive"
-                        >
+                        <div class="col-md-12 table-responsive">
                           <!-- ตารางปกติสำหรับหน้าจอขนาดใหญ่ (ไม่เปลี่ยนแปลง) -->
                           <table class="table table-bordered table-striped">
                             <thead class="bg-warning">
@@ -109,6 +107,12 @@
                                 </th>
                                 <th class="text-center text-white">
                                   ชื่อ-นามสกุล (Email)
+                                </th>
+                                <th
+                                  class="text-center text-white"
+                                  style="width: 100px"
+                                >
+                                  คะแนน
                                 </th>
                                 <th
                                   class="text-center text-white"
@@ -126,7 +130,7 @@
                                   class="text-center text-white"
                                   style="width: 120px"
                                 >
-                                  ส่งเมล
+                                  ส่งเมล/ดูคะแนน
                                 </th>
                               </tr>
                             </thead>
@@ -137,7 +141,24 @@
                                   {{ rv.reviewer_id?.fullname }}
                                 </td>
                                 <td class="text-center">
-                                  {{ rv.detail }}
+                                  {{
+                                    Number(rv.score_1) +
+                                    Number(rv.score_2) +
+                                    Number(rv.score_3) +
+                                    Number(rv.score_4) +
+                                    Number(rv.score_5) +
+                                    Number(rv.score_6) +
+                                    Number(rv.score_7) +
+                                    Number(rv.score_8) +
+                                    Number(rv.score_9) +
+                                    Number(rv.score_10)+
+                                    Number(rv.score_11)+
+                                    Number(rv.score_12)+
+                                    Number(rv.score_13)
+                                  }}
+                                </td>
+                                <td class="text-center">
+                                  {{ rv.comment }}
                                 </td>
                                 <td class="text-center">
                                   <span
@@ -160,6 +181,17 @@
                                     <span class="ms-1">
                                       {{ rv.time_no_send_mail }}
                                     </span>
+                                  </button>
+
+                                  <button
+                                    class="btn btn-primary btn-icon ms-2"
+                                    :class="[
+                                      rv.review_status > 1 ? '' : 'disabled',
+                                    ]"
+                                    v-if="rv.reviewer_id != null"
+                                    @click="onShowScore(rv)"
+                                  >
+                                    <i class="fa fa-file"></i>
                                   </button>
                                 </td>
                               </tr>
@@ -270,6 +302,43 @@
         @close-modal="openAddReviewerModal = false"
       ></AddReviewerPage>
     </div>
+
+    <div
+      class="modal fade"
+      tabindex="-1"
+      ref="detailModalRef"
+      id="main-modal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              @click="onCloseDetail({ reload: false })"
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <DetailReviewPage
+              v-if="openDetailScoreModal == true"
+              :review_id="item_rv.id"
+            />
+          </div>
+          <div class="mx-auto text-center mt-5">
+            <button
+              @click="onCloseDetail({ reload: false })"
+              type="button"
+              class="btn btn-danger me-2"
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -302,6 +371,7 @@ import useReviewStatusData from "@/composables/useReviewStatusData";
 // Import Component
 import DetailPage from "@/views/admin-paper/Detail.vue";
 import AddReviewerPage from "@/views/reviewer/Add.vue";
+import DetailReviewPage from "@/views/review/Detail.vue";
 
 export default defineComponent({
   name: "reject-paper-modal",
@@ -316,17 +386,22 @@ export default defineComponent({
     DetailPage,
     vSelect,
     AddReviewerPage,
+    DetailReviewPage,
   },
   setup(props, { emit }) {
     // UI
     const isLoading = ref<any>(true);
     const mainModalRef = ref<any>(null);
     const mainModalObj = ref<any>(null);
+    const detailModalRef = ref<any>(null);
+    const detailModalObj = ref<any>(null);
     const router = useRouter();
     const openAddReviewerModal = ref(false);
+    const openDetailScoreModal = ref(false);
 
     // Variable
     const { item } = toRefs(props);
+    const item_rv = reactive<any>({});
     const selectOptions = ref<any>({
       reviewers: [],
       review_statuses: useReviewStatusData().statuses,
@@ -420,11 +495,20 @@ export default defineComponent({
 
     // Event
     const onClose = ({ reload = false }: { reload?: boolean }) => {
+      console.log("FREEDOM");
       mainModalObj.value.hide();
       if (reload === true) {
         emit("reload");
       }
       emit("close-modal");
+    };
+
+    const onCloseDetail = ({ reload = false }: { reload?: boolean }) => {
+      detailModalObj.value.hide();
+      openDetailScoreModal.value = false;
+      //   if (reload === true) {
+      //     emit("reload");
+      //   }
     };
 
     const onSubmit = async () => {
@@ -494,6 +578,7 @@ export default defineComponent({
       isLoading.value = true;
       await ApiService.put("review/send-mail/" + rv.id, {
         time_no_send_mail: rv.time_no_send_mail + 1,
+        paper_id: item.value.id,
       })
         .then(async ({ data }) => {
           if (data.msg != "success") {
@@ -508,6 +593,13 @@ export default defineComponent({
           isLoading.value = false;
           console.log(response);
         });
+    };
+
+    const onShowScore = (it: any) => {
+      Object.assign(item_rv, it);
+      openDetailScoreModal.value = true;
+
+      detailModalObj.value.show();
     };
 
     // const onSubmit = async () => {
@@ -556,11 +648,20 @@ export default defineComponent({
     onMounted(async () => {
       await fetchReviewers();
       await fetchReview();
+
       mainModalObj.value = new Modal(mainModalRef.value, {});
       mainModalObj.value.show();
       mainModalRef.value.addEventListener("hidden.bs.modal", () =>
         onClose({ reload: false })
       );
+
+      detailModalObj.value = new Modal(detailModalRef.value, {});
+      detailModalRef.value.addEventListener("hidden.bs.modal", () =>
+        onCloseDetail({ reload: false })
+      );
+
+      //   detail
+
       isLoading.value = false;
     });
 
@@ -571,12 +672,15 @@ export default defineComponent({
         );
       }
       mainModalObj.value.hide();
+      detailModalObj.value.hide();
+
       emit("close-modal");
     });
     // Return
     return {
       isLoading,
       mainModalRef,
+      detailModalRef,
       convertDate: useDateData().convertDate,
       item,
       onClose,
@@ -586,6 +690,10 @@ export default defineComponent({
       openAddReviewerModal,
       onReLoadReviewer,
       onSendMail,
+      onShowScore,
+      openDetailScoreModal,
+      item_rv,
+      onCloseDetail,
     };
   },
 });

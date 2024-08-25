@@ -62,7 +62,12 @@ export default defineComponent({
 
     const signOut = () => {
       store.logout();
-      router.push({ name: "sign-in" });
+
+      if (userData.level == 3) {
+        router.push({ name: "reviewer-sign-in" });
+      } else {
+        router.push({ name: "sign-in" });
+      }
     };
 
     return {

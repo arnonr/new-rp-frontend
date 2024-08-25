@@ -31,7 +31,9 @@
             <template v-if="menuItem.heading">
               <div
                 class="menu-item"
-                v-if="menuItem.route == '/paper' || userData.level == 1"
+                v-if="
+                  userData.level == 1 && menuItem.route != '/reviewer-paper'
+                "
               >
                 <router-link
                   v-if="menuItem.route"
@@ -39,18 +41,59 @@
                   active-class="active"
                   :to="menuItem.route"
                 >
-                <!-- :to="{ path: '/your-path', replace: true }" -->
                   <span
                     v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
                     class="menu-icon"
                   >
-                    <!-- v-if="sidebarMenuIcons === 'bootstrap'" -->
                     <i :class="menuItem.bootstrapIcon" class="bi fs-3"></i>
-                    <!-- <KTIcon
-                      v-else-if="sidebarMenuIcons === 'keenthemes'"
-                      :icon-name="menuItem.keenthemesIcon"
-                      icon-class="fs-2"
-                    /> -->
+                  </span>
+                  <span class="menu-title">{{
+                    translate(menuItem.heading)
+                  }}</span>
+                </router-link>
+              </div>
+
+              <div
+                class="menu-item"
+                v-if="userData.level == 2 && menuItem.route == '/paper'"
+              >
+                <router-link
+                  v-if="menuItem.route"
+                  class="menu-link"
+                  active-class="active"
+                  :to="menuItem.route"
+                >
+                  <span
+                    v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
+                    class="menu-icon"
+                  >
+                    <i :class="menuItem.bootstrapIcon" class="bi fs-3"></i>
+                  </span>
+                  <span class="menu-title">{{
+                    translate(menuItem.heading)
+                  }}</span>
+                </router-link>
+              </div>
+
+              <div
+                class="menu-item"
+                v-if="
+                  userData.level == 3 &&
+                  (menuItem.route == '/reviewer-paper' ||
+                    menuItem.route == '/review-edit')
+                "
+              >
+                <router-link
+                  v-if="menuItem.route"
+                  class="menu-link"
+                  active-class="active"
+                  :to="menuItem.route"
+                >
+                  <span
+                    v-if="menuItem.keenthemesIcon || menuItem.bootstrapIcon"
+                    class="menu-icon"
+                  >
+                    <i :class="menuItem.bootstrapIcon" class="bi fs-3"></i>
                   </span>
                   <span class="menu-title">{{
                     translate(menuItem.heading)
@@ -58,6 +101,7 @@
                 </router-link>
               </div>
             </template>
+
             <div
               v-if="menuItem.sectionTitle && menuItem.route"
               :class="{ show: hasActiveChildren(menuItem.route) }"

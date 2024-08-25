@@ -5,6 +5,7 @@ import {
   type RouteRecordRaw,
 } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useAuthReviewerStore } from "@/stores/auth-reviewer";
 import { useConfigStore } from "@/stores/config";
 
 const routes: Array<RouteRecordRaw> = [
@@ -132,6 +133,23 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           middleware: "admin",
           pageTitle: "แบบฟอร์มแก้ไขข้อมูลหน้าติดต่อเรา",
+        },
+      },
+      //
+      {
+        path: "/reviewer-paper",
+        name: "reviewer-paper",
+        component: () => import("@/views/reviewer-paper/Index.vue"),
+        meta: {
+          pageTitle: "รายการยื่นเสนอโครงการวิจัย",
+        },
+      },
+      {
+        path: "/review-edit/:id",
+        name: "review-edit",
+        component: () => import("@/views/review/Edit.vue"),
+        meta: {
+          pageTitle: "แบบประเมินข้อเสนอโครงการวิจัย",
         },
       },
     ],
@@ -568,6 +586,29 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Password reset",
         },
       },
+      {
+        path: "/review-new-password",
+        name: "review-new-password",
+        component: () =>
+          import(
+            "@/views/crafted/authentication/basic-flow/ReviewerNewPassword.vue"
+          ),
+        meta: {
+          pageTitle: "ตั้งรหัสผ่านใหม่",
+        },
+      },
+
+      {
+        path: "/reviewer-sign-in",
+        name: "reviewer-sign-in",
+        component: () =>
+          import(
+            "@/views/crafted/authentication/basic-flow/ReviewerSignIn.vue"
+          ),
+        meta: {
+          pageTitle: "Reviewer Sign In",
+        },
+      },
     ],
   },
   {
@@ -609,7 +650,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-//   history: createWebHistory(import.meta.env.BASE_URL),
+  //   history: createWebHistory(import.meta.env.BASE_URL),
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to) {
@@ -632,6 +673,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  const authReviewerStore = useAuthReviewerStore();
   const configStore = useConfigStore();
 
   // current page view title
@@ -645,7 +687,22 @@ router.beforeEach((to, from, next) => {
 
   // before page access check if page requires authentication
   if (to.meta.middleware == "auth" || to.meta.middleware == "admin") {
-    if (authStore.isAuthenticated) {
+    console.log(to.name);
+    if (to.name == "reviewer-paper") {
+      if (authReviewerStore.isAuthenticated) {
+        if (to.meta.middleware == "admin") {
+          if (authStore.isAdmin) {
+            next();
+          } else {
+            next({ name: "error-permission" });
+          }
+        } else {
+          next();
+        }
+      } else {
+        next({ name: "reviewer-sign-in" });
+      }
+    } else if (authStore.isAuthenticated) {
       if (to.meta.middleware == "admin") {
         if (authStore.isAdmin) {
           next();
@@ -658,6 +715,8 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: "sign-in" });
     }
+
+    //
   } else {
     next();
   }

@@ -29,9 +29,13 @@
             {{
               it.user.prefix_name + it.user.firstname + " " + it.user.surname
             }}
-          </td> 
+          </td>
           <td>{{ it.department?.name }}</td>
           <td class="text-center">{{ it.paper_type?.name }}</td>
+          <td class="text-center">{{ it.review.length }}</td>
+          <td class="text-center">
+            {{ showReviewSuccess(it.review) }}
+          </td>
           <td class="text-center">
             <span
               class="badge p-2 text-white"
@@ -108,7 +112,6 @@
                 <li>
                   <a
                     class="dropdown-item cursor-pointer"
-                    v-if="it.status_id == 2"
                     @click="
                       handleManageReview({
                         id: it.id,
@@ -212,6 +215,8 @@ export default defineComponent({
       { column_name: "fullname", title: "ผู้ส่ง", sort: true },
       { column_name: "department_id", title: "หน่วยงาน", sort: true },
       { column_name: "paper_type_id", title: "ประเภททุนวิจัย", sort: true },
+      { column_name: "review", title: "กรรมการ", sort: true },
+      { column_name: "review_status", title: "การประเมิน", sort: true },
       { column_name: "status_id", title: "สถานะ", sort: true },
       { column_name: "manage", title: "จัดการข้อมูล", sort: false },
     ];
@@ -258,6 +263,14 @@ export default defineComponent({
       };
     };
 
+    const showReviewSuccess = (rv) => {
+      let rv_success = rv.filter((x: any) => {
+        return x.review_status != 1;
+      });
+
+      return rv_success.length;
+    };
+
     const updateCurrentPage = (newPage: any) => {
       internalCurrentPage.value = newPage;
       emit("update:currentPage", newPage);
@@ -290,6 +303,7 @@ export default defineComponent({
       handleSort,
       headerColumn,
       userData,
+      showReviewSuccess,
     };
   },
 });

@@ -11,6 +11,12 @@ const MainMenuConfig: Array<MenuItem> = [
       },
       {
         heading: "รายการโครงการวิจัย",
+        route: "/reviewer-paper",
+        keenthemesIcon: "element-11",
+        bootstrapIcon: "bi-clipboard-data",
+      },
+      {
+        heading: "รายการโครงการวิจัย",
         route: "/admin-paper",
         keenthemesIcon: "element-11",
         bootstrapIcon: "bi-clipboard-data",
