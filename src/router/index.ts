@@ -688,7 +688,7 @@ router.beforeEach((to, from, next) => {
   // before page access check if page requires authentication
   if (to.meta.middleware == "auth" || to.meta.middleware == "admin") {
     console.log(to.name);
-    if (to.name == "reviewer-paper") {
+    if (to.name == "reviewer-paper" || to.name == "review-edit") {
       if (authReviewerStore.isAuthenticated) {
         if (to.meta.middleware == "admin") {
           if (authStore.isAdmin) {
