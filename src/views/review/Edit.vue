@@ -311,7 +311,7 @@ export default defineComponent({
             total_score: 45,
             q: [
               {
-                name: "1.1.1 หัวเรื่องของการวิจัยน่าสนใจ/เป็นประเด๋นเร่งด่วน/สำคัญ",
+                name: "1.1.1 หัวเรื่องของการวิจัยน่าสนใจ/เป็นประเด็นเร่งด่วน/สำคัญ",
                 total_score: 5,
                 col_name: "score_1",
               },
@@ -352,7 +352,7 @@ export default defineComponent({
             total_score: 25,
             q: [
               {
-                name: "1.2.1 ระบุกลยุทธ์การเชื่อมโยงของขั้นตอนการวิจัยอบ่างสมบูรณ์ ถูกต้อง ชัดเจน และสอดคล้องกับวัตถุุประสงค์",
+                name: "1.2.1 ระบุกลยุทธ์การเชื่อมโยงของขั้นตอนการวิจัยอย่างสมบูรณ์ ถูกต้อง ชัดเจน และสอดคล้องกับวัตถุประสงค์",
                 total_score: 15,
                 col_name: "score_8",
               },
@@ -378,7 +378,7 @@ export default defineComponent({
                 col_name: "score_11",
               },
               {
-                name: "1.3.3 ระบกลุ่มเป้าหมายที่ได้รับผลประโยชน์ชัดเจน",
+                name: "1.3.3 ระบุกลุ่มเป้าหมายที่ได้รับผลประโยชน์ชัดเจน",
                 total_score: 5,
                 col_name: "score_12",
               },
@@ -405,7 +405,9 @@ export default defineComponent({
       },
     ];
 
-    const item = reactive<any>({});
+    const item = reactive<any>({
+      review_file: [],
+    });
 
     // Validate Schema
     const validationItemSchema = Yup.object().shape({
@@ -561,7 +563,7 @@ export default defineComponent({
         budget_status: item.budget_status ? item.budget_status.id : undefined,
         review_status: item.review_status ? item.review_status.id : undefined,
         review_file:
-          item.review_file.length != 0 ? item.review_file : undefined,
+          item.review_file?.length != 0 ? item.review_file : undefined,
         //
         created_at: undefined,
         created_by: undefined,
