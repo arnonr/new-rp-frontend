@@ -151,9 +151,9 @@
                                     Number(rv.score_7) +
                                     Number(rv.score_8) +
                                     Number(rv.score_9) +
-                                    Number(rv.score_10)+
-                                    Number(rv.score_11)+
-                                    Number(rv.score_12)+
+                                    Number(rv.score_10) +
+                                    Number(rv.score_11) +
+                                    Number(rv.score_12) +
                                     Number(rv.score_13)
                                   }}
                                 </td>
@@ -436,7 +436,7 @@ export default defineComponent({
     //Fetch
     const fetchReviewers = async () => {
       try {
-        const { data } = await ApiService.query("reviewer/", {});
+        const { data } = await ApiService.query("reviewer/", { perPage: 500 });
         selectOptions.value.reviewers = data.data.map((x: any) => {
           x.fullname = `${x.fullname} (${x.email})`;
           return x;
