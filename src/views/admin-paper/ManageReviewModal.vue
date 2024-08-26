@@ -436,7 +436,9 @@ export default defineComponent({
     //Fetch
     const fetchReviewers = async () => {
       try {
-        const { data } = await ApiService.query("reviewer/", { perPage: 500 });
+        const { data } = await ApiService.query("reviewer/", {
+          params: { perPage: 500 },
+        });
         selectOptions.value.reviewers = data.data.map((x: any) => {
           x.fullname = `${x.fullname} (${x.email})`;
           return x;
