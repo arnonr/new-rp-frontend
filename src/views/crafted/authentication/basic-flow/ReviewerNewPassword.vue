@@ -13,7 +13,8 @@
       <div class="text-center mb-10">
         <!--begin::Title-->
         <h4 class="text-gray-900 mb-3">
-          ระบบยื่นเสนอโครงการวิจัย <br />คณะวิทยาศาสตร์ประยุกต์
+          ระบบยื่นเสนอโครงการวิจัย คณะวิทยาศาสตร์ประยุกต์<br /><br />
+          หน้าเปลี่ยนรหัสผ่าน
         </h4>
         <!--end::Title-->
       </div>
@@ -21,6 +22,10 @@
 
       <div class="mb-10 bg-light-warning p-4 rounded">
         <div class="text-dark">ตั้งรหัสผ่านใหม่/เข้าใช้งานครั้งแรก</div>
+        <div class="text-dark mt-5">
+          กรณีเคยเข้าใช้งานแล้ว
+          <router-link to="/reviewer-sign-in">คลิกที่นี่</router-link>
+        </div>
       </div>
 
       <!--begin::Input group-->
@@ -153,7 +158,7 @@ export default defineComponent({
             throw new Error("ERROR");
           }
           if (data.data.verify == false) {
-            useToast("URL ไม่ถูกต้อง",'error');
+            useToast("URL ไม่ถูกต้อง", "error");
             throw new Error("ERROR");
           }
 
