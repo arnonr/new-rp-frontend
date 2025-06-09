@@ -1,356 +1,234 @@
 <template>
   <!--begin::Wrapper-->
   <div class="mt-5">
-    <!-- Profile -->
-    <div class="card shadow-sm my-5">
-      <div class="card-header bg-warning">
-        <h4 class="card-title">ข้อมูลส่วนตัว</h4>
-      </div>
-      <div class="card-body row">
-        <div class="col-md-12 px-5 py-3">
-          <span class="fw-bold">ชื่อ-นามสกุล : </span>
-          <span class="fst-italic"
-            >{{ user_item.prefix_name != null ? user_item.prefix_name : ""
-            }}{{ user_item.firstname + " " + user_item.surname }}</span
-          >
-          <div class="separator separator-dotted my-2"></div>
-        </div>
-        <div class="col-md-12 px-5 py-3">
-          <span class="fw-bold">หน่วยงาน : </span>
-          <span class="fst-italic">{{ user_item.department?.name }}</span>
-        </div>
+    <!-- Profile Section -->
+    <ProfileCard :user="user_item" @edit-user="handleEditUserModal" />
 
-        <div class="separator separator-dotted my-2"></div>
+    <!-- Research Projects Section -->
+    <ProjectsCard
+      :search="search"
+      :items="items"
+      :pagination-data="paginationData"
+      :sort-key="sortKey"
+      :sort-order="sortOrder"
+      :is-loading="isLoading"
+      @search="handleSearch"
+      @clear="handleClear"
+      @add-project="handleAddProject"
+      @edit-project="handleEditProject"
+      @detail="handleDetailModal"
+      @history-detail="handleHistoryDetailModal"
+      @sort="handleSort"
+      @update:current-page="paginationData.currentPage = $event"
+      @update:per-page="paginationData.perPage = $event"
+    />
 
-        <div class="col-md-12 mt-3 text-end">
-          <button
-            class="btn btn-primary me-2 pe-sm-3 ps-sm-5"
-            @click="onEditUserModal"
-          >
-            <i class="fa fa-edit"></i>
-            <span class="d-none d-lg-inline-block">แก้ไข</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="card shadow-sm my-5">
-      <div class="card-header bg-warning">
-        <h4 class="card-title">โครงการวิจัย</h4>
-        <div class="card-toolbar">
-          <div>
-            <button
-              class="btn btn-primary me-2 pe-sm-3 ps-sm-5 disabled"
-              @click="goToAddPage"
-            >
-              <i class="bi bi-file-earmark-plus-fill fs-4"></i>
-              <span class="d-none d-lg-inline-block ms-2"
-                >เสนอโครงการวิจัย (ปิดรับ)</span
-              >
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="card-body table-responsive d-none d-lg-block">
-        <div class="mb-5">
-          <SearchComponent
-            :search="search"
-            @search="fetchItems"
-            @clear="onClear"
-          />
-        </div>
-        <Preloader :isLoading="isLoading" :position="'absolute'" />
-        <ListComponent
-          :items="items"
-          :paginationData="paginationData"
-          :sortKey="sortKey"
-          :sortOrder="sortOrder"
-          @update:currentPage="paginationData.currentPage = $event"
-          @update:perPage="paginationData.perPage = $event"
-          @sort="(key: any) => {
-            sortedItems(key)}"
-          @edit="(it: any) => {goToEditPage(it.id)}"
-          @detail="(it: any) => {onDetailModal(it) }"
-          @history-detail="(it: any) =>{ onHistoryDetailModal(it)}"
-        />
-      </div>
-      <div class="card-body d-lg-none">
-        <CardListComponent
-          :items="items"
-          :paginationData="paginationData"
-          :sortKey="sortKey"
-          :sortOrder="sortOrder"
-          @update:currentPage="paginationData.currentPage = $event"
-          @update:perPage="paginationData.perPage = $event"
-          @sort="(key: any) => {
-            sortedItems(key)}"
-          @edit="(it: any) => {goToEditPage(it.id)}"
-          @detail="(it: any) => {onDetailModal(it) }"
-          @history-detail="(it: any) =>{ onHistoryDetailModal(it)}"
-        />
-      </div>
-    </div>
-
-    <div>
-      <div id="edit-user-modal">
-        <EditUserPage
-          v-if="openEditUserModal == true"
-          :id="user_item.id"
-          @close-modal="
-            () => {
-              openEditUserModal = false;
-            }
-          "
-          @reload="fetchUser"
-        />
-      </div>
-
-      <!-- Modal Detail ดูข้อมูล -->
-      <div id="detail-modal">
-        <DetailPage
-          v-if="openDetailModal == true"
-          :paper_id="item.id"
-          @close-modal="
-            () => {
-              openDetailModal = false;
-            }
-          "
-        />
-      </div>
-
-      <!-- Modal History Detail ดูข้อมูลประวัติการแก้ไข -->
-      <div id="history-detail-modal">
-        <HistoryDetailPage
-          v-if="openHistoryDetailModal == true"
-          :paper_id="item.id"
-          @close-modal="
-            () => {
-              openHistoryDetailModal = false;
-            }
-          "
-        />
-      </div>
-    </div>
+    <!-- Modals -->
+    <ModalsContainer
+      :user-item="user_item"
+      :selected-item="selectedItem"
+      :modals="modals"
+      @close-edit-user="modals.editUser = false"
+      @close-detail="modals.detail = false"
+      @close-history-detail="modals.historyDetail = false"
+      @reload-user="fetchUser"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, reactive, onMounted, watch } from "vue";
+<script setup lang="ts">
+import { ref, reactive, onMounted, watch } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useRouter } from "vue-router";
-import useToast from "@/composables/useToast";
 
 // Component
-import SearchComponent from "@/components/paper/Search2.vue";
-import ListComponent from "@/components/paper/List.vue";
-import CardListComponent from "@/components/paper/CardList.vue";
-import Preloader from "@/components/preloader/Preloader.vue";
-import EditUserPage from "@/views/user/EditUser.vue";
-import DetailPage from "@/views/paper/DetailModal.vue";
-import HistoryDetailPage from "@/views/paper/HistoryDetailModal.vue";
+import ProfileCard from "@/components/profile/card.vue";
+import ProjectsCard from "@/components/paper/Card.vue";
+import ModalsContainer from "@/components/paper/ModalsContainer.vue";
+import useToast from "@/composables/useToast";
 
-export default defineComponent({
-  name: "paper",
-  components: {
-    SearchComponent,
-    ListComponent,
-    CardListComponent,
-    Preloader,
-    EditUserPage,
-    DetailPage,
-    HistoryDetailPage,
-  },
-  setup() {
-    // UI Variable
-    const isLoading = ref<any>(false);
-    const router = useRouter();
-    const sortKey = ref<any>("");
-    const sortOrder = ref<any>(-1);
+// Composables
+const router = useRouter();
 
-    // Variable
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-    const openEditUserModal = ref<any>(false);
-    const user_item = reactive<any>({});
+// User data from localStorage
+const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
-    const search = reactive<any>({});
+// Reactive state
+const isLoading = ref<any>(false);
+const sortKey = ref("");
+const sortOrder = ref(-1);
 
-    const items = reactive<any[]>([]);
-    const item = reactive<any>({});
+const user_item = reactive<any>({});
+const search = reactive<any>({});
+const items = reactive<any[]>([]);
+const selectedItem = reactive<any>({});
 
-    const paginationData = reactive<any>({
-      perPage: 20,
-      currentPage: 1,
-      totalPage: 1,
-      totalItems: 0,
+const paginationData = reactive<any>({
+  perPage: 20,
+  currentPage: 1,
+  totalPage: 1,
+  totalItems: 0,
+});
+
+const modals = reactive<any>({
+  editUser: false,
+  detail: false,
+  historyDetail: false,
+});
+
+// API Functions
+const fetchItems = async (): Promise<void> => {
+  try {
+    isLoading.value = true;
+
+    const params = {
+      ...search,
+      create_year: search.year ?? undefined,
+      title_th: search.title_th ?? undefined,
+      rp_no: search.rp_no ?? undefined,
+      fullname: search.fullname ?? undefined,
+      status_id: search.status_id?.id ?? undefined,
+      orderBy: sortKey.value || "created_at",
+      order: sortOrder.value === 1 ? "asc" : "desc",
+      perPage: paginationData.perPage,
+      currentPage: paginationData.currentPage,
+      user_id: userData.id,
+    };
+
+    const { data } = await ApiService.query("paper", { params });
+
+    items.length = 0;
+    Object.assign(items, data.data);
+
+    paginationData.totalPage = data.totalPage;
+    paginationData.totalItems = data.totalData;
+    paginationData.currentPage = data.currentPage;
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    useToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const fetchUser = async (): Promise<void> => {
+  try {
+    const { data } = await ApiService.query(`user/${userData.id}`, {});
+
+    Object.assign(user_item, {
+      ...data.data,
+      department_id: data.data.department_id
+        ? {
+            name: data.data.department.name,
+            id: data.data.department_id,
+          }
+        : null,
     });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    useToast("เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้", "error");
+  }
+};
 
-    const openDetailModal = ref(false);
-    const openEditModal = ref(false);
-    const openReceive1Modal = ref(false);
-    const openHistoryDetailModal = ref(false);
+// Validation Functions
+const validateUserProfile = (): boolean => {
+  const requiredFields = [
+    user_item.prefix_name,
+    user_item.firstname,
+    user_item.surname,
+    user_item.email,
+    user_item.department_id,
+  ];
 
-    // Fetch Data
-    const fetchItems = async () => {
-      isLoading.value = true;
-      const params = {
-        ...search,
-        create_year: search.year ?? undefined,
-        title_th: search.title_th ?? undefined,
-        rp_no: search.rp_no ?? undefined,
-        fullname: search.fullname ?? undefined,
-        status_id: search.status_id?.id ?? undefined,
-        orderBy: sortKey.value != "" ? sortKey.value : "created_at",
-        order: sortOrder.value == 1 ? "asc" : "desc",
-        perPage: paginationData.perPage,
-        currentPage: paginationData.currentPage,
-        user_id: userData.id,
-      };
+  const isValid = requiredFields.every(
+    (field) => field !== "" && field !== null && field !== undefined
+  );
 
-      const { data } = await ApiService.query("paper", {
-        params: params,
+  if (!isValid) {
+    useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
+  }
+
+  return isValid;
+};
+
+// Event Handlers
+const handleSearch = (): void => {
+  paginationData.currentPage = 1;
+  fetchItems();
+};
+
+const handleClear = (): void => {
+  Object.keys(search).forEach((key) => {
+    const value = search[key as keyof SearchParams];
+    if (typeof value === "object" && value !== null) {
+      Object.keys(value).forEach((subKey) => {
+        (value as any)[subKey] = null;
       });
+    } else {
+      (search as any)[key] = null;
+    }
+  });
 
-      items.length = 0;
-      Object.assign(items, data.data);
-      paginationData.totalPage = data.totalPage;
-      paginationData.totalItems = data.totalData;
-      paginationData.currentPage = data.currentPage;
-      isLoading.value = false;
-    };
-    const fetchUser = async () => {
-      try {
-        const { data } = await ApiService.query("user/" + userData.id, {});
-        Object.assign(user_item, {
-          ...data.data,
-          department_id:
-            data.data.department_id != null
-              ? {
-                  name: data.data.department.name,
-                  id: data.data.department_id,
-                }
-              : null,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  paginationData.currentPage = 1;
+  fetchItems();
+};
 
-    // Event
-    const onClear = () => {
-      Object.keys(search).forEach((key) => {
-        if (typeof search[key] === "object" && search[key] !== null) {
-          Object.keys(search[key]).forEach((subKey) => {
-            search[key][subKey] = null;
-          });
-        } else {
-          search[key] = null;
-        }
-      });
-    };
+const handleSort = (key: string): void => {
+  if (sortKey.value === key) {
+    sortOrder.value *= -1;
+  } else {
+    sortKey.value = key;
+    sortOrder.value = 1;
+  }
+  fetchItems();
+};
 
-    const onExport = async () => {};
+// Modal Handlers
+const handleDetailModal = (item: any): void => {
+  Object.assign(selectedItem, item);
+  modals.detail = true;
+};
 
-    // Modal action
+const handleEditUserModal = (): void => {
+  modals.editUser = true;
+};
 
-    const onDetailModal = (it: any) => {
-      Object.assign(item, it);
-      openDetailModal.value = true;
-    };
+const handleHistoryDetailModal = (item: any): void => {
+  Object.assign(selectedItem, item);
+  modals.historyDetail = true;
+};
 
-    const onEditUserModal = () => {
-      openEditUserModal.value = true;
-    };
+// Navigation Handlers
+const handleAddProject = (): void => {
+  if (!validateUserProfile()) return;
+  router.push({ name: "paper-add" });
+};
 
-    const onHistoryDetailModal = (it: any) => {
-      Object.assign(item, it);
-      openHistoryDetailModal.value = true;
-    };
+const handleEditProject = (id: number): void => {
+  if (!validateUserProfile()) return;
+  router.push({ name: "paper-edit", params: { id } });
+};
 
-    // Mounted
-    onMounted(() => {
-      fetchUser();
-      fetchItems();
-    });
+// Watchers
+watch(
+  () => paginationData.currentPage,
+  () => fetchItems()
+);
 
-    // Watch
-    watch(
-      () => paginationData.currentPage,
-      () => {
-        fetchItems();
-      }
-    );
+watch(
+  () => paginationData.perPage,
+  () => {
+    paginationData.currentPage = 1;
+    fetchItems();
+  }
+);
 
-    watch(
-      () => paginationData.perPage,
-      () => {
-        fetchItems();
-      }
-    );
+// Lifecycle
+onMounted(async () => {
+  await Promise.all([fetchUser(), fetchItems()]);
+});
 
-    const goToAddPage = () => {
-      if (
-        user_item.prefix_name == "" ||
-        user_item.firstname == "" ||
-        user_item.surname == "" ||
-        user_item.email == "" ||
-        user_item.department_id == null
-      ) {
-        useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
-        return;
-      }
-      router.push({ name: "paper-add" });
-    };
-
-    const goToEditPage = (id: number) => {
-      if (
-        user_item.prefix_name == "" ||
-        user_item.firstname == "" ||
-        user_item.surname == "" ||
-        user_item.email == "" ||
-        user_item.department_id == null
-      ) {
-        useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
-        return;
-      }
-      router.push({ name: "paper-edit", params: { id: id } });
-    };
-
-    const sortedItems = (key: any) => {
-      if (sortKey.value === key) {
-        sortOrder.value = sortOrder.value * -1;
-      } else {
-        sortKey.value = key;
-      }
-
-      if (!sortKey.value) return items;
-
-      fetchItems();
-    };
-
-    return {
-      search,
-      items,
-      item,
-      paginationData,
-      isLoading,
-      onClear,
-      onExport,
-      onDetailModal,
-      fetchItems,
-      fetchUser,
-      openDetailModal,
-      openEditModal,
-      openReceive1Modal,
-      goToAddPage,
-      goToEditPage,
-      openEditUserModal,
-      onEditUserModal,
-      user_item,
-      sortKey,
-      sortOrder,
-      sortedItems,
-      openHistoryDetailModal,
-      onHistoryDetailModal,
-    };
-  },
+defineOptions({
+  name: "PaperIndex",
 });
 </script>

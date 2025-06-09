@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading" class="preloader" :style="`position: ${position}`" >
+  <div v-if="isLoading" class="preloader" :style="`position: ${position}`">
     <!-- You can use a spinner or any other preloader animation -->
     <div class="spinner"></div>
   </div>
@@ -11,7 +11,8 @@ import { computed } from "vue";
 export default {
   props: {
     isLoading: {
-      default: undefined, // ตั้งค่า default เป็น undefined
+      type: Boolean,
+      default: false,
     },
     position: {
       default: "fixed",
