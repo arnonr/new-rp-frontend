@@ -1,23 +1,10 @@
 <template>
   <!--begin::Wrapper-->
-  <div class="container mt-5">
-    <!-- Search -->
-    <div class="card shadow-sm my-6">
-      <SearchComponent :search="search" @search="fetchItems" @clear="onClear" />
-    </div>
+  <div class="mt-5">
     <!-- Profile -->
     <div class="card shadow-sm my-5">
-      <div class="card-header bg-white">
+      <div class="card-header bg-warning">
         <h4 class="card-title">ข้อมูลส่วนตัว</h4>
-        <div class="card-toolbar">
-          <button
-            class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5"
-            @click="onEditUserModal"
-          >
-            <i class="fa fa-edit"></i>
-            <span class="d-none d-lg-inline-block">แก้ไข</span>
-          </button>
-        </div>
       </div>
       <div class="card-body row">
         <div class="col-md-12 px-5 py-3">
@@ -34,22 +21,43 @@
         </div>
 
         <div class="separator separator-dotted my-2"></div>
-      </div>
-    </div>
-    <div class="card shadow-sm my-5">
-      <div class="card-header bg-white">
-        <h4 class="card-title">โครงการวิจัย</h4>
-        <div class="card-toolbar">
+
+        <div class="col-md-12 mt-3 text-end">
           <button
-            class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5 disabled"
-            @click="goToAddPage"
+            class="btn btn-primary me-2 pe-sm-3 ps-sm-5"
+            @click="onEditUserModal"
           >
-            <i class="bi bi-file-earmark-plus-fill fs-4"></i>
-            <span class="d-none d-lg-inline-block ms-2">เสนอโครงการวิจัย (ปิดรับ)</span>
+            <i class="fa fa-edit"></i>
+            <span class="d-none d-lg-inline-block">แก้ไข</span>
           </button>
         </div>
       </div>
+    </div>
+    <div class="card shadow-sm my-5">
+      <div class="card-header bg-warning">
+        <h4 class="card-title">โครงการวิจัย</h4>
+        <div class="card-toolbar">
+          <div>
+            <button
+              class="btn btn-primary me-2 pe-sm-3 ps-sm-5 disabled"
+              @click="goToAddPage"
+            >
+              <i class="bi bi-file-earmark-plus-fill fs-4"></i>
+              <span class="d-none d-lg-inline-block ms-2"
+                >เสนอโครงการวิจัย (ปิดรับ)</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="card-body table-responsive d-none d-lg-block">
+        <div class="mb-5">
+          <SearchComponent
+            :search="search"
+            @search="fetchItems"
+            @clear="onClear"
+          />
+        </div>
         <Preloader :isLoading="isLoading" :position="'absolute'" />
         <ListComponent
           :items="items"
@@ -132,7 +140,7 @@ import { useRouter } from "vue-router";
 import useToast from "@/composables/useToast";
 
 // Component
-import SearchComponent from "@/components/paper/Search.vue";
+import SearchComponent from "@/components/paper/Search2.vue";
 import ListComponent from "@/components/paper/List.vue";
 import CardListComponent from "@/components/paper/CardList.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
