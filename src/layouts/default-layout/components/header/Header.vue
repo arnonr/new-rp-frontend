@@ -9,40 +9,22 @@
     data-kt-sticky-name="app-header-minimize"
     data-kt-sticky-offset="{default: '200px', lg: '0'}"
     data-kt-sticky-animation="false"
-    
   >
     <!--begin::Header container-->
     <div
       class="app-container d-flex align-items-stretch justify-content-between"
-      :class="{
-        'container-fluid': headerWidthFluid,
-        'container-xxl': !headerWidthFluid,
-      }"
+      :class="containerClasses"
     >
       <div
-        v-if="layout === 'light-header' || layout === 'dark-header'"
+        v-if="isHeaderLayoutMode"
         class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15"
       >
         <router-link to="/">
-          <img
-            v-if="themeMode === 'light' && layout === 'light-header'"
-            alt="Logo"
-            :src="getAssetPath('media/logos/logo-sci.png')"
-            class="h-20px h-lg-30px app-sidebar-logo-default theme-light-show"
-          />
-          <img
-            v-if="
-              layout === 'dark-header' ||
-              (themeMode === 'dark' && layout === 'light-header')
-            "
-            alt="Logo"
-            :src="getAssetPath('media/logos/logo-sci.png')"
-            class="h-20px h-lg-30px app-sidebar-logo-default"
-          />
+          <img alt="Logo" :src="logoSrc" :class="logoClasses" />
         </router-link>
       </div>
+
       <template v-else>
-        <!--begin::sidebar mobile toggle-->
         <div class="d-flex align-items-center d-lg-none ms-n3 me-1 me-md-2">
           <div
             class="btn btn-icon btn-active-color-primary w-35px h-35px"
@@ -51,8 +33,6 @@
             <KTIcon icon-name="abstract-14" icon-class="fs-2 fs-md-1" />
           </div>
         </div>
-        <!--end::sidebar mobile toggle-->
-        <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
           <router-link to="/" class="d-lg-none">
             <img
@@ -62,8 +42,8 @@
             />
           </router-link>
         </div>
-        <!--end::Mobile logo-->
       </template>
+
       <!--begin::Header wrapper-->
       <div
         class="d-flex align-items-stretch justify-content-end flex-lg-grow-1"
@@ -78,36 +58,44 @@
   <!--end::Header-->
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from "vue";
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent } from "vue";
-import KTHeaderMenu from "@/layouts/default-layout/components/header/menu/Menu.vue";
 import KTHeaderNavbar from "@/layouts/default-layout/components/header/Navbar.vue";
+// import KTIcon from "@/core/components/KTIcon.vue";
 import {
   headerDisplay,
   headerWidthFluid,
   layout,
   themeMode,
-  headerDesktopFixed,
-  headerMobileFixed,
 } from "@/layouts/default-layout/config/helper";
 
-export default defineComponent({
+// Container classes computed property
+const containerClasses = computed(() => ({
+  "container-fluid": headerWidthFluid,
+  "container-xxl": !headerWidthFluid,
+}));
+
+// Check if current layout is header-based (light or dark header)
+const isHeaderLayoutMode = computed(
+  () => layout.value === "light-header" || layout.value === "dark-header"
+);
+
+// Logo source computed property
+const logoSrc = computed(() => getAssetPath("media/logos/logo-sci.png"));
+
+// Logo classes computed property
+const logoClasses = computed(() => {
+  const baseClasses = "h-20px h-lg-30px app-sidebar-logo-default";
+
+  if (themeMode.value === "light" && layout.value === "light-header") {
+    return `${baseClasses} theme-light-show`;
+  }
+
+  return baseClasses;
+});
+
+defineOptions({
   name: "layout-header",
-  components: {
-    KTHeaderMenu,
-    KTHeaderNavbar,
-  },
-  setup() {
-    return {
-      layout,
-      headerWidthFluid,
-      headerDisplay,
-      themeMode,
-      getAssetPath,
-      headerDesktopFixed,
-      headerMobileFixed,
-    };
-  },
 });
 </script>

@@ -9,19 +9,17 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" :src="getAssetPath('media/avatars/blank.png')" />
+          <img alt="User Avatar" :src="userAvatar" />
         </div>
         <!--end::Avatar-->
 
         <!--begin::Username-->
         <div class="">
           <div class="fw-bold align-items-center fs-7">
-            {{
-              userData.prefix_name + userData.firstname + " " + userData.surname
-            }}
+            {{ fullName }}
           </div>
           <a href="#" class="fw-semibold text-muted fs-7">{{
-            userData.department?.name
+            departmentName
           }}</a>
           <!-- <a href="#" class="fw-semibold text-muted fs-7">{{
             userData.email
@@ -39,42 +37,53 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <a @click="signOut()" class="menu-link px-5"> ออกจากระบบ </a>
+      <a @click="handleSignOut()" class="menu-link px-5"> ออกจากระบบ </a>
     </div>
     <!--end::Menu item-->
   </div>
   <!--end::Menu-->
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import { computed } from "vue";
 
-export default defineComponent({
+defineOptions({
   name: "kt-user-menu",
-  components: {},
-  setup() {
-    const router = useRouter();
-    const store = useAuthStore();
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-
-    const signOut = () => {
-      store.logout();
-
-      if (userData.level == 3) {
-        router.push({ name: "reviewer-sign-in" });
-      } else {
-        router.push({ name: "sign-in" });
-      }
-    };
-
-    return {
-      signOut,
-      getAssetPath,
-      userData,
-    };
-  },
 });
+
+const authStore = useAuthStore();
+const router = useRouter();
+const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+const userAvatar = computed(() => {
+  return getAssetPath("media/avatars/blank.png");
+});
+
+const fullName = computed(() => {
+  const { prefix_name = "", firstname = "", surname = "" } = userData;
+  if (prefix_name != null) {
+    return `${prefix_name}${firstname} ${surname}`.trim();
+  } else {
+    return `${firstname} ${surname}`.trim();
+  }
+});
+
+const departmentName = computed(() => {
+  return userData.department?.name || "";
+});
+
+const handleSignOut = async () => {
+  try {
+    authStore.logout();
+
+    const redirectRouteName =
+      userData.level != 3 ? "sign-in" : "reviewer-sign-in";
+
+    await router.push({ name: redirectRouteName });
+  } catch (error) {
+    console.error("Error during sign out:", error);
+  }
+};
 </script>
