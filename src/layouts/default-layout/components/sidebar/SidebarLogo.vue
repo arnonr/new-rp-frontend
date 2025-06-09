@@ -3,32 +3,14 @@
   <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
     <!--begin::Logo image-->
     <router-link to="/">
-      <img
-        v-if="
-          layout === 'dark-sidebar' ||
-          (themeMode === 'dark' && layout === 'light-sidebar')
-        "
-        alt="Logo"
-        :src="getAssetPath('media/logos/logo-sci.png')"
-        class="h-50px app-sidebar-logo-default"
-      />
-      <img
-        v-if="themeMode === 'light' && layout === 'light-sidebar'"
-        alt="Logo"
-        :src="getAssetPath('media/logos/logo-sci.png')"
-        class="h-50px app-sidebar-logo-default"
-      />
-      <img
-        alt="Logo"
-        :src="getAssetPath('media/logos/logo-sci.png')"
-        class="h-50px app-sidebar-logo-minimize"
-      />
+      <img alt="Logo" :src="logoPath" :class="logoClasses" />
 
-      <span class="fs-8 text-link text-light fw-bold title-sidebar">
+      <span class="fs-5 text-link text-light fw-bold title-sidebar">
         ระบบเสนอโครงการวิจัย
       </span>
     </router-link>
     <!--end::Logo image-->
+
     <!--begin::Sidebar toggle-->
     <div
       v-if="sidebarToggleDisplay"
@@ -48,44 +30,62 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { ToggleComponent } from "@/assets/ts/components";
 import { getAssetPath } from "@/core/helpers/assets";
-import {
-  layout,
-  sidebarToggleDisplay,
-  themeMode,
-} from "@/layouts/default-layout/config/helper";
+import { sidebarToggleDisplay } from "@/layouts/default-layout/config/helper";
 
 interface IProps {
   sidebarRef: HTMLElement | null;
 }
 
 const props = defineProps<IProps>();
-
 const toggleRef = ref<HTMLFormElement | null>(null);
 
-onMounted(() => {
+// Computed properties สำหรับลด redundancy
+const logoPath = computed(() => getAssetPath("media/logos/logo-sci.png"));
+
+const logoClasses = computed(() => {
+  const baseClasses = "h-50px";
+  const logoClass = shouldShowMinimizedLogo.value
+    ? "app-sidebar-logo-minimize"
+    : "app-sidebar-logo-default";
+
+  return `${baseClasses} ${logoClass}`;
+});
+
+const shouldShowMinimizedLogo = computed(() => {
+  // Logic สำหรับกำหนดว่าจะแสดง logo แบบ minimize หรือไม่
+  // (ปรับตาม business logic ที่ต้องการ)
+  return false;
+});
+
+// ฟังก์ชันสำหรับจัดการ sidebar animation
+const handleSidebarAnimation = () => {
+  if (!props.sidebarRef) return;
+
+  props.sidebarRef.classList.add("animating");
+
   setTimeout(() => {
-    const toggleObj = ToggleComponent.getInstance(
-      toggleRef.value!
-    ) as ToggleComponent | null;
+    props.sidebarRef?.classList.remove("animating");
+  }, 300);
+};
 
-    if (toggleObj === null) {
-      return;
-    }
+// ฟังก์ชันสำหรับ setup toggle component
+const setupToggleComponent = () => {
+  if (!toggleRef.value) return;
 
-    // Add a class to prevent sidebar hover effect after toggle click
-    toggleObj.on("kt.toggle.change", function () {
-      // Set animation state
-      props.sidebarRef?.classList.add("animating");
+  const toggleObj = ToggleComponent.getInstance(
+    toggleRef.value
+  ) as ToggleComponent | null;
 
-      // Wait till animation finishes
-      setTimeout(function () {
-        // Remove animation state
-        props.sidebarRef?.classList.remove("animating");
-      }, 300);
-    });
-  }, 1);
+  if (toggleObj) {
+    toggleObj.on("kt.toggle.change", handleSidebarAnimation);
+  }
+};
+
+onMounted(() => {
+  // ใช้ nextTick หรือ setTimeout เพื่อให้แน่ใจว่า DOM พร้อม
+  setTimeout(setupToggleComponent, 1);
 });
 </script>
