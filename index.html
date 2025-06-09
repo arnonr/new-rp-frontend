@@ -1,44 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Metronic Vue Demo" />
-    <link rel="icon" href="/media/logos/logo-sci.png" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Prompt:300,400,500,600,700"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ระบบยื่นเสนอโครงการ คณะวิทยาศาสตร์ประยุกต์ มจพ."
     />
 
+    <title>ระบบยื่นเสนอโครงการ คณะวิทยาศาสตร์ประยุกต์ มจพ.</title>
+
+    <link rel="icon" href="/media/logos/logo-sci.png" />
+
+    <!-- Google Fonts - Combined for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Sarabun:300,400,500,600,700"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
     />
 
     <link rel="stylesheet" href="/splash-screen.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ระบบยื่นเสนอโครงการ คณะวิทยาศาสตร์ประยุกต์ มจพ.</title>
   </head>
 
   <body class="page-loading">
     <!--begin::Theme mode setup on page load-->
     <script>
-      let themeMode = "system";
+      (function () {
+        let themeMode = localStorage.getItem("kt_theme_mode_value") || "system";
 
-      if (localStorage.getItem("kt_theme_mode_value")) {
-        themeMode = localStorage.getItem("kt_theme_mode_value");
-      }
+        if (themeMode === "system") {
+          themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
 
-      if (themeMode === "system") {
-        themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      }
-
-      document.documentElement.setAttribute("data-bs-theme", themeMode);
+        document.documentElement.setAttribute("data-bs-theme", themeMode);
+      })();
     </script>
     <!--end::Theme mode setup on page load-->
 
@@ -49,16 +47,11 @@
       <img
         src="/media/logos/logo-sci.png"
         class="dark-logo"
-        alt="Keenthemes dark logo"
+        alt="โลโก้คณะวิทยาศาสตร์ประยุกต์"
       />
-      <!-- <img
-      src="/media/logos/logo-sci.png"
-        class="light-logo"
-        alt="Keenthemes light logo"
-      /> -->
       <div class="loader-wrapper">
         <span class="loader"></span>
-        <span class="loading-text">Loading...</span>
+        <span class="loading-text">กำลังโหลด...</span>
       </div>
     </div>
     <!--end::Loading markup-->

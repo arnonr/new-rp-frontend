@@ -1,74 +1,50 @@
 <template>
-  <!--begin::Footer-->
-  <div v-if="footerDisplay" id="kt_app_footer" class="app-footer bg-warning mt-10">
-    <!--begin::Footer container-->
+  <!-- Footer -->
+  <footer
+    v-if="footerDisplay"
+    id="kt_app_footer"
+    class="app-footer bg-warning mt-10"
+  >
     <div
       class="app-container d-flex flex-column flex-md-row flex-center flex-md-stack py-3"
-      :class="{
-        'container-fluid': footerWidthFluid,
-        'container-xxl': !footerWidthFluid,
-      }"
+      :class="containerClasses"
     >
-      <!--begin::Copyright-->
+      <!-- Copyright -->
       <div class="text-gray-800 order-2 order-md-1">
-        <span class="text-gray-800 me-1">© 2567 </span>
+        <span class="text-gray-800 me-1">© {{ currentYear }} </span>
         <a
-          href="http://sci.kmutnb.ac.th/m"
+          :href="facultyUrl"
           target="_blank"
           class="text-gray-800 text-hover-white"
-          >คณะวิทยาศาสตร์ประยุกต์ มจพ.</a
+          rel="noopener noreferrer"
         >
+          {{ facultyName }}
+        </a>
       </div>
-      <!--end::Copyright-->
-      <!--begin::Menu-->
-      <!-- <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-        <li class="menu-item">
-          <a
-            href="https://keenthemes.com"
-            target="_blank"
-            class="menu-link px-2"
-            >About</a
-          >
-        </li>
-        <li class="menu-item">
-          <a
-            href="https://devs.keenthemes.com"
-            target="_blank"
-            class="menu-link px-2"
-            >Support</a
-          >
-        </li>
-        <li class="menu-item">
-          <a
-            href="https://1.envato.market/EA4JP"
-            target="_blank"
-            class="menu-link px-2"
-            >Purchase</a
-          >
-        </li>
-      </ul> -->
-      <!--end::Menu-->
     </div>
-    <!--end::Footer container-->
-  </div>
-  <!--end::Footer-->
+  </footer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import {
   footerDisplay,
   footerWidthFluid,
 } from "@/layouts/default-layout/config/helper";
 
-export default defineComponent({
+// Component name
+defineOptions({
   name: "theme-footer",
-  components: {},
-  setup() {
-    return {
-      footerWidthFluid,
-      footerDisplay,
-    };
-  },
 });
+
+// Constants
+const currentYear = new Date().getFullYear() + 543; // Buddhist Era
+const facultyUrl = "http://sci.kmutnb.ac.th/";
+const facultyName = "คณะวิทยาศาสตร์ประยุกต์ มจพ.";
+
+// Computed properties
+const containerClasses = computed(() => ({
+  "container-fluid": footerWidthFluid.value,
+  "container-xxl": !footerWidthFluid.value,
+}));
 </script>
