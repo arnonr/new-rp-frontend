@@ -6,11 +6,9 @@
       class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1"
     >
       <!--begin::Form-->
-      <div
-        class="d-flex flex-center flex-column flex-lg-row-fluid"
-      >
+      <div class="d-flex flex-center flex-column flex-lg-row-fluid">
         <!--begin::Wrapper-->
-        <div class="w-lg-500px p-10">
+        <div class="w-lg-500px">
           <router-view></router-view>
         </div>
         <!--end::Wrapper-->
@@ -52,8 +50,6 @@ export default defineComponent({
       store.addBodyClassname("app-blank");
       store.addBodyClassname("bg-body");
       store.addBodyClassname("bg-img-auth");
-
-      
     });
 
     return {

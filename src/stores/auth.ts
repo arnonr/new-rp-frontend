@@ -45,21 +45,15 @@ export const useAuthStore = defineStore("auth", () => {
     JwtService.destroyToken();
   }
 
-  function login(credentials: User) {
-    return ApiService.post("user/login", credentials)
-      .then(({ data }) => {
-        setAuth(data);
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            ...data,
-          })
-        );
-        localStorage.setItem("id_token", data.token);
-      })
-      .catch(({ response }) => {
-        setError(response.data.errors);
-      });
+  async function login(credentials: User) {
+    try {
+      const { data } = await ApiService.post("auth/login", credentials);
+      setAuth(data);
+      localStorage.setItem("userData", JSON.stringify({ ...data }));
+      localStorage.setItem("id_token", data.token);
+    } catch ({ response }: any) {
+      setError(response.data);
+    }
   }
 
   function logout() {
