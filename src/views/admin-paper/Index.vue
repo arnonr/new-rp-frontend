@@ -25,31 +25,6 @@
       @update:per-page="paginationData.perPage = $event"
     />
 
-    <div class="card-body d-lg-none">
-      <!-- <CardListComponent
-          :items="items"
-          :paginationData="paginationData"
-          :sortKey="sortKey"
-          :sortOrder="sortOrder"
-          @update:currentPage="paginationData.currentPage = $event"
-          @update:perPage="paginationData.perPage = $event"
-          @sort="(key: any) => {
-            sortedItems(key)}"
-          @edit="(it: any) => {goToEditPage(it.id)}"
-          @reject="(it: any) => { Object.assign(item, it); openRejectModal = true;}"
-          @approve="(it: any) => { Object.assign(item, it);  openApproveModal = true}"
-          @cancel="(it: any) =>{ Object.assign(item, it);  openCancelModal = true}"
-          @history-detail="(it: any) =>{ Object.assign(item, it); openHistoryDetailModal = true}"
-          @manage-review="(it: any) =>{  Object.assign(item, it); openManageReviewModal = true}"
-          @detail="
-            (it: any) => {
-              Object.assign(item, it);
-              openDetailModal = true;
-            }
-          "
-        /> -->
-    </div>
-
     <!-- Modals -->
     <ModalsContainer
       :selected-item="selectedItem"

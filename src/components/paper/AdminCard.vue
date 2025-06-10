@@ -35,7 +35,7 @@
     </div>
 
     <!-- Mobile View -->
-    <!-- <div class="card-body d-lg-none">
+    <div class="card-body d-lg-none">
       <CardListComponent
         :items="items"
         :paginationData="paginationData"
@@ -44,24 +44,23 @@
         @update:currentPage="$emit('update:currentPage', $event)"
         @update:perPage="$emit('update:perPage', $event)"
         @sort="$emit('sort', $event)"
+        @edit="$emit('editProject', $event)"
         @reject="$emit('reject', $event)"
         @approve="$emit('approve', $event)"
         @cancel="$emit('cancel', $event)"
         @manage-review="$emit('manageReview', $event)"
-        @edit="$emit('editProject', $event)"
         @detail="$emit('detail', $event)"
         @history-detail="$emit('historyDetail', $event)"
       />
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import SearchComponent from "@/components/paper/Search2.vue";
 import AdminListComponent from "@/components/paper/AdminList.vue";
-import CardListComponent from "@/components/paper/CardList.vue";
+import CardListComponent from "@/components/paper/AdminCardList.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
-import { ref } from "vue";
 
 defineProps({
   search: { type: Object, required: true },
