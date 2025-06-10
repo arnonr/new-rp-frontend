@@ -414,6 +414,19 @@ export default defineComponent({
       reviewer_id: null,
       is_send_mail: 0,
       time_no_send_mail: 0,
+      score_1: 0,
+      score_2: 0,
+      score_3: 0,
+      score_4: 0,
+      score_5: 0,
+      score_6: 0,
+      score_7: 0,
+      score_8: 0,
+      score_9: 0,
+      score_10: 0,
+      score_11: 0,
+      score_12: 0,
+      score_13: 0,
     };
     const review_items = reactive<any>([
       {
@@ -497,7 +510,6 @@ export default defineComponent({
 
     // Event
     const onClose = ({ reload = false }: { reload?: boolean }) => {
-      console.log("FREEDOM");
       mainModalObj.value.hide();
       if (reload === true) {
         emit("reload");

@@ -1,22 +1,8 @@
 <template>
   <div class="card shadow-sm my-5">
     <div class="card-header bg-warning">
-      <h4 class="card-title">โครงการวิจัย</h4>
-      <div class="card-toolbar">
-        <div>
-          <button
-            type="button"
-            class="btn btn-primary me-2 pe-sm-3 ps-sm-5"
-            :disabled="!isOpenRegister"
-            @click="$emit('addProject')"
-          >
-            <i class="bi bi-file-earmark-plus-fill fs-4"></i>
-            <span class="d-none d-lg-inline-block ms-2">
-              เสนอโครงการวิจัย {{ !isOpenRegister ? "(ปิดรับ)" : "" }}
-            </span>
-          </button>
-        </div>
-      </div>
+      <h4 class="card-title">รายการยื่นเสนอโครงการวิจัย</h4>
+      <div class="card-toolbar"></div>
     </div>
 
     <!-- Desktop View -->
@@ -30,7 +16,7 @@
         />
       </div>
       <Preloader :isLoading="isLoading" :position="'absolute'" />
-      <ListComponent
+      <AdminListComponent
         :items="items"
         :paginationData="paginationData"
         :sortKey="sortKey"
@@ -39,13 +25,17 @@
         @update:perPage="$emit('update:perPage', $event)"
         @sort="$emit('sort', $event)"
         @edit="$emit('editProject', $event)"
+        @reject="$emit('reject', $event)"
+        @approve="$emit('approve', $event)"
+        @cancel="$emit('cancel', $event)"
+        @manage-review="$emit('manageReview', $event)"
         @detail="$emit('detail', $event)"
         @history-detail="$emit('historyDetail', $event)"
       />
     </div>
 
     <!-- Mobile View -->
-    <div class="card-body d-lg-none">
+    <!-- <div class="card-body d-lg-none">
       <CardListComponent
         :items="items"
         :paginationData="paginationData"
@@ -54,17 +44,21 @@
         @update:currentPage="$emit('update:currentPage', $event)"
         @update:perPage="$emit('update:perPage', $event)"
         @sort="$emit('sort', $event)"
+        @reject="$emit('reject', $event)"
+        @approve="$emit('approve', $event)"
+        @cancel="$emit('cancel', $event)"
+        @manage-review="$emit('manageReview', $event)"
         @edit="$emit('editProject', $event)"
         @detail="$emit('detail', $event)"
         @history-detail="$emit('historyDetail', $event)"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import SearchComponent from "@/components/paper/Search2.vue";
-import ListComponent from "@/components/paper/List.vue";
+import AdminListComponent from "@/components/paper/AdminList.vue";
 import CardListComponent from "@/components/paper/CardList.vue";
 import Preloader from "@/components/preloader/Preloader.vue";
 import { ref } from "vue";
@@ -88,11 +82,13 @@ defineEmits([
   "sort",
   "update:currentPage",
   "update:perPage",
+  "reject",
+  "approve",
+  "cancel",
+  "manageReview",
 ]);
 
-const isOpenRegister = ref(true);
-
 defineOptions({
-  name: "PaperAll",
+  name: "AdminPaperAll",
 });
 </script>

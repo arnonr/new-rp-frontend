@@ -5,141 +5,156 @@
         <h6>คณะผู้วิจัย</h6>
 
         <div class="p-3 border border-dark-subtle rounded">
-          <div
-            class="row"
-            :class="[idx == 0 ? '' : ' mt-7']"
-            v-if="researcher"
-            style="margin: 0.03rem"
-            v-for="(rs, idx) in researcher"
-            :key="'researcher' + idx"
-          >
-            <div class="">
-              <h6>ลำดับที่ {{ idx + 1 }}</h6>
-            </div>
-            <div class="mb-3 col-12 col-lg-2">
-              <label for="prefix_name" class="form-label">คำนำหน้า</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="rs.prefix_name"
-              />
-            </div>
-            <div class="mb-3 col-12 col-lg-5">
-              <label for="firstname" class="form-label">ชื่อ</label>
-              <input type="text" class="form-control" v-model="rs.firstname" />
-            </div>
-            <div class="mb-3 col-12 col-lg-5">
-              <label for="surname" class="form-label">นามสกุล</label>
-              <input type="text" class="form-control" v-model="rs.surname" />
-            </div>
-            <div class="mb-7 col-12 col-lg-6">
-              <label for="department_id" class="form-label">หน่วยงาน</label>
-              <v-select
-                name="department_id"
-                label="name"
-                placeholder="หน่วยงาน"
-                :options="selectOptions.departments"
-                class="form-control"
-                :clearable="false"
-                v-model="rs.department_id"
-              >
-              </v-select>
-            </div>
-            <div class="mb-7 col-12 col-lg-6">
-              <label for="department_text" class="form-label"
-                >กรณีหน่วยงานอื่นๆ โปรดระบุ</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                v-model="rs.department_text"
-              />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.department_text.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.department_text.text
-                }}</span>
+          <template v-if="researcher">
+            <div
+              class="row"
+              :class="[idx == 0 ? '' : ' mt-7']"
+              style="margin: 0.03rem"
+              v-for="(rs, idx) in researcher"
+              :key="'researcher' + idx"
+            >
+              <div class="">
+                <h6>ลำดับที่ {{ idx + 1 }}</h6>
               </div>
-            </div>
-            <div class="mb-7 col-12 col-lg-6">
-              <label for="phone_number" class="form-label">เบอร์โทรศัพท์</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="rs.phone_number"
-              />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.phone_number.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.phone_number.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-2">
+                <label for="prefix_name" class="form-label">คำนำหน้า</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.prefix_name"
+                />
               </div>
-            </div>
-            <div class="mb-7 col-12 col-lg-6">
-              <label for="expertise" class="form-label"
-                >ความชำนาญ/ความสนใจพิเศษ</label
-              >
-              <input type="text" class="form-control" v-model="rs.expertise" />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.expertise.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.expertise.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-5">
+                <label for="firstname" class="form-label">ชื่อ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.firstname"
+                />
               </div>
-            </div>
-            <div class="mb-7 col-12 col-lg-6">
-              <label for="research_type" class="required form-label"
-                >ประเภท</label
-              >
-              <v-select
-                name="research_type"
-                label="name"
-                placeholder="ประเภท"
-                :options="selectOptions.researcher_types"
-                class="form-control"
-                :clearable="false"
-                v-model="rs.researcher_type_id"
-              >
-              </v-select>
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.researcher_type_id.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.researcher_type_id.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-5">
+                <label for="surname" class="form-label">นามสกุล</label>
+                <input type="text" class="form-control" v-model="rs.surname" />
               </div>
-            </div>
-            <div class="mb-7 col-12 col-lg-4">
-              <label for="percentage" class="form-label">สัดส่วน (%)</label>
-              <input type="text" class="form-control" v-model="rs.percentage" />
-              <div
-                class="d-block mt-1"
-                v-if="researcher_errors.percentage.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  researcher_errors.percentage.text
-                }}</span>
+              <div class="mb-7 col-12 col-lg-6">
+                <label for="department_id" class="form-label">หน่วยงาน</label>
+                <v-select
+                  name="department_id"
+                  label="name"
+                  placeholder="หน่วยงาน"
+                  :options="selectOptions.departments"
+                  class="form-control"
+                  :clearable="false"
+                  v-model="rs.department_id"
+                >
+                </v-select>
               </div>
-            </div>
+              <div class="mb-7 col-12 col-lg-6">
+                <label for="department_text" class="form-label"
+                  >กรณีหน่วยงานอื่นๆ โปรดระบุ</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.department_text"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="researcher_errors.department_text.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    researcher_errors.department_text.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-7 col-12 col-lg-6">
+                <label for="phone_number" class="form-label"
+                  >เบอร์โทรศัพท์</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.phone_number"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="researcher_errors.phone_number.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    researcher_errors.phone_number.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-7 col-12 col-lg-6">
+                <label for="expertise" class="form-label"
+                  >ความชำนาญ/ความสนใจพิเศษ</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.expertise"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="researcher_errors.expertise.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    researcher_errors.expertise.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-7 col-12 col-lg-6">
+                <label for="research_type" class="required form-label"
+                  >ประเภท</label
+                >
+                <v-select
+                  name="research_type"
+                  label="name"
+                  placeholder="ประเภท"
+                  :options="selectOptions.researcher_types"
+                  class="form-control"
+                  :clearable="false"
+                  v-model="rs.researcher_type_id"
+                >
+                </v-select>
+                <div
+                  class="d-block mt-1"
+                  v-if="researcher_errors.researcher_type_id.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    researcher_errors.researcher_type_id.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-7 col-12 col-lg-4">
+                <label for="percentage" class="form-label">สัดส่วน (%)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="rs.percentage"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="researcher_errors.percentage.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    researcher_errors.percentage.text
+                  }}</span>
+                </div>
+              </div>
 
-            <div class="mb-1 col-12 col-md-2">
-              <button
-                class="btn btn-danger mt-7 w-100"
-                @click="onDecreaseResearcher(idx)"
-              >
-                <i class="fa fa-close"></i>
-                <span>ลบ</span>
-              </button>
+              <div class="mb-1 col-12 col-md-2">
+                <button
+                  class="btn btn-danger mt-7 w-100"
+                  @click="onDecreaseResearcher(idx)"
+                >
+                  <i class="fa fa-close"></i>
+                  <span>ลบ</span>
+                </button>
+              </div>
+              <hr />
             </div>
-            <hr />
-          </div>
+          </template>
         </div>
 
         <div class="mt-3">
@@ -159,101 +174,105 @@
         </h6>
 
         <div class="p-3 border border-dark-subtle rounded">
-          <div
-            class="row"
-            :class="[idx == 0 ? '' : ' mt-7']"
-            v-if="method_list"
-            style="margin: 0.03rem"
-            v-for="(ml, idx) in method_list"
-            :key="'method' + idx"
-          >
-            <div class="">
-              <h6>ลำดับที่ {{ idx + 1 }}</h6>
-            </div>
-
-            <div class="mb-3 col-12 col-lg-6">
-              <label for="method_start_date" class="form-label"
-                >วันที่เริ่ม</label
-              >
-              <VueDatePicker
-                v-model="ml.start_date"
-                :enable-time-picker="false"
-                placeholder="วันเดือนปี"
-                :locale="'th'"
-                auto-apply
-                class="form-control"
-                :format="format"
-              >
-                <template #year-overlay-value="{ text }">
-                  {{ parseInt(text) + 543 }}
-                </template>
-
-                <template #year="{ value }">
-                  {{ value + 543 }}
-                </template>
-              </VueDatePicker>
-              <div
-                class="d-block mt-1"
-                v-if="method_list_errors.start_date == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  method_list_errors.start_date.text
-                }}</span>
+          <template v-if="method_list">
+            <div
+              class="row"
+              :class="[idx == 0 ? '' : ' mt-7']"
+              style="margin: 0.03rem"
+              v-for="(ml, idx) in method_list"
+              :key="'method' + idx"
+            >
+              <div class="">
+                <h6>ลำดับที่ {{ idx + 1 }}</h6>
               </div>
-            </div>
 
-            <div class="mb-3 col-12 col-lg-6">
-              <label for="method_end_date" class="form-label"
-                >วันที่สิ้นสุด</label
-              >
-              <VueDatePicker
-                v-model="ml.end_date"
-                :enable-time-picker="false"
-                placeholder="วันเดือนปี"
-                :locale="'th'"
-                auto-apply
-                class="form-control"
-                :format="format"
-              >
-                <template #year-overlay-value="{ text }">
-                  {{ parseInt(text) + 543 }}
-                </template>
+              <div class="mb-3 col-12 col-lg-6">
+                <label for="method_start_date" class="form-label"
+                  >วันที่เริ่ม</label
+                >
+                <VueDatePicker
+                  v-model="ml.start_date"
+                  :enable-time-picker="false"
+                  placeholder="วันเดือนปี"
+                  :locale="'th'"
+                  auto-apply
+                  class="form-control"
+                  :format="format"
+                >
+                  <template #year-overlay-value="{ text }">
+                    {{ parseInt(text) + 543 }}
+                  </template>
 
-                <template #year="{ value }">
-                  {{ value + 543 }}
-                </template>
-              </VueDatePicker>
-              <div class="d-block mt-1" v-if="method_list_errors.end_date == 1">
-                <span role="alert" class="text-danger">{{
-                  method_list_errors.end_date.text
-                }}</span>
+                  <template #year="{ value }">
+                    {{ value + 543 }}
+                  </template>
+                </VueDatePicker>
+                <div
+                  class="d-block mt-1"
+                  v-if="method_list_errors.start_date == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    method_list_errors.start_date.text
+                  }}</span>
+                </div>
               </div>
-            </div>
 
-            <div class="mb-3 col-12 col-lg-10">
-              <label for="method_detail" class="form-label">รายละเอียด</label>
-              <input type="text" class="form-control" v-model="ml.detail" />
-              <div
-                class="d-block mt-1"
-                v-if="method_list_errors.detail.error == 1"
-              >
-                <span role="alert" class="text-danger">{{
-                  method_list_errors.detail.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-6">
+                <label for="method_end_date" class="form-label"
+                  >วันที่สิ้นสุด</label
+                >
+                <VueDatePicker
+                  v-model="ml.end_date"
+                  :enable-time-picker="false"
+                  placeholder="วันเดือนปี"
+                  :locale="'th'"
+                  auto-apply
+                  class="form-control"
+                  :format="format"
+                >
+                  <template #year-overlay-value="{ text }">
+                    {{ parseInt(text) + 543 }}
+                  </template>
+
+                  <template #year="{ value }">
+                    {{ value + 543 }}
+                  </template>
+                </VueDatePicker>
+                <div
+                  class="d-block mt-1"
+                  v-if="method_list_errors.end_date == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    method_list_errors.end_date.text
+                  }}</span>
+                </div>
               </div>
-            </div>
 
-            <div class="mb-1 col-12 col-md-2">
-              <button
-                class="btn btn-danger mt-7 w-100"
-                @click="onDecreaseMethodList(idx)"
-              >
-                <i class="fa fa-close"></i>
-                <span>ลบ </span>
-              </button>
+              <div class="mb-3 col-12 col-lg-10">
+                <label for="method_detail" class="form-label">รายละเอียด</label>
+                <input type="text" class="form-control" v-model="ml.detail" />
+                <div
+                  class="d-block mt-1"
+                  v-if="method_list_errors.detail.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    method_list_errors.detail.text
+                  }}</span>
+                </div>
+              </div>
+
+              <div class="mb-1 col-12 col-md-2">
+                <button
+                  class="btn btn-danger mt-7 w-100"
+                  @click="onDecreaseMethodList(idx)"
+                >
+                  <i class="fa fa-close"></i>
+                  <span>ลบ </span>
+                </button>
+              </div>
+              <hr />
             </div>
-            <hr />
-          </div>
+          </template>
         </div>
 
         <div class="mt-3">
@@ -276,58 +295,67 @@
         </h6>
 
         <div class="p-3 border border-dark-subtle rounded">
-          <div
-            class="row"
-            :class="[idx == 0 ? '' : ' mt-7']"
-            v-if="budget"
-            style="margin: 0.03rem"
-            v-for="(bg, idx) in budget"
-            :key="'budget1' + idx"
-          >
-            <div class="">
-              <h4>ลำดับที่ {{ idx + 1 }}</h4>
-            </div>
-            <div class="mb-3 col-12 col-lg-8">
-              <label for="budget_detail" class="form-label"> รายละเอียด</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="รายละเอียด"
-                aria-label="รายละเอียด"
-                v-model="bg.detail"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.detail.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.detail.text
-                }}</span>
+          <template v-if="budget">
+            <div
+              class="row"
+              :class="[idx == 0 ? '' : ' mt-7']"
+              style="margin: 0.03rem"
+              v-for="(bg, idx) in budget"
+              :key="'budget1' + idx"
+            >
+              <div class="">
+                <h4>ลำดับที่ {{ idx + 1 }}</h4>
               </div>
-            </div>
-            <div class="mb-3 col-12 col-lg-2">
-              <label for="amount" class="form-label">จำนวนเงิน</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="จำนวนเงิน"
-                aria-label="จำนวนเงิน"
-                v-model="bg.amount"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.amount.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.amount.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-8">
+                <label for="budget_detail" class="form-label">
+                  รายละเอียด</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="รายละเอียด"
+                  aria-label="รายละเอียด"
+                  v-model="bg.detail"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.detail.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.detail.text
+                  }}</span>
+                </div>
               </div>
+              <div class="mb-3 col-12 col-lg-2">
+                <label for="amount" class="form-label">จำนวนเงิน</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="จำนวนเงิน"
+                  aria-label="จำนวนเงิน"
+                  v-model="bg.amount"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.amount.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.amount.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-1 col-12 col-md-2">
+                <button
+                  class="btn btn-danger mt-7 w-100"
+                  @click="onDecreaseBudget(1, idx)"
+                >
+                  <i class="fa fa-close"></i>
+                  <span>ลบ</span>
+                </button>
+              </div>
+              <hr />
             </div>
-            <div class="mb-1 col-12 col-md-2">
-              <button
-                class="btn btn-danger mt-7 w-100"
-                @click="onDecreaseBudget(1, idx)"
-              >
-                <i class="fa fa-close"></i>
-                <span>ลบ</span>
-              </button>
-            </div>
-            <hr />
-          </div>
+          </template>
         </div>
 
         <div class="mt-3">
@@ -342,58 +370,67 @@
         </h6>
 
         <div class="p-3 border border-dark-subtle rounded">
-          <div
-            class="row"
-            :class="[idx == 0 ? '' : ' mt-7']"
-            v-if="budget2"
-            style="margin: 0.03rem"
-            v-for="(bg, idx) in budget2"
-            :key="'budget2' + idx"
-          >
-            <div class="">
-              <h4>ลำดับที่ {{ idx + 1 }}</h4>
-            </div>
-            <div class="mb-3 col-12 col-lg-8">
-              <label for="budget_detail" class="form-label"> รายละเอียด</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="รายละเอียด"
-                aria-label="รายละเอียด"
-                v-model="bg.detail"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.detail.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.detail.text
-                }}</span>
+          <template v-if="budget2">
+            <div
+              class="row"
+              :class="[idx == 0 ? '' : ' mt-7']"
+              style="margin: 0.03rem"
+              v-for="(bg, idx) in budget2"
+              :key="'budget2' + idx"
+            >
+              <div class="">
+                <h4>ลำดับที่ {{ idx + 1 }}</h4>
               </div>
-            </div>
-            <div class="mb-3 col-12 col-lg-2">
-              <label for="amount" class="form-label">จำนวนเงิน</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="จำนวนเงิน"
-                aria-label="จำนวนเงิน"
-                v-model="bg.amount"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.amount.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.amount.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-8">
+                <label for="budget_detail" class="form-label">
+                  รายละเอียด</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="รายละเอียด"
+                  aria-label="รายละเอียด"
+                  v-model="bg.detail"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.detail.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.detail.text
+                  }}</span>
+                </div>
               </div>
+              <div class="mb-3 col-12 col-lg-2">
+                <label for="amount" class="form-label">จำนวนเงิน</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="จำนวนเงิน"
+                  aria-label="จำนวนเงิน"
+                  v-model="bg.amount"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.amount.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.amount.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-1 col-12 col-md-2">
+                <button
+                  class="btn btn-danger mt-7 w-100"
+                  @click="onDecreaseBudget(2, idx)"
+                >
+                  <i class="fa fa-close"></i>
+                  <span>ลบ</span>
+                </button>
+              </div>
+              <hr />
             </div>
-            <div class="mb-1 col-12 col-md-2">
-              <button
-                class="btn btn-danger mt-7 w-100"
-                @click="onDecreaseBudget(2, idx)"
-              >
-                <i class="fa fa-close"></i>
-                <span>ลบ</span>
-              </button>
-            </div>
-            <hr />
-          </div>
+          </template>
         </div>
 
         <div class="mt-3">
@@ -408,58 +445,67 @@
         </h6>
 
         <div class="p-3 border border-dark-subtle rounded">
-          <div
-            class="row"
-            :class="[idx == 0 ? '' : ' mt-7']"
-            v-if="budget3"
-            style="margin: 0.03rem"
-            v-for="(bg, idx) in budget3"
-            :key="'budget3' + idx"
-          >
-            <div class="">
-              <h4>ลำดับที่ {{ idx + 1 }}</h4>
-            </div>
-            <div class="mb-3 col-12 col-lg-8">
-              <label for="budget_detail" class="form-label"> รายละเอียด</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="รายละเอียด"
-                aria-label="รายละเอียด"
-                v-model="bg.detail"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.detail.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.detail.text
-                }}</span>
+          <template v-if="budget3">
+            <div
+              class="row"
+              :class="[idx == 0 ? '' : ' mt-7']"
+              style="margin: 0.03rem"
+              v-for="(bg, idx) in budget3"
+              :key="'budget3' + idx"
+            >
+              <div class="">
+                <h4>ลำดับที่ {{ idx + 1 }}</h4>
               </div>
-            </div>
-            <div class="mb-3 col-12 col-lg-2">
-              <label for="amount" class="form-label">จำนวนเงิน</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="จำนวนเงิน"
-                aria-label="จำนวนเงิน"
-                v-model="bg.amount"
-              />
-              <div class="d-block mt-1" v-if="budget_errors.amount.error == 1">
-                <span role="alert" class="text-danger">{{
-                  budget_errors.amount.text
-                }}</span>
+              <div class="mb-3 col-12 col-lg-8">
+                <label for="budget_detail" class="form-label">
+                  รายละเอียด</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="รายละเอียด"
+                  aria-label="รายละเอียด"
+                  v-model="bg.detail"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.detail.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.detail.text
+                  }}</span>
+                </div>
               </div>
+              <div class="mb-3 col-12 col-lg-2">
+                <label for="amount" class="form-label">จำนวนเงิน</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="จำนวนเงิน"
+                  aria-label="จำนวนเงิน"
+                  v-model="bg.amount"
+                />
+                <div
+                  class="d-block mt-1"
+                  v-if="budget_errors.amount.error == 1"
+                >
+                  <span role="alert" class="text-danger">{{
+                    budget_errors.amount.text
+                  }}</span>
+                </div>
+              </div>
+              <div class="mb-1 col-12 col-md-2">
+                <button
+                  class="btn btn-danger mt-7 w-100"
+                  @click="onDecreaseBudget(3, idx)"
+                >
+                  <i class="fa fa-close"></i>
+                  <span>ลบ</span>
+                </button>
+              </div>
+              <hr />
             </div>
-            <div class="mb-1 col-12 col-md-2">
-              <button
-                class="btn btn-danger mt-7 w-100"
-                @click="onDecreaseBudget(3, idx)"
-              >
-                <i class="fa fa-close"></i>
-                <span>ลบ</span>
-              </button>
-            </div>
-            <hr />
-          </div>
+          </template>
         </div>
 
         <div class="mt-3">
@@ -476,7 +522,7 @@
         <froala
           :tag="'textarea'"
           :config="froalaConfig.references"
-          v-model="item.references"
+          :model-value="item.reference"
         ></froala>
         <div class="d-block mt-1" v-if="errors.references.error == 1">
           <span role="alert" class="text-danger">{{
@@ -604,7 +650,6 @@ export default defineComponent({
   components: {
     vSelect,
     VueDatePicker,
-    dayjs,
     Dashboard,
     TabContent,
   },
@@ -612,6 +657,12 @@ export default defineComponent({
     // Variable
     const { item, budget, budget2, budget3, researcher, method_list } =
       toRefs(props);
+
+    console.log(budget.value);
+
+    const updateItem = (field: string, value: any) => {
+      emit("update:item", { ...props.item, [field]: value });
+    };
 
     const format = (date: any) => {
       const day = dayjs(date).locale("th").format("DD");
@@ -629,19 +680,20 @@ export default defineComponent({
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
         keyup: function (inputEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         click: function (clickEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         "commands.after": function (cmd: any, param1: any, param2: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         "paste.after": function (pasteEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         initialized: function () {
-          this.html.insert(item.value[x]);
+          const content = item.value[x] || "";
+          this.html.insert(content);
         },
       };
     });
@@ -699,7 +751,7 @@ export default defineComponent({
     // End Uppy
 
     const selectOptions = ref({
-      departments: <any>[],
+      departments: [] as any[],
       researcher_types: useBasicData().researcher_types,
     });
 

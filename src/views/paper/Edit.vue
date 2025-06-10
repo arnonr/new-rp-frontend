@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="card" v-if="item.id != null">
+      <!-- Form Wizard -->
       <div class="card-body">
         <form-wizard
           color="#ffc600"
@@ -13,7 +14,7 @@
           @on-change="onTabChange"
           @on-complete="onComplete"
         >
-          <Tab1 :item="item" :errors="errors" />
+          <Tab1 v-model:item="item" :errors="errors" />
 
           <Tab2
             :item="item"
@@ -46,10 +47,11 @@
             <div class="wizard-footer-left">
               <button
                 v-if="props.activeTabIndex > 0"
-                @click.native="props.prevTab()"
+                @click="props.prevTab()"
                 class="btn btn-danger text-white float-left"
                 :disabled="isLoading"
               >
+                <i v-if="isLoading" class="fa fa-spinner fa-spin me-2"></i>
                 ย้อนกลับ
               </button>
             </div>
@@ -57,29 +59,32 @@
             <div class="wizard-footer-right">
               <button
                 v-if="!props.isLastStep"
-                @click.native="props.nextTab()"
+                @click="props.nextTab()"
                 class="btn btn-primary text-white"
                 :disabled="isLoading"
               >
+                <i v-if="isLoading" class="fa fa-spinner fa-spin me-2"></i>
                 ถัดไป
               </button>
 
               <button
                 v-else
-                @click.native="onComplete(0)"
+                @click="onComplete(0)"
                 class="btn btn-primary text-white"
                 :disabled="isLoading"
               >
+                <i v-if="isLoading" class="fa fa-spinner fa-spin me-2"></i>
                 {{ props.isLastStep ? "บันทึก" : "Next" }}
               </button>
 
               <button
                 v-if="props.isLastStep"
-                @click.native="onComplete(1)"
+                @click="onComplete(1)"
                 class="finish-button btn text-white ms-4"
                 style="background-color: green"
                 :disabled="isLoading"
               >
+                <i v-if="isLoading" class="fa fa-spinner fa-spin me-2"></i>
                 {{ "ส่งข้อมูล" }}
               </button>
             </div>
@@ -972,7 +977,8 @@ export default defineComponent({
         router.push({ name: "paper" });
         return;
       }
-
+      console.log(userData.id);
+      console.log(item.user_id);
       if (userData.id != item.user_id) {
         useToast("คุณไม่สามารถแก้ไขข้อมูลของบุคคลอื่นได้", "error");
         router.push({ name: "paper" });

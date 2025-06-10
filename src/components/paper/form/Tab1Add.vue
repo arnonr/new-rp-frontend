@@ -21,6 +21,7 @@
         <label for="paper_type_id" class="required form-label"
           >ลักษณะงานวิจัย</label
         >
+        {{ item.paper_kind_id }}
         <v-select
           name="paper_kind_id"
           label="name"
@@ -169,7 +170,8 @@
         <froala
           :tag="'textarea'"
           :config="froalaConfig.location"
-          v-model="item.location"
+          :model-value="item.location"
+          @update:model-value="(value: any) => updateItem('location', value)"
         ></froala>
       </div>
     </div>
@@ -182,7 +184,7 @@ import { defineComponent, ref, onMounted, toRefs, onBeforeUnmount } from "vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 // Import Datepicker
-import VueDatePicker from "@vuepic/vue-datepicker";
+// import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 // Import Dayjs
 import dayjs from "dayjs";
@@ -213,8 +215,6 @@ export default defineComponent({
   },
   components: {
     vSelect,
-    VueDatePicker,
-    dayjs,
     TabContent,
     Vue3TagsInput,
   },
@@ -222,6 +222,10 @@ export default defineComponent({
     // Variable
     const { item } = toRefs(props);
     const tags = ref<string[]>([]);
+
+    const updateItem = (field: string, value: any) => {
+      emit("update:item", { ...props.item, [field]: value });
+    };
 
     let froalaConfig: any = {
       abstract: useFroalaConfigData().froala_config,
@@ -248,28 +252,29 @@ export default defineComponent({
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
         keyup: function (inputEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         click: function (clickEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         "commands.after": function (cmd: any, param1: any, param2: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         "paste.after": function (pasteEvent: any) {
-          item.value[x] = this.html.get();
+          updateItem(x, this.html.get());
         },
         initialized: function () {
-        //   this.$el.css("font-size", "16px"); // ตั้งค่าขนาดฟอนต์เริ่มต้น
-          this.html.insert(item.value[x]);
+          //   this.$el.css("font-size", "16px"); // ตั้งค่าขนาดฟอนต์เริ่มต้น
+          const content = item.value[x] || "";
+          this.html.insert(content);
         },
       };
     });
 
     const selectOptions = ref({
-      departments: <any>[],
-      paper_types: <any>[],
-      paper_kinds: <any>[],
+      departments: [] as any[],
+      paper_types: [] as any[],
+      paper_kinds: [] as any[],
     });
 
     // Event

@@ -6,7 +6,7 @@
     id="main-modal"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header" v-if="!isLoading">
           <h3 class="modal-title">ประวัติการดำเนินการ</h3>
@@ -20,7 +20,40 @@
         </div>
 
         <div class="modal-body" v-if="!isLoading">
-          <div class="row">
+          <!-- Timeline Section -->
+          <div class="bg-light p-4 border-bottom">
+            <h5 class="text-primary mb-3">
+              <i class="bi bi-timeline me-2"></i>
+              เส้นทางการดำเนินงาน
+            </h5>
+
+            <div v-if="item" class="timeline">
+              <div class="timeline-item completed">
+                <div class="timeline-marker bg-success">
+                  <i class="bi bi-send text-white"></i>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-date">
+                    {{ convertDate(item.sended_at) }}
+                  </div>
+                  <div class="timeline-title">ส่งข้อเสนอโครงการ</div>
+                </div>
+              </div>
+
+              <div v-if="item.approved_at" class="timeline-item completed">
+                <div class="timeline-marker bg-info">
+                  <i class="bi bi-check-circle text-white"></i>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-date">
+                    {{ convertDate(item.approved_at) }}
+                  </div>
+                  <div class="timeline-title">พิจารณาข้อเสนอ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
             <table
               v-if="item"
               class="table table-bordered table-striped bg-sky"
@@ -44,9 +77,9 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
 
-          <h3 class="mt-6 mb-6">รายละเอียดที่ต้องแก้ไข</h3>
+          <h3 class="mt-6 mb-6">รายละเอียดที่ต้องดำเนินการแก้ไข</h3>
           <div class="row">
             <table class="table table-bordered table-striped bg-sky">
               <thead class="bg-warning">
@@ -65,7 +98,12 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                    <td colspan="3" class="text-center">ไม่พบการส่งกลับให้แก้ไข</td>
+                  <td colspan="3" class="text-center">
+                    <div class="no-data-content">
+                      <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+                      <p class="text-muted mb-0">ไม่มีประวัติการส่งกลับแก้ไข</p>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -244,5 +282,101 @@ export default defineComponent({
 }
 th {
   vertical-align: middle;
+}
+
+/* Timeline Styles */
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #dee2e6;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -22px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-content {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+}
+
+.timeline-date {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.timeline-title {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Table Styles */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.detail-text {
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .timeline {
+    padding-left: 20px;
+  }
+
+  .timeline-marker {
+    left: -15px;
+    width: 25px;
+    height: 25px;
+  }
+
+  .timeline::before {
+    left: 10px;
+  }
+}
+
+/* Badge adjustments */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
 }
 </style>

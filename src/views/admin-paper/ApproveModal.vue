@@ -218,7 +218,6 @@ export default defineComponent({
       isLoading,
       mainModalRef,
       convertDate: useDateData().convertDate,
-      item,
       approved_item,
       statuses,
       onClose,
