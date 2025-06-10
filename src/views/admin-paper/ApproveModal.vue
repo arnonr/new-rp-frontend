@@ -178,7 +178,7 @@ export default defineComponent({
         status_id: approved_item.status_id?.id,
       };
 
-      await ApiService.put("paper/" + item.value.id, data_item)
+      await ApiService.post("paper/approve/" + item.value.id, data_item)
         .then(({ data }) => {
           if (data.msg != "success") {
             throw new Error("ERROR");
