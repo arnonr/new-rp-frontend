@@ -2,36 +2,31 @@
   <!--begin::Wrapper-->
   <div class="mt-5">
     <!-- Profile -->
-    <div class="card shadow-sm my-5">
-      <div class="card-header bg-white">
-        <h4 class="card-title">รายการยื่นเสนอโครงการวิจัย</h4>
-      </div>
-      <div class="card-body table-responsive d-none d-lg-block">
-        <Preloader :isLoading="isLoading" :position="'absolute'" />
-        <ProjectsCard
-          :search="search"
-          :items="items"
-          :paginationData="paginationData"
-          :sortKey="sortKey"
-          :sortOrder="sortOrder"
-          :is-loading="isLoading"
-          @search="handleSearch"
-          @clear="handleClear"
-          @edit-project="handleEdit"
-          @reject="handleRejectModal"
-          @approve="handleApproveModal"
-          @cancel="handleCancelModal"
-          @manage-review="handleManageReviewModal"
-          @detail="handleDetailModal"
-          @history-detail="handleHistoryDetailModal"
-          @sort="handleSort"
-          @update:current-page="paginationData.currentPage = $event"
-          @update:per-page="paginationData.perPage = $event"
-        />
-      </div>
 
-      <div class="card-body d-lg-none">
-        <!-- <CardListComponent
+    <Preloader :isLoading="isLoading" :position="'absolute'" />
+    <ProjectsCard
+      :search="search"
+      :items="items"
+      :paginationData="paginationData"
+      :sortKey="sortKey"
+      :sortOrder="sortOrder"
+      :is-loading="isLoading"
+      @search="handleSearch"
+      @clear="handleClear"
+      @edit-project="handleEdit"
+      @reject="handleRejectModal"
+      @approve="handleApproveModal"
+      @cancel="handleCancelModal"
+      @manage-review="handleManageReviewModal"
+      @detail="handleDetailModal"
+      @history-detail="handleHistoryDetailModal"
+      @sort="handleSort"
+      @update:current-page="paginationData.currentPage = $event"
+      @update:per-page="paginationData.perPage = $event"
+    />
+
+    <div class="card-body d-lg-none">
+      <!-- <CardListComponent
           :items="items"
           :paginationData="paginationData"
           :sortKey="sortKey"
@@ -53,7 +48,6 @@
             }
           "
         /> -->
-      </div>
     </div>
 
     <!-- Modals -->

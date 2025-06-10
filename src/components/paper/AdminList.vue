@@ -1,7 +1,7 @@
 <template>
   <div class="paper-list-container">
     <!-- Table -->
-    <div class="table-wrapper">
+    <div class="table-wrapper table-responsive">
       <table class="table custom-table" style="min-height: 200px">
         <thead class="table-header">
           <tr>
