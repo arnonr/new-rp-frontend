@@ -680,15 +680,19 @@ export default defineComponent({
     textEditor.forEach((x: any) => {
       froalaConfig[x]["events"] = {
         keyup: function (inputEvent: any) {
+          item.value[x] = this.html.get();
           updateItem(x, this.html.get());
         },
         click: function (clickEvent: any) {
+          item.value[x] = this.html.get();
           updateItem(x, this.html.get());
         },
         "commands.after": function (cmd: any, param1: any, param2: any) {
+          item.value[x] = this.html.get();
           updateItem(x, this.html.get());
         },
         "paste.after": function (pasteEvent: any) {
+          item.value[x] = this.html.get();
           updateItem(x, this.html.get());
         },
         initialized: function () {
