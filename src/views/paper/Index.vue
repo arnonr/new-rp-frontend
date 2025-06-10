@@ -204,9 +204,9 @@ const handleAddProject = (): void => {
   router.push({ name: "paper-add" });
 };
 
-const handleEditProject = (id: number): void => {
+const handleEditProject = (item: any): void => {
   if (!validateUserProfile()) return;
-  router.push({ name: "paper-edit", params: { id } });
+  router.push({ name: "paper-edit", params: { id: item.id } });
 };
 
 // Watchers
