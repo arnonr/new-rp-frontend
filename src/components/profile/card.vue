@@ -17,7 +17,7 @@
 
       <div class="separator separator-dotted my-2"></div>
 
-      <div class="col-md-12 mt-3 text-end">
+      <div class="col-md-12 mt-3 text-end p-3">
         <button
           type="button"
           class="btn btn-primary me-2 pe-sm-3 ps-sm-5"
