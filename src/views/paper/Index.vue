@@ -159,7 +159,7 @@ const handleSearch = (): void => {
 
 const handleClear = (): void => {
   Object.keys(search).forEach((key) => {
-    const value = search[key as keyof SearchParams];
+    const value = search[key];
     if (typeof value === "object" && value !== null) {
       Object.keys(value).forEach((subKey) => {
         (value as any)[subKey] = null;

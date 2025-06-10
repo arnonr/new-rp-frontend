@@ -170,7 +170,6 @@
           :tag="'textarea'"
           :config="froalaConfig.location"
           :model-value="item.location"
-          @update:model-value="(value: any) => updateItem('location', value)"
         ></froala>
       </div>
     </div>
