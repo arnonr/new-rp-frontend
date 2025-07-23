@@ -219,6 +219,10 @@ const updateCurrentPage = (page: number) => {
 const updatePerPage = (perPage: number) => {
   emit("update:perPage", perPage);
 };
+
+defineOptions({
+  name: "PaperCardList",
+});
 </script>
 
 <style scoped>

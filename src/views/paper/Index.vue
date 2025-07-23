@@ -40,12 +40,13 @@
 import { ref, reactive, onMounted, watch } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useRouter } from "vue-router";
+// use Toast
 
 // Component
 import ProfileCard from "@/components/profile/card.vue";
 import ProjectsCard from "@/components/paper/Card.vue";
 import ModalsContainer from "@/components/paper/ModalsContainer.vue";
-import useToast from "@/composables/useToast";
+import toast from "@/composables/useToast";
 
 // Composables
 const router = useRouter();
@@ -54,7 +55,7 @@ const router = useRouter();
 const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
 // Reactive state
-const isLoading = ref<any>(false);
+const isLoading = ref(false);
 const sortKey = ref("");
 const sortOrder = ref(-1);
 
@@ -77,7 +78,7 @@ const modals = reactive<any>({
 });
 
 // API Functions
-const fetchItems = async (): Promise<void> => {
+const fetchItems = async () => {
   try {
     isLoading.value = true;
 
@@ -97,21 +98,20 @@ const fetchItems = async (): Promise<void> => {
 
     const { data } = await ApiService.query("paper", { params });
 
-    items.length = 0;
-    Object.assign(items, data.data);
+    items.splice(0, items.length, ...data.data);
 
     paginationData.totalPage = data.totalPage;
     paginationData.totalItems = data.totalData;
     paginationData.currentPage = data.currentPage;
   } catch (error) {
     console.error("Error fetching items:", error);
-    useToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
+    toast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
   } finally {
     isLoading.value = false;
   }
 };
 
-const fetchUser = async (): Promise<void> => {
+const fetchUser = async () => {
   try {
     const { data } = await ApiService.query(`user/${userData.id}`, {});
 
@@ -126,7 +126,7 @@ const fetchUser = async (): Promise<void> => {
     });
   } catch (error) {
     console.error("Error fetching user:", error);
-    useToast("เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้", "error");
+    toast("เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้", "error");
   }
 };
 
@@ -145,7 +145,7 @@ const validateUserProfile = (): boolean => {
   );
 
   if (!isValid) {
-    useToast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
+    toast("โปรดระบุข้อมูลส่วนตัวให้ครบถ้วน", "error");
   }
 
   return isValid;

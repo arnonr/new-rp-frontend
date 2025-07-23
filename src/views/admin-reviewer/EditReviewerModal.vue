@@ -94,7 +94,7 @@
                 class="form-control"
                 placeholder="โปรดระบุข้อมูลให้ครบถ้วน บ้านเลขที่ จังหวัด อำเภอ ตำบล รหัสไปรษณีย์"
                 aria-label="ที่อยู่ตามบัตรประชาชน"
-                v-model="item_edit.position"
+                v-model="item_edit.address"
               />
             </div>
 
@@ -160,10 +160,6 @@ import ApiService from "@/core/services/ApiService";
 import useToast from "@/composables/useToast";
 import _ from "lodash";
 
-// Import Vue-select
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
-
 // Use Composables
 import useUserStatusData from "@/composables/useUserStatusData";
 import Preloader from "@/components/preloader/Preloader.vue";
@@ -178,7 +174,6 @@ export default defineComponent({
   },
   components: {
     Preloader,
-    vSelect,
   },
   setup(props, { emit }) {
     // UI
@@ -220,6 +215,32 @@ export default defineComponent({
 
     const onSubmit = async () => {
       isLoading.value = true;
+      console.log(item_edit.value);
+
+      if (
+        item_edit.value.prefix_name == null ||
+        item_edit.value.prefix_name == "" ||
+        item_edit.value.firstname == null ||
+        item_edit.value.firstname == "" ||
+        item_edit.value.surname == null ||
+        item_edit.value.surname == "" ||
+        item_edit.value.organization_name == null ||
+        item_edit.value.organization_name == "" ||
+        item_edit.value.email == null ||
+        item_edit.value.email == "" ||
+        item_edit.value.address == null ||
+        item_edit.value.address == "" ||
+        item_edit.value.name_bank == null ||
+        item_edit.value.name_bank == "" ||
+        item_edit.value.name_account_bank == null ||
+        item_edit.value.name_account_bank == "" ||
+        item_edit.value.no_account_bank == null ||
+        item_edit.value.no_account_bank == ""
+      ) {
+        useToast("กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน", "error");
+        isLoading.value = false;
+        return;
+      }
 
       let data_item = {
         ...item_edit.value,
@@ -265,7 +286,6 @@ export default defineComponent({
     return {
       isLoading,
       mainModalRef,
-      item,
       onClose,
       onSubmit,
       selectOptions,

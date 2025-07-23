@@ -17,23 +17,23 @@
               </div>
             </div>
             <h3 class="auth-title mb-2">
-              {{ pageTitle }}
+              {{ TEXT.pageTitle }}
             </h3>
-            <p class="auth-subtitle">เข้าสู่ระบบเพื่อเริ่มต้นการทำงาน</p>
+            <p class="auth-subtitle">สำหรับผู้วิจัย</p>
           </div>
 
           <!-- Info Banner with enhanced styling -->
           <div class="auth-banner mb-8">
             <div class="d-flex align-items-center">
               <i class="fas fa-info-circle text-primary me-3 fs-4"></i>
-              <span class="fw-semibold">{{ bannerText }}</span>
+              <span class="fw-semibold">{{ TEXT.banner }}</span>
             </div>
           </div>
 
           <!-- Username Input with Icon -->
           <div class="fv-row mb-6">
             <label class="form-label auth-label">
-              {{ usernameLabel }}
+              {{ TEXT.username }}
             </label>
             <div class="input-group auth-input-group">
               <span class="input-group-text">
@@ -59,15 +59,15 @@
           <div class="fv-row mb-6">
             <div class="d-flex flex-stack mb-2">
               <label class="form-label auth-label">
-                {{ passwordLabel }}
+                {{ TEXT.password }}
               </label>
               <a
-                :href="forgotPasswordUrl"
+                :href="TEXT.forgotUrl"
                 target="_blank"
                 class="auth-link"
                 rel="noopener noreferrer"
               >
-                {{ forgotPasswordText }}
+                {{ TEXT.forgot }}
               </a>
             </div>
             <div class="input-group auth-input-group">
@@ -100,15 +100,9 @@
               class="btn auth-submit-btn w-100"
               :disabled="isLoading"
             >
-              <span v-if="!isLoading" class="indicator-label">
+              <span class="indicator-label">
                 <i class="fas fa-sign-in-alt me-2"></i>
-                {{ submitButtonText }}
-              </span>
-              <span v-else class="indicator-progress">
-                {{ loadingText }}
-                <span
-                  class="spinner-border spinner-border-sm align-middle ms-2"
-                ></span>
+                {{ TEXT.submit }}
               </span>
             </button>
           </div>
@@ -117,7 +111,7 @@
           <div class="text-center">
             <router-link to="/home" class="auth-back-link">
               <i class="fas fa-arrow-left me-2"></i>
-              {{ backToHomeText }}
+              {{ TEXT.back }}
             </router-link>
           </div>
         </VForm>
@@ -133,54 +127,45 @@ import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import * as Yup from "yup";
-// import { getAssetPath } from "@/core/helpers/assets";
 
-// Component name
-defineOptions({
-  name: "user-sign-in",
-});
+defineOptions({ name: "user-sign-in" });
 
 // Composables
 const authStore = useAuthStore();
 const router = useRouter();
-
-// Reactive state
 const submitButtonRef = ref<HTMLButtonElement | null>(null);
 const isLoading = ref(false);
 
-// Constants
-const pageTitle = "ระบบยื่นเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์";
-const bannerText = "เข้าใช้งานด้วย ICIT Account";
-const usernameLabel = "ICIT Account";
-const passwordLabel = "Password";
-const forgotPasswordText = "ลืมรหัสผ่าน ?";
-const forgotPasswordUrl = "https://account.kmutnb.ac.th/web/recovery/password";
-const submitButtonText = "Continue";
-const loadingText = "Please wait...";
-const backToHomeText = "กลับหน้าหลัก";
-
-// Initial form values
-const initialValues = {
-  username: "arnonr",
-  password: "demo",
+const TEXT = {
+  pageTitle: "ระบบยื่นเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์",
+  banner: "เข้าใช้งานด้วย ICIT Account",
+  username: "ICIT Account",
+  password: "Password",
+  forgot: "ลืมรหัสผ่าน ?",
+  forgotUrl: "https://account.kmutnb.ac.th/web/recovery/password",
+  submit: "Continue",
+  loading: "Please wait...",
+  back: "กลับหน้าหลัก",
+  success: "You have successfully logged in!",
+  error: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
 };
 
+const initialValues = { username: "arnonr", password: "demo" };
+
 // Validation schema
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required().label(usernameLabel),
-  password: Yup.string().min(4).required().label(passwordLabel),
+const validationSchema = Yup.object({
+  username: Yup.string().required().label(TEXT.username),
+  password: Yup.string().min(4).required().label(TEXT.password),
 });
 
 // Alert configurations
 const successAlert = {
-  text: "You have successfully logged in!",
+  text: TEXT.success,
   icon: "success" as const,
   buttonsStyling: false,
   confirmButtonText: "Ok, got it!",
   heightAuto: false,
-  customClass: {
-    confirmButton: "btn fw-semibold btn-light-primary",
-  },
+  customClass: { confirmButton: "btn fw-semibold btn-light-primary" },
 };
 
 const errorAlert = (message: string) => ({
@@ -189,57 +174,34 @@ const errorAlert = (message: string) => ({
   buttonsStyling: false,
   confirmButtonText: "Try again!",
   heightAuto: false,
-  customClass: {
-    confirmButton: "btn fw-semibold btn-light-danger",
-  },
+  customClass: { confirmButton: "btn fw-semibold btn-light-danger" },
 });
 
-// Loading state management
-const setLoadingState = (loading: boolean) => {
-  isLoading.value = loading;
-  if (submitButtonRef.value) {
-    submitButtonRef.value.disabled = loading;
-    if (loading) {
-      submitButtonRef.value.setAttribute("data-kt-indicator", "on");
-    } else {
-      submitButtonRef.value.removeAttribute("data-kt-indicator");
-    }
-  }
-};
-// Form submission handler
 const handleSubmit = async (values: any) => {
   try {
-    // Clear existing errors and set loading state
     authStore.logout();
-    setLoadingState(true);
-
-    // Attempt login
+    isLoading.value = true;
     await authStore.login(values);
-
     const errors = Object.values(authStore.errors);
-
-    if (errors.length === 0) {
-      // Success - show success message and redirect
+    if (!errors.length) {
       await Swal.fire(successAlert);
       await router.push({ name: "paper" });
     } else {
-      // Error - show error message
       await Swal.fire(errorAlert(errors[0] as string));
       authStore.errors = {};
     }
   } catch (error) {
-    // Handle unexpected errors
     console.error("Login error:", error);
-    await Swal.fire(errorAlert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ"));
+    await Swal.fire(errorAlert(TEXT.error));
   } finally {
-    setLoadingState(false);
+    isLoading.value = false;
   }
 };
 </script>
 
 <style scoped>
 .auth-wrapper {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ffd54f 0%, #ffc107 100%);
   border-radius: 2em;
   display: flex;
   align-items: center;
@@ -280,7 +242,7 @@ const handleSubmit = async (values: any) => {
 .logo-circle {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ffd54f 0%, #ffc107 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -378,7 +340,7 @@ const handleSubmit = async (values: any) => {
 }
 
 .auth-submit-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ffd54f 0%, #ffc107 100%);
   border: none;
   border-radius: 12px;
   padding: 14px 24px;
@@ -386,12 +348,12 @@ const handleSubmit = async (values: any) => {
   font-size: 16px;
   color: white;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 213, 79, 0.4);
 }
 
 .auth-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 224, 102, 0.4);
 }
 
 .auth-submit-btn:active {

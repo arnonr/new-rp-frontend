@@ -73,66 +73,39 @@ interface UserData {
   [key: string]: any;
 }
 
+const contactInfo = "โทร: 123-456-7890 | อีเมล: info@example.com";
+const appTitle = "ระบบเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์";
+
 export default defineComponent({
   name: "LayoutHeader",
   setup() {
-    // Reactive states
     const userData = ref<UserData>({});
 
-    // Constants
-    const contactInfo = "โทร: 123-456-7890 | อีเมล: info@example.com";
-    const appTitle = "ระบบเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์";
-
-    // Computed properties
     const isLoggedIn = computed(() => Boolean(userData.value.id));
 
     const navigationItems = computed<NavigationItem[]>(() => [
-      {
-        name: "หน้าแรก",
-        path: "/",
-        visible: true,
-      },
+      { name: "หน้าแรก", path: "/", visible: true },
       {
         name: "ระบบยื่นเสนอโครงการ",
         path: "/paper",
         visible: isLoggedIn.value,
       },
-      {
-        name: "เข้าสู่ระบบ",
-        path: "/sign-in",
-        visible: !isLoggedIn.value,
-      },
+      { name: "เข้าสู่ระบบ", path: "/sign-in", visible: !isLoggedIn.value },
       {
         name: "เข้าสู่ระบบ (สำหรับกรรมการ)",
         path: "/reviewer-sign-in",
         visible: true,
       },
-      {
-        name: "เอกสาร",
-        path: "/document",
-        visible: !isLoggedIn.value,
-      },
-      {
-        name: "ติดต่อเรา",
-        path: "/contact",
-        visible: true,
-      },
+      //   { name: "เอกสาร", path: "/document", visible: !isLoggedIn.value },
+      { name: "ติดต่อเรา", path: "/contact", visible: true },
     ]);
 
-    // Methods
-    const loadUserData = () => {
+    onMounted(() => {
       try {
-        const storedData = localStorage.getItem("userData");
-        userData.value = storedData ? JSON.parse(storedData) : {};
-      } catch (error) {
-        console.error("Error loading user data:", error);
+        userData.value = JSON.parse(localStorage.getItem("userData") ?? "{}");
+      } catch {
         userData.value = {};
       }
-    };
-
-    // Lifecycle hooks
-    onMounted(() => {
-      loadUserData();
     });
 
     return {
@@ -142,7 +115,6 @@ export default defineComponent({
       navigationItems,
       isLoggedIn,
       getAssetPath,
-      loadUserData,
     };
   },
 });

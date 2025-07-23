@@ -282,7 +282,7 @@
                       type="button"
                       @click="openAddReviewerModal = true"
                     >
-                      ไม่พบตัวเลือกกรรมการ
+                      เพิ่มข้อมูลกรรมการ
                     </button>
                   </div>
                 </div>

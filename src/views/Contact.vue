@@ -29,7 +29,6 @@
 import { defineComponent, ref, onMounted } from "vue";
 import ApiService from "@/core/services/ApiService";
 
-// Interface สำหรับข้อมูล
 interface AboutItem {
   detail: string;
   id?: number;
@@ -37,43 +36,20 @@ interface AboutItem {
   updated_at?: string;
 }
 
-// Interface สำหรับ API Response
-interface ApiResponse {
-  data: AboutItem;
-  message?: string;
-  status?: string;
-}
-
 export default defineComponent({
   name: "ContactPage",
-  components: {},
   setup() {
-    // Reactive states
-    const item = ref<AboutItem>({
-      detail: "",
-    });
-    const loading = ref<boolean>(false);
-    const error = ref<string>("");
+    const item = ref<AboutItem>({ detail: "" });
+    const loading = ref(false);
+    const error = ref("");
 
-    // Fetch item function with error handling
-    const fetchItem = async (): Promise<void> => {
+    const fetchItem = async () => {
+      loading.value = true;
+      error.value = "";
       try {
-        loading.value = true;
-        error.value = "";
-
-        const params = {
-          orderBy: "created_at",
-          order: "desc",
-        };
-
-        const { data }: { data: ApiResponse } = await ApiService.query(
-          "about/3",
-          {
-            params: params,
-          }
-        );
-
-        item.value = data.data;
+        const params = { orderBy: "created_at", order: "desc" };
+        const res = await ApiService.query("about/3", { params });
+        item.value = res.data.data;
       } catch (err) {
         console.error("Error fetching about data:", err);
         error.value = "ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง";
@@ -82,17 +58,9 @@ export default defineComponent({
       }
     };
 
-    // Lifecycle
-    onMounted(() => {
-      fetchItem();
-    });
+    onMounted(fetchItem);
 
-    return {
-      item,
-      loading,
-      error,
-      fetchItem,
-    };
+    return { item, loading, error, fetchItem };
   },
 });
 </script>

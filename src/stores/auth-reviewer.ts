@@ -45,23 +45,17 @@ export const useAuthReviewerStore = defineStore("auth-reviewer", () => {
     JwtService.destroyToken();
   }
 
-  function login(credentials: User) {
-    return ApiService.post("reviewer/login", credentials)
-      .then(({ data }) => {
-        setAuth(data);
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            ...data,
-            level: 3,
-          })
-        );
-        localStorage.setItem("id_token", data.token);
-      })
-      .catch(({ response }) => {
-        setError(response.data.errors);
-      });
+  async function login(credentials: User) {
+    try {
+      const { data } = await ApiService.post("reviewer/login", credentials);
+      setAuth(data);
+      localStorage.setItem("userData", JSON.stringify({ ...data, level: 3 }));
+      localStorage.setItem("id_token", data.token);
+    } catch ({ response }: any) {
+      setError(response.data);
+    }
   }
+
 
   function logout() {
     purgeAuth();

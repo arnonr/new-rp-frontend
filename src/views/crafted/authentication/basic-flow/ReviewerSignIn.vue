@@ -1,217 +1,442 @@
 <template>
-  <!--begin::Wrapper-->
-  <div class="w-lg-500px p-10">
-    <!--begin::Form-->
-    <VForm
-      class="form w-100"
-      id="kt_login_signin_form"
-      @submit="onSubmitLogin"
-      :validation-schema="login"
-      :initial-values="{ email: '', password: '' }"
-    >
-      <!--begin::Heading-->
-      <div class="text-center mb-10">
-        <!--begin::Title-->
-        <h4 class="text-gray-900 mb-3">
-          ระบบยื่นเสนอโครงการวิจัย สำหรับกรรมการ <br />คณะวิทยาศาสตร์ประยุกต์
-        </h4>
-        <!--end::Title-->
-      </div>
-      <!--begin::Heading-->
-
-      <div class="mb-10 bg-light-warning p-4 rounded">
-        <div class="text-dark">เข้าใช้งานด้วย Email</div>
-      </div>
-
-      <!--begin::Input group-->
-      <div class="fv-row mb-10">
-        <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-gray-900">Email</label>
-        <!--end::Label-->
-
-        <!--begin::Input-->
-        <Field
-          tabindex="1"
-          class="form-control form-control-lg form-control-solid"
-          type="text"
-          name="username"
-          autocomplete="off"
-        />
-        <!--end::Input-->
-        <div class="fv-plugins-message-container">
-          <div class="fv-help-block">
-            <ErrorMessage name="username" />
-          </div>
-        </div>
-      </div>
-      <!--end::Input group-->
-
-      <!--begin::Input group-->
-      <div class="fv-row mb-10">
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-stack mb-2">
-          <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6 mb-0"
-            >Password</label
-          >
-          <!--end::Label-->
-
-          <!--begin::Link-->
-
-          <!-- <a
-            href="https://account.kmutnb.ac.th/web/recovery/password"
-            target="_blank"
-            class="link-primary fs-6 fw-bold"
-          >
-            ลืมรหัสผ่าน ?
-          </a> -->
-          <!--end::Link-->
-        </div>
-        <!--end::Wrapper-->
-
-        <!--begin::Input-->
-        <Field
-          tabindex="2"
-          class="form-control form-control-lg form-control-solid"
-          type="password"
-          name="password"
-          autocomplete="off"
-        />
-        <!--end::Input-->
-        <div class="fv-plugins-message-container">
-          <div class="fv-help-block">
-            <ErrorMessage name="password" />
-          </div>
-        </div>
-      </div>
-      <!--end::Input group-->
-
-      <!--begin::Actions-->
-      <div class="text-center">
-        <!--begin::Submit button-->
-        <button
-          tabindex="3"
-          type="submit"
-          ref="submitButton"
-          id="kt_sign_in_submit"
-          class="btn btn-lg btn-primary w-100 mb-5"
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="auth-card">
+        <VForm
+          class="form w-100"
+          id="kt_login_signin_form"
+          @submit="handleSubmit"
+          :validation-schema="validationSchema"
+          :initial-values="initialValues"
         >
-          <span class="indicator-label"> Continue </span>
+          <!-- Header with Logo -->
+          <div class="text-center mb-8">
+            <div class="auth-logo mb-4">
+              <div class="logo-circle">
+                <i class="fas fa-graduation-cap text-white fs-2"></i>
+              </div>
+            </div>
+            <h3 class="auth-title mb-2">
+              {{ TEXT.pageTitle }}
+            </h3>
+            <p class="auth-subtitle">สำหรับกรรมการ</p>
+          </div>
 
-          <span class="indicator-progress">
-            Please wait...
-            <span
-              class="spinner-border spinner-border-sm align-middle ms-2"
-            ></span>
-          </span>
-        </button>
-        <!--end::Submit button-->
-      </div>
-      <!--end::Actions-->
+          <!-- Info Banner with enhanced styling -->
+          <div class="auth-banner mb-8">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-info-circle text-primary me-3 fs-4"></i>
+              <span class="fw-semibold">{{ TEXT.banner }}</span>
+            </div>
+          </div>
 
-      <div class="text-start d-flex justify-content-between">
-        <router-link to="/home" class="link-primary fs-6 fw-bold">
-          กลับหน้าหลัก
-        </router-link>
+          <!-- Username Input with Icon -->
+          <div class="fv-row mb-6">
+            <label class="form-label auth-label">
+              {{ TEXT.username }}
+            </label>
+            <div class="input-group auth-input-group">
+              <span class="input-group-text">
+                <i class="fas fa-user text-muted"></i>
+              </span>
+              <Field
+                tabindex="1"
+                class="form-control auth-input"
+                type="text"
+                name="username"
+                autocomplete="username"
+                placeholder="กรอกอีเมล"
+              />
+            </div>
+            <div class="fv-plugins-message-container">
+              <div class="fv-help-block">
+                <ErrorMessage name="username" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Input with Icon -->
+          <div class="fv-row mb-6">
+            <div class="d-flex flex-stack mb-2">
+              <label class="form-label auth-label">
+                {{ TEXT.password }}
+              </label>
+              <a
+                :href="TEXT.forgotUrl"
+                target="_blank"
+                class="auth-link"
+                rel="noopener noreferrer"
+              >
+                {{ TEXT.forgot }}
+              </a>
+            </div>
+            <div class="input-group auth-input-group">
+              <span class="input-group-text">
+                <i class="fas fa-lock text-muted"></i>
+              </span>
+              <Field
+                tabindex="2"
+                class="form-control auth-input"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="กรอกรหัสผ่าน"
+              />
+            </div>
+            <div class="fv-plugins-message-container">
+              <div class="fv-help-block">
+                <ErrorMessage name="password" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Enhanced Submit Button -->
+          <div class="text-center mb-6">
+            <button
+              ref="submitButtonRef"
+              tabindex="3"
+              type="submit"
+              id="kt_sign_in_submit"
+              class="btn auth-submit-btn w-100"
+              :disabled="isLoading"
+            >
+              <span class="indicator-label">
+                <i class="fas fa-sign-in-alt me-2"></i>
+                {{ TEXT.submit }}
+              </span>
+            </button>
+          </div>
+
+          <!-- Back to Home Link with styling -->
+          <div class="text-center">
+            <router-link to="/home" class="auth-back-link">
+              <i class="fas fa-arrow-left me-2"></i>
+              {{ TEXT.back }}
+            </router-link>
+          </div>
+        </VForm>
       </div>
-    </VForm>
-    <!--end::Form-->
+    </div>
   </div>
-  <!--end::Wrapper-->
 </template>
 
-<script lang="ts">
-import { getAssetPath } from "@/core/helpers/assets";
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { useAuthReviewerStore, type User } from "@/stores/auth-reviewer";
+import { useAuthReviewerStore } from "@/stores/auth-reviewer";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import * as Yup from "yup";
 
-export default defineComponent({
-  name: "sign-in",
-  components: {
-    Field,
-    VForm,
-    ErrorMessage,
-  },
-  setup() {
-    const store = useAuthReviewerStore();
-    const router = useRouter();
+defineOptions({ name: "reviewer-sign-in" });
 
-    const submitButton = ref<HTMLButtonElement | null>(null);
+const authStore = useAuthReviewerStore();
+const router = useRouter();
+const submitButtonRef = ref<HTMLButtonElement | null>(null);
+const isLoading = ref(false);
 
-    //Create form validation object
-    const login = Yup.object().shape({
-      username: Yup.string().required().label("Email"),
-      password: Yup.string().min(4).required().label("Password"),
-    });
+const TEXT = {
+  pageTitle: "ระบบยื่นเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์",
+  banner: "เข้าใช้งานด้วย Email",
+  username: "Email",
+  password: "Password",
+  forgot: "ลืมรหัสผ่าน ?",
+  forgotUrl: "https://account.kmutnb.ac.th/web/recovery/password",
+  submit: "Continue",
+  loading: "Please wait...",
+  back: "กลับหน้าหลัก",
+  success: "You have successfully logged in!",
+  error: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+};
 
-    //Form submit function
-    const onSubmitLogin = async (values: any) => {
-      values = values as User;
-      // Clear existing errors
-      store.logout();
+const initialValues = { username: "arnonr@gmail.com", password: "demo" };
 
-      if (submitButton.value) {
-        // eslint-disable-next-line
-        submitButton.value!.disabled = true;
-        // Activate indicator
-        submitButton.value.setAttribute("data-kt-indicator", "on");
-      }
-
-      // Send login request
-
-      let reviewer_user: any = {
-        email: values.username,
-        password: values.password,
-      };
-
-      await store.login(reviewer_user);
-      const error = Object.values(store.errors);
-
-      if (error.length === 0) {
-        Swal.fire({
-          text: "You have successfully logged in!",
-          icon: "success",
-          buttonsStyling: false,
-          confirmButtonText: "Ok, got it!",
-          heightAuto: false,
-          customClass: {
-            confirmButton: "btn fw-semibold btn-light-primary",
-          },
-        }).then(() => {
-          // Go to page after successfully login
-          router.push({ name: "reviewer-paper" });
-        });
-      } else {
-        Swal.fire({
-          text: error[0] as string,
-          icon: "error",
-          buttonsStyling: false,
-          confirmButtonText: "Try again!",
-          heightAuto: false,
-          customClass: {
-            confirmButton: "btn fw-semibold btn-light-danger",
-          },
-        }).then(() => {
-          store.errors = {};
-        });
-      }
-
-      //Deactivate indicator
-      submitButton.value?.removeAttribute("data-kt-indicator");
-      // eslint-disable-next-line
-      submitButton.value!.disabled = false;
-    };
-
-    return {
-      onSubmitLogin,
-      login,
-      submitButton,
-      getAssetPath,
-    };
-  },
+// Validation schema
+const validationSchema = Yup.object({
+  username: Yup.string().required().label(TEXT.username),
+  password: Yup.string().min(4).required().label(TEXT.password),
 });
+
+// Alert configurations
+const successAlert = {
+  text: TEXT.success,
+  icon: "success" as const,
+  buttonsStyling: false,
+  confirmButtonText: "Ok, got it!",
+  heightAuto: false,
+  customClass: { confirmButton: "btn fw-semibold btn-light-primary" },
+};
+
+const errorAlert = (message: string) => ({
+  text: message,
+  icon: "error" as const,
+  buttonsStyling: false,
+  confirmButtonText: "Try again!",
+  heightAuto: false,
+  customClass: { confirmButton: "btn fw-semibold btn-light-danger" },
+});
+
+const handleSubmit = async (values: any) => {
+  try {
+    authStore.logout();
+    isLoading.value = true;
+
+    let reviewer_user: any = {
+      email: values.username,
+      password: values.password,
+    };
+
+    await authStore.login(reviewer_user);
+
+    const errors = Object.values(authStore.errors);
+    if (!errors.length) {
+      await Swal.fire(successAlert);
+      await router.push({ name: "reviewer-paper" });
+    } else {
+      await Swal.fire(errorAlert(errors[0] as string));
+      authStore.errors = {};
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    await Swal.fire(errorAlert(TEXT.error));
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
+
+<style scoped>
+.auth-wrapper {
+  background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+  border-radius: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 35px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-logo {
+  margin-bottom: 20px;
+}
+
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ffd54f 0%, #ffc107 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 35px rgba(102, 126, 234, 0.5);
+  }
+  100% {
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+}
+
+.auth-title {
+  color: #2d3748;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: pre-line;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auth-subtitle {
+  color: #718096;
+  font-size: 14px;
+  margin: 0;
+}
+
+.auth-banner {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border: 1px solid #e1bee7;
+  border-radius: 12px;
+  padding: 16px 20px;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-label {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.auth-input-group {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.auth-input-group:focus-within {
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+  transform: translateY(-1px);
+}
+
+.auth-input-group .input-group-text {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-right: none;
+  padding: 12px 15px;
+}
+
+.auth-input {
+  border: 1px solid #e2e8f0;
+  border-left: none;
+  padding: 12px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+  border-color: #667eea;
+  box-shadow: none;
+}
+
+.auth-input::placeholder {
+  color: #a0aec0;
+  font-size: 13px;
+}
+
+.auth-submit-btn {
+  background: linear-gradient(135deg, #ffd54f 0%, #ffc107 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(255, 213, 79, 0.4);
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 224, 102, 0.4);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.auth-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.auth-back-link {
+  color: #718096;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.auth-back-link:hover {
+  color: #667eea;
+  transform: translateX(-2px);
+}
+
+.fv-help-block {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 6px;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .auth-wrapper {
+    padding: 15px;
+  }
+
+  .auth-card {
+    padding: 30px 25px;
+    border-radius: 15px;
+  }
+
+  .logo-circle {
+    width: 70px;
+    height: 70px;
+  }
+
+  .auth-title {
+    font-size: 20px;
+  }
+}
+</style>

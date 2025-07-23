@@ -3,24 +3,10 @@
   <div class="container mt-5">
     <!-- Profile -->
     <div class="card shadow-sm my-5">
-      <div class="card-header bg-white">
+      <div class="card-header bg-warning">
         <h4 class="card-title">ข้อมูลกรรมการ</h4>
-        <div class="card-toolbar">
-          <button
-            class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5"
-            @click="onEditReviewerModal"
-          >
-            <i class="fa fa-edit"></i>
-            <span class="d-none d-lg-inline-block">แก้ไข</span>
-          </button>
-        </div>
       </div>
       <div class="card-body row">
-        <!-- <div class="col-md-12 px-5 py-3">
-          <span class="fw-bold">ตำแหน่งทางวิชาการ : </span>
-          <span class="fst-italic">{{ user_item.position }}</span>
-        </div> -->
-        <!-- <div class="separator separator-dotted my-2"></div> -->
         <div class="col-md-12 px-5 py-3">
           <span class="fw-bold">ชื่อ-นามสกุล : </span>
           <span class="fst-italic"
@@ -64,10 +50,20 @@
         </div>
 
         <div class="separator separator-dotted my-2"></div>
+        <div class="col-md-12 mt-3 text-end p-3">
+          <button
+            class="btn btn-primary me-2 pe-sm-3 ps-sm-5"
+            @click="onEditReviewerModal"
+          >
+            <i class="fa fa-edit"></i>
+            <span class="d-none d-lg-inline-block">แก้ไข</span>
+          </button>
+        </div>
       </div>
     </div>
+    <!-- Table -->
     <div class="card shadow-sm my-5">
-      <div class="card-header bg-white">
+      <div class="card-header bg-warning">
         <h4 class="card-title">โครงการวิจัย</h4>
       </div>
       <div class="card-body table-responsive d-none d-lg-block">
@@ -161,7 +157,7 @@ import DetailPage from "@/views/paper/DetailModal.vue";
 import HistoryDetailPage from "@/views/paper/HistoryDetailModal.vue";
 
 export default defineComponent({
-  name: "paper",
+  name: "ReviewerPaper",
   components: {
     ListComponent,
     CardListComponent,
@@ -268,6 +264,21 @@ export default defineComponent({
     // Mounted
     onMounted(async () => {
       await fetchUser();
+      if (
+        user_item.prefix_name == null ||
+        user_item.firstname == null ||
+        user_item.surname == null ||
+        user_item.organization_name == null ||
+        user_item.email == null ||
+        user_item.address == null ||
+        user_item.name_bank == null ||
+        user_item.name_account_bank == null ||
+        user_item.no_account_bank == null
+      ) {
+        useToast("กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน", "error");
+        onEditReviewerModal();
+      }
+
       await fetchItems();
     });
 
