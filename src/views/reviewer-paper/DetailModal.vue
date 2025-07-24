@@ -44,20 +44,9 @@
                 @click="generatePDF"
                 type="button"
                 class="btn btn-success"
-                :disabled="true"
                 v-if="item.status_id != 1"
               >
                 พิมพ์ข้อมูล
-              </button>
-
-              <button
-                @click="generatePDF1"
-                type="button"
-                class="btn btn-primary ms-2"
-                :disabled="true"
-                v-if="item.status_id != 1"
-              >
-                พิมพ์บันทึกข้อความ
               </button>
             </div>
           </div>
