@@ -189,6 +189,10 @@ const handleSubmit = async (values: any) => {
     await authStore.login(reviewer_user);
 
     const errors = Object.values(authStore.errors);
+
+    console.log(authStore.errors);
+
+
     if (!errors.length) {
       await Swal.fire(successAlert);
       await router.push({ name: "reviewer-paper" });
