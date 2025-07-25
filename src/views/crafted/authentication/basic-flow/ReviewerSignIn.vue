@@ -149,7 +149,7 @@ const TEXT = {
   error: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
 };
 
-const initialValues = { username: "arnonr@gmail.com", password: "demo" };
+const initialValues = { username: "", password: "" };
 
 // Validation schema
 const validationSchema = Yup.object({

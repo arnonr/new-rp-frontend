@@ -78,8 +78,7 @@ const handleSignOut = async () => {
   try {
     authStore.logout();
 
-    const redirectRouteName =
-      userData.level != 3 ? "sign-in" : "reviewer-sign-in";
+    const redirectRouteName = userData.level != 3 ? "home" : "home";
 
     await router.push({ name: redirectRouteName });
   } catch (error) {

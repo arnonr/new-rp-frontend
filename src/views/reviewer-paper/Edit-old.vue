@@ -143,6 +143,15 @@ export default defineComponent({
     const tab_index = ref(0);
     const onTabChange = (prevIndex: number, nextIndex: number) => {
       tab_index.value = nextIndex;
+
+      setTimeout(() => {
+        const el = document.querySelector(".card");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 100); // รอให้ DOM เปลี่ยนก่อน
     };
 
     // Variable

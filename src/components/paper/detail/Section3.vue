@@ -5,8 +5,8 @@
 
       <h6 class="py-5 px-5 bg-warning rounded">งบประมาณในการดำเนินงานวิจัย</h6>
       <h6 class="mt-10">หมวดค่าตอบแทน เฉพาะค่าจ้างผู้ช่วยวิจัย</h6>
-      <div class="table-responsive">
-        <table class="table table-bordered table-border-black">
+      <div class="table-responsive avoid-page-break">
+        <table class="table table-bordered table-border-black avoid-page-break">
           <thead>
             <tr>
               <th class="text-center" style="width: 80px">ลำดับที่</th>
@@ -44,8 +44,8 @@
       <h6>
         หมวดค่าใช้สอย เช่น ค่าพาหนะ ค่าจ้างเหมาต่าง ๆ เช่น ค่าจัดทำรูปเล่ม
       </h6>
-      <div class="table-responsive">
-        <table class="table table-bordered table-border-black">
+      <div class="table-responsive avoid-page-break">
+        <table class="table table-bordered table-border-black avoid-page-break">
           <thead>
             <tr>
               <th class="text-center" style="width: 80px">ลำดับที่</th>
@@ -82,7 +82,7 @@
     <div v-if="budget3.length != 0">
       <h6>หมวดค่าวัสดุ (แจกแจงรายละเอียดราคาต่อหน่วยอย่างชัดเจน)</h6>
       <div class="table-responsive">
-        <table class="table table-bordered table-border-black">
+        <table class="table table-bordered table-border-black avoid-page-break">
           <thead>
             <tr>
               <th class="text-center" style="width: 80px">ลำดับที่</th>
@@ -191,3 +191,14 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+table,
+thead,
+tbody,
+tr,
+.avoid-page-break {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+</style>

@@ -21,23 +21,25 @@
 
         <div class="modal-body" v-if="!isLoading">
           <div class="row">
-            <Section1 v-if="item.id != null" :item="item" />
+            <div ref="pdfContent" class="pdfContent">
+              <Section1 v-if="item.id != null" :item="item" />
 
-            <Section2
-              v-if="item.id != null"
-              :item="item"
-              :researcher="researcher"
-              :method_list="method_list"
-            />
+              <Section2
+                v-if="item.id != null"
+                :item="item"
+                :researcher="researcher"
+                :method_list="method_list"
+              />
 
-            <Section3
-              v-if="item.id != null"
-              :item="item"
-              :budget="budget"
-              :budget2="budget2"
-              :budget3="budget3"
-              :file_attach="file_attach"
-            />
+              <Section3
+                v-if="item.id != null"
+                :item="item"
+                :budget="budget"
+                :budget2="budget2"
+                :budget3="budget3"
+                :file_attach="file_attach"
+              />
+            </div>
 
             <div class="mx-auto text-center mt-5">
               <button
@@ -55,77 +57,6 @@
         <Preloader :isLoading="isLoading1" :position="'absolute'" />
       </div>
     </div>
-
-    <!-- PDF -->
-    <!-- <vue3-html2pdf
-      filename="rp_data"
-      :show-layout="false"
-      :float-layout="true"
-      :enable-download="true"
-      :preview-modal="true"
-      :pdf-quality="2"
-      :manual-pagination="true"
-      pdf-format="a4"
-      pdf-orientation="portrait"
-      :paginate-elements-by-height="1400"
-      :margin="{ top: '50px', bottom: '50px', left: '20px', right: '20px' }"
-      :pdf-content-selector="'.generate-pdf'"
-      ref="html2Pdf"
-      :page-break-before="false"
-      :insert-page-break="true"
-    >
-      <template v-slot:pdf-content>
-        <div class="generate-pdf">
-          <div class="pdf-section">
-            <SectionPDF1 :item="item" />
-          </div>
-
-          <div class="pdf-section page-break">
-            <SectionPDF2
-              :item="item"
-              :researcher="researcher"
-              :method_list="method_list"
-            />
-          </div>
-
-          <div class="pdf-section page-break">
-            <SectionPDF3
-              :item="item"
-              :budget="budget"
-              :budget2="budget2"
-              :budget3="budget3"
-              :file_attach="file_attach"
-            />
-          </div>
-        </div>
-      </template>
-    </vue3-html2pdf> -->
-
-    <div ref="htmlPdf">
-      <!-- <div class="generate-pdf">
-        <div class="pdf-section">
-          <SectionPDF1 :item="item" />
-        </div>
-
-        <div class="pdf-section">
-          <SectionPDF2
-            :item="item"
-            :researcher="researcher"
-            :method_list="method_list"
-          />
-        </div>
-
-        <div class="pdf-section">
-          <SectionPDF3
-            :item="item"
-            :budget="budget"
-            :budget2="budget2"
-            :budget3="budget3"
-            :file_attach="file_attach"
-          />
-        </div>
-      </div> -->
-    </div>
   </div>
 </template>
 
@@ -139,36 +70,9 @@ import dayjs from "dayjs";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 dayjs.extend(buddhistEra);
-// PDF
-import { jsPDF } from "jspdf";
-// import Vue3Html2pdf from "vue3-html2pdf";
-// import html2pdf from "html2pdf.js";
-//
-
-import pdfMake from "pdfmake/build/pdfmake";
-import { pdfMake as pdfFonts } from "pdfmake/build/vfs_fonts";
-import thSarabunNew from "@/assets/fonts/THSarabunNew.js";
-import htmlToPdfMake from "html-to-pdfmake";
-
-// if (!pdfMake.vfs) {
-//   pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// }
-
-// pdfMake.vfs["THSarabunNew.ttf"] = thSarabunNew;
-
-pdfMake.fonts = {
-  THSarabunNew: {
-    normal: "THSarabunNew.ttf",
-    bold: "THSarabunNew-Bold.ttf",
-    italics: "THSarabunNew-Italic.ttf",
-    bolditalics: "THSarabunNew-BoldItalic.ttf",
-  },
-};
-
-// กำหนดฟอนต์ภาษาไทย (ต้องมีไฟล์ฟอนต์ที่รองรับภาษาไทย)
-// import thSarabunNew from "@/assets/fonts/THSarabunNew-Italic.ttf";
-// import thSarabunNew from "@/assets/fonts/THSarabunNew-Bold.ttf";
-// import thSarabunNew from "@/assets/fonts/THSarabunNew-BoldItalic.ttf";
+// import { jsPDF } from "jspdf";
+import html2pdf from "html2pdf.js";
+import "@/assets/fonts/THSarabunNew-normal.js";
 
 // Use Composables
 import useBasicData from "@/composables/useBasicData";
@@ -179,9 +83,6 @@ import useDateData from "@/composables/useDateData";
 import Section1 from "@/components/paper/detail/Section1.vue";
 import Section2 from "@/components/paper/detail/Section2.vue";
 import Section3 from "@/components/paper/detail/Section3.vue";
-import SectionPDF1 from "@/components/paper/pdf/SectionPDF1.vue";
-import SectionPDF2 from "@/components/paper/pdf/SectionPDF2.vue";
-import SectionPDF3 from "@/components/paper/pdf/SectionPDF3.vue";
 
 export default defineComponent({
   name: "paper-detail-modal",
@@ -192,16 +93,10 @@ export default defineComponent({
     },
   },
   components: {
-    dayjs,
     Preloader,
-    jsPDF,
-    // Vue3Html2pdf,
     Section1,
     Section2,
     Section3,
-    SectionPDF1,
-    SectionPDF2,
-    SectionPDF3,
   },
   setup(props, { emit }) {
     // UI
@@ -219,7 +114,6 @@ export default defineComponent({
     };
 
     // Variable
-    const selectOptions = ref({});
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     const item = reactive<any>({});
@@ -232,31 +126,199 @@ export default defineComponent({
     const method_list = reactive<any[]>([] as any[]);
     const file_attach = reactive<any[]>([] as any[]);
 
-    const generatePDF = async () => {
-      const html = htmlPdf.value;
-
-      let content: any;
-      try {
-        content = htmlToPdfMake(html);
-      } catch (error) {
-        console.error("Error converting HTML to pdfMake:", error);
-        return; // หรือจัดการกับข้อผิดพลาดตามที่คุณต้องการ
-      }
-
-      const documentDefinition = {
-        pageSize: "A4",
-        pageMargins: [72, 72, 72, 72], // 1 inch margins
-
-        defaultStyle: {
-          font: "THSarabunNew",
-          fontSize: 16,
-          lineHeight: 1.5,
-        },
-
-        content: { ...content },
+    // เพิ่มฟังก์ชัน generatePDF
+    // const generatePDF = () => {
+    //   const doc = new jsPDF({ unit: "mm", format: "a4" });
+    //   doc.setFont("THSarabunNew", "normal");
+    //   doc.setFontSize(18);
+    //   doc.text("ทดสอบภาษาไทย", 10, 10);
+    //   let y = 15;
+    //   // Section 1: ข้อมูลโครงการ
+    //   doc.text("ชื่อโครงการ (ภาษาไทย): " + (item.title_th || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("ชื่อโครงการ (ภาษาอังกฤษ): " + (item.title_en || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("ประเภทงานวิจัย: " + (item.paper_type_id?.name || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("ลักษณะงานวิจัย: " + (item.paper_kind_id?.name || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("บทคัดย่อ:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.abstract || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("Keyword: " + (item.keyword || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("หน่วยงาน: " + (item.department_id?.name || "-"), 15, y);
+    //   y += 10;
+    //   doc.text("ความเป็นมาและความสำคัญของปัญหา:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.history || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("วัตถุประสงค์ของโครงการวิจัย:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.objective || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("ขอบเขตของการวิจัย:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.scope || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("ผลงานวิจัยที่เกี่ยวข้อง:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.review_literature || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("ระเบียบวิธีวิจัย:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.method || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("ประโยชน์ที่คาดว่าจะได้รับ:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.benefit || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   doc.text("สถานที่ทำการทดลอง/หรือเก็บข้อมูล:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.location || "-", 20, y, { maxWidth: 170 });
+    //   y += 12;
+    //   doc.setFontSize(18);
+    //   // Section 2: นักวิจัย
+    //   y += 5;
+    //   doc.text(
+    //     "\u0e04\u0e13\u0e30\u0e1c\u0e39\u0e49\u0e27\u0e34\u0e08\u0e31\u0e22",
+    //     15,
+    //     y
+    //   );
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(
+    //     "ลำดับ | ชื่อ-นามสกุล | หน่วยงาน | เบอร์โทรศัพท์ | ความชำนาญ/สาขา | ประเภท | สัดส่วน(%)",
+    //     15,
+    //     y
+    //   );
+    //   y += 7;
+    //   researcher.forEach((rc: any, idx: number) => {
+    //     doc.text(
+    //       `${idx + 1} | ${rc.prefix_name} ${rc.firstname} ${rc.surname} | ${
+    //         rc.department_id ? rc.department_id.name : rc.department_text
+    //       } | ${rc.phone_number} | ${rc.expertise} | ${
+    //         rc.researcher_type?.name || "-"
+    //       } | ${rc.percentage}`,
+    //       15,
+    //       y
+    //     );
+    //     y += 7;
+    //   });
+    //   y += 5;
+    //   doc.setFontSize(18);
+    //   doc.text(
+    //     "\u0e02\u0e31\u0e49\u0e19\u0e15\u0e2d\u0e19\u0e41\u0e25\u0e30\u0e23\u0e30\u0e22\u0e30\u0e40\u0e27\u0e25\u0e32\u0e02\u0e2d\u0e07\u0e41\u0e1c\u0e19\u0e14\u0e33\u0e40\u0e19\u0e34\u0e19\u0e07\u0e32\u0e19",
+    //     15,
+    //     y
+    //   );
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text("ลำดับ | รายละเอียด | วันที่เริ่ม | วันที่สิ้นสุด", 15, y);
+    //   y += 7;
+    //   method_list.forEach((ml: any, idx: number) => {
+    //     doc.text(
+    //       `${idx + 1} | ${ml.detail} | ${ml.start_date} | ${ml.end_date}`,
+    //       15,
+    //       y
+    //     );
+    //     y += 7;
+    //   });
+    //   y += 5;
+    //   // Section 3: งบประมาณ
+    //   doc.setFontSize(18);
+    //   doc.text("งบประมาณในงานวิจัย", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text("ลำดับ | รายละเอียด | จำนวนเงิน (บาท)", 15, y);
+    //   y += 7;
+    //   budget.forEach((bg: any, idx: number) => {
+    //     doc.text(
+    //       `${idx + 1} | ${bg.detail} | ${Number(bg.amount).toLocaleString(
+    //         "en-US",
+    //         { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    //       )}`,
+    //       15,
+    //       y
+    //     );
+    //     y += 7;
+    //   });
+    //   y += 5;
+    //   if (budget2.length > 0) {
+    //     doc.setFontSize(18);
+    //     doc.text("งบประมาณใช้สอย/ค่าใช้จ่ายอื่น ๆ", 15, y);
+    //     y += 8;
+    //     doc.setFontSize(14);
+    //     doc.text("ลำดับ | รายละเอียด | จำนวนเงิน (บาท)", 15, y);
+    //     y += 7;
+    //     budget2.forEach((bg: any, idx: number) => {
+    //       doc.text(
+    //         `${idx + 1} | ${bg.detail} | ${Number(bg.amount).toLocaleString(
+    //           "en-US",
+    //           { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    //         )}`,
+    //         15,
+    //         y
+    //       );
+    //       y += 7;
+    //     });
+    //     y += 5;
+    //   }
+    //   if (budget3.length > 0) {
+    //     doc.setFontSize(18);
+    //     doc.text("งบประมาณวัสดุ (แจกแจงรายละเอียดรายจ่าย)", 15, y);
+    //     y += 8;
+    //     doc.setFontSize(14);
+    //     doc.text("ลำดับ | รายละเอียด | จำนวนเงิน (บาท)", 15, y);
+    //     y += 7;
+    //     budget3.forEach((bg: any, idx: number) => {
+    //       doc.text(
+    //         `${idx + 1} | ${bg.detail} | ${Number(bg.amount).toLocaleString(
+    //           "en-US",
+    //           { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    //         )}`,
+    //         15,
+    //         y
+    //       );
+    //       y += 7;
+    //     });
+    //     y += 5;
+    //   }
+    //   // อ้างอิง
+    //   doc.setFontSize(18);
+    //   doc.text("รายการอ้างอิง/บรรณานุกรม:", 15, y);
+    //   y += 8;
+    //   doc.setFontSize(14);
+    //   doc.text(item.references || "-", 20, y, { maxWidth: 170 });
+    //   // Save
+    //   doc.save("ข้อมูลโครงการ.pdf");
+    // };
+    const generatePDF = () => {
+      const element = mainModalRef.value.querySelector(".pdfContent");
+      const opt = {
+        margin: 0.5,
+        filename: "ข้อมูลโครงการ.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
       };
-
-      pdfMake.createPdf(documentDefinition).download("output.pdf");
+      html2pdf().set(opt).from(element).save();
     };
 
     //Fetch
@@ -387,64 +449,6 @@ export default defineComponent({
       emit("close-modal");
     });
 
-    const generatePDF1 = () => {
-      const documentDefinition = {
-        pageSize: "A4",
-        pageMargins: [72, 72, 72, 72], // 1 inch margins
-
-        defaultStyle: {
-          font: "THSarabunNew",
-          fontSize: 16,
-          lineHeight: 1.5,
-        },
-
-        content: [
-          { text: "ที่ ศธ 0506(5)/ว569", alignment: "right" },
-          "\n\n",
-          {
-            columns: [
-              {
-                width: "*",
-                text: "กระทรวงศึกษาธิการ\nกทม. 10300",
-              },
-              {
-                width: "auto",
-                text: "15 พฤษภาคม 2566",
-              },
-            ],
-          },
-          "\n\n",
-          { text: "เรื่อง   ขอเชิญประชุม", marginBottom: 10 },
-          { text: "เรียน   อธิการบดีมหาวิทยาลัยราชภัฏ", marginBottom: 10 },
-          {
-            text: "สิ่งที่ส่งมาด้วย   1. ระเบียบวาระการประชุม   จำนวน 1 ฉบับ",
-            marginBottom: 10,
-          },
-          {
-            text: [
-              { text: "                    ด้วย", marginBottom: 10 },
-              "สำนักงานปลัดกระทรวงศึกษาธิการ กำหนดจัดประชุมคณะกรรมการการอุดมศึกษา ครั้งที่ 5/2566 ในวันพุธที่ 24 พฤษภาคม 2566 เวลา 13.30 น. ณ ห้องประชุมศาสตราจารย์วิจิตร ศรีสอ้าน ชั้น 5 สำนักงานปลัดกระทรวงศึกษาธิการ",
-            ],
-            marginBottom: 10,
-          },
-          {
-            text: "                    จึงเรียนมาเพื่อโปรดทราบและเข้าร่วมประชุมตามวัน เวลา และสถานที่ดังกล่าว",
-            marginBottom: 20,
-          },
-          {
-            text: "ขอแสดงความนับถือ",
-            alignment: "center",
-            marginBottom: 50,
-          },
-          {
-            text: "(นายวีระ แข็งกสิการ)\nปลัดกระทรวงศึกษาธิการ",
-            alignment: "center",
-          },
-        ],
-      };
-
-      pdfMake.createPdf(documentDefinition).download("หนังสือราชการ.pdf");
-    };
     // Return
     return {
       isLoading,
@@ -454,15 +458,14 @@ export default defineComponent({
       item,
       file_attach,
       onClose,
-      generatePDF,
       htmlPdf,
       researcher,
       method_list,
       budget,
       budget2,
       budget3,
-      generatePDF1,
       margin,
+      generatePDF,
     };
   },
 });
@@ -521,6 +524,15 @@ export default defineComponent({
   page-break-before: always;
 }
 
+/* ป้องกันตารางถูกแยกข้ามหน้า */
+table,
+thead,
+tbody,
+tr,
+.avoid-page-break {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
 /* @media print {
   .pdf-section {
     margin-bottom: 50px; 

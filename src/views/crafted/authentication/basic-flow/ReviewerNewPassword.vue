@@ -7,7 +7,7 @@
       id="kt_login_signin_form"
       @submit="onSubmit"
       :validation-schema="newPassword"
-      :initial-values="{ email: 'arnonr', password: 'demo' }"
+      :initial-values="{ email: '', password: '' }"
     >
       <!--begin::Heading-->
       <div class="text-center mb-10">

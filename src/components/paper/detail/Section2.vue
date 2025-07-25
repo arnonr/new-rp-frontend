@@ -2,8 +2,8 @@
   <div class="row">
     <div>
       <h6 class="py-5 px-5 bg-warning rounded">คณะผู้วิจัย</h6>
-      <div class="table-responsive">
-        <table class="table table-bordered table-border-black">
+      <div class="table-responsive avoid-page-break">
+        <table class="table table-bordered table-border-black avoid-page-break">
           <thead>
             <tr>
               <th class="text-center">ลำดับ</th>
@@ -42,8 +42,8 @@
         ขั้นตอนและระยะเวลาของแผนดำเนินงาน
       </h6>
 
-      <div class="table-responsive">
-        <table class="table table-bordered table-border-black">
+      <div class="table-responsive avoid-page-break">
+        <table class="table table-bordered table-border-black avoid-page-break">
           <thead>
             <tr>
               <th class="text-center">ลำดับ</th>
@@ -116,3 +116,14 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+table,
+thead,
+tbody,
+tr,
+.avoid-page-break {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+</style>
