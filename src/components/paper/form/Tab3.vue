@@ -46,8 +46,20 @@
             <div class="separator separator-dotted my-2"></div>
           </div>
           <div class="col-md-12">
-            <span class="fw-bold">ภาควิชา : </span>
+            <span class="fw-bold">หน่วยงาน : </span>
             <span>{{ item.department_id?.name }}</span>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">ประเภทบุคลากร : </span>
+            <span>{{ item.personal_type_id?.name }}</span>
+            <div class="separator separator-dotted my-2"></div>
+          </div>
+
+          <div class="col-md-12">
+            <span class="fw-bold">เงื่อนไขการปิดทุน : </span>
+            <span>{{ getConditionName(item.condition_id) }}</span>
             <div class="separator separator-dotted my-2"></div>
           </div>
 
@@ -280,6 +292,7 @@ import { TabContent } from "vue3-form-wizard";
 
 // Composable
 import useDateData from "@/composables/useDateData";
+import useMasterData from "@/composables/useMasterData";
 
 export default defineComponent({
   name: "complaint-form-tab3",
@@ -325,8 +338,22 @@ export default defineComponent({
     const { tab_index, item } = toRefs(props);
 
     const selectOptions = ref({});
+    const conditions = ref([]);
 
     const file_attach = reactive<any>([]);
+
+    // Fetch
+    const fetchConditions = async () => {
+      try {
+        const conditionsData = await useMasterData().fetchConditions({
+          is_active: 1,
+          perPage: 500,
+        });
+        conditions.value = conditionsData;
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     // Fetch
     const fetchFileAttach = async () => {
@@ -344,6 +371,14 @@ export default defineComponent({
       }
     };
 
+    // Method to get condition name by ID
+    const getConditionName = (conditionId: number) => {
+      if (!conditionId || !conditions.value.length) return "";
+
+      const condition = conditions.value.find((c: any) => c.id === conditionId);
+      return condition ? condition.name : "";
+    };
+
     // Mounted
     const new_item = reactive<any>({
       is_anonymous: null,
@@ -352,6 +387,7 @@ export default defineComponent({
 
     const beforeShowTab = () => {
       fetchFileAttach();
+      fetchConditions();
 
       new_item.keyword =
         item.value.keyword != "" && item.value.keyword != null
@@ -380,6 +416,7 @@ export default defineComponent({
       new_item,
       convertDate: useDateData().convertDate,
       file_attach,
+      getConditionName,
     };
   },
 });

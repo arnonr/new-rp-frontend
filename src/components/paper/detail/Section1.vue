@@ -57,6 +57,24 @@
 
     <div class="col-md-12 mt-5">
       <div class="d-block d-md-flex align-items-baseline">
+        <span class="fw-bold flex-shrink-0 me-5">ประเภทบุคลากร </span>
+        <span class="custom-underline flex-grow-1">{{
+          item.personal_type?.name
+        }}</span>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-5">
+      <div class="d-block d-md-flex align-items-baseline">
+        <span class="fw-bold flex-shrink-0 me-5">เงื่อนไขการปิดทุน </span>
+        <span class="custom-underline flex-grow-1">{{
+          item.condition?.name
+        }}</span>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-5">
+      <div class="d-block d-md-flex align-items-baseline">
         <div class="fw-bold flex-shrink-0 me-5">
           ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ
         </div>
