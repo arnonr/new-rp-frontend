@@ -46,7 +46,7 @@
             <div class="separator separator-dotted my-2"></div>
           </div>
           <div class="col-md-12">
-            <span class="fw-bold">ภาควิชา : </span>
+            <span class="fw-bold">หน่วยงาน : </span>
             <span>{{ item.department_id?.name }}</span>
             <div class="separator separator-dotted my-2"></div>
           </div>

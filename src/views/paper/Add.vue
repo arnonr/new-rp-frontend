@@ -153,6 +153,7 @@ export default defineComponent({
     // Variable
     const r = (Math.random() + 1).toString(36).substring(7);
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    console.log(userData);
     // Item Variable
     const item = reactive<any>({
       rp_no: "",
@@ -161,7 +162,10 @@ export default defineComponent({
       title_en: "",
       abstract: "",
       keyword: "",
-      department_id: null,
+      department_id: {
+        name: userData.department.name,
+        id: userData.department_id,
+      },
       paper_type_id: null,
       paper_kind_id: null,
       history: "",

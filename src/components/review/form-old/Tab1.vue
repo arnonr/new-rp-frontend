@@ -81,11 +81,11 @@
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
-        <label for="department_id" class="required form-label">ภาควิชา</label>
+        <label for="department_id" class="required form-label">หน่วยงาน</label>
         <v-select
           name="department_id"
           label="name"
-          placeholder="ภาควิชา"
+          placeholder="หน่วยงาน"
           :options="selectOptions.departments"
           class="form-control"
           :clearable="false"
