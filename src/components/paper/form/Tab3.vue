@@ -338,7 +338,7 @@ export default defineComponent({
     const { tab_index, item } = toRefs(props);
 
     const selectOptions = ref({});
-    const conditions = ref([]);
+    const conditions = ref<any[]>([]);
 
     const file_attach = reactive<any>([]);
 
