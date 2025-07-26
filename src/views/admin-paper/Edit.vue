@@ -13,7 +13,7 @@
           @on-change="onTabChange"
           @on-complete="onComplete"
         >
-          <Tab1 :item="item" :errors="errors" />
+          <Tab1 :item="item" :errors="errors" :isEdit="true" />
 
           <Tab2
             :item="item"
@@ -29,6 +29,7 @@
             :researcher_errors="researcher_errors"
             :method_list_errors="method_list_errors"
             :r="r"
+            :isEdit="true"
           />
 
           <Tab3
@@ -40,6 +41,7 @@
             :researcher="researcher"
             :method_list="method_list"
             :r="r"
+            :isEdit="true"
           />
 
           <template #footer="props">
@@ -180,6 +182,8 @@ export default defineComponent({
       status_id: null,
       sended_at: null,
       sended_user_id: null,
+      personal_type_id: null,
+      condition_id: null,
     });
     const user_item = reactive<any>({});
 
@@ -297,6 +301,12 @@ export default defineComponent({
       benefit: Yup.string().nullable().label("ประโยชน์ที่คาดว่าจะได้รับ"),
       location: Yup.string().nullable().label("สถานที่ทำการทดลอง"),
       references: Yup.string().nullable().label("เอกสารอ้างอิง"),
+      personal_type_id: Yup.object()
+        .required("${path} จำเป็นต้องระบุ")
+        .label("ประเภทบุคลากร"),
+      condition_id: Yup.number()
+        .required("${path} จำเป็นต้องระบุ")
+        .label("เงื่อนไขการปิดทุน"),
     });
 
     const validationResearcherSchema = Yup.object().shape({
@@ -354,6 +364,8 @@ export default defineComponent({
       benefit: { error: 0, text: "" },
       location: { error: 0, text: "" },
       references: { error: 0, text: "" },
+      personal_type_id: { error: 0, text: "" },
+      condition_id: { error: 0, text: "" },
     };
     const errors = reactive<any>({
       ...errors_default,
@@ -445,6 +457,14 @@ export default defineComponent({
                   id: data.data.paper_kind_id,
                 }
               : null,
+          personal_type_id:
+            data.data.personal_type_id != null
+              ? {
+                  name: data.data.personal_type.name,
+                  id: data.data.personal_type_id,
+                }
+              : null,
+          condition_id: data.data.condition_id,
         });
 
         budget.length = 0;
@@ -685,6 +705,8 @@ export default defineComponent({
         // sended_user_id: userData.id,
         // user_id: userData.id,
         is_send: is_send,
+        personal_type_id: item.personal_type_id?.id,
+        condition_id: item.condition_id,
       };
 
       if (is_send == 1) {

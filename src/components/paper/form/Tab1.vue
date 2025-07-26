@@ -95,6 +95,22 @@
       </div>
 
       <div class="mb-7 col-12 col-lg-12">
+        <label for="department_id" class="required form-label"
+          >ประเภทบุคลากร</label
+        >
+        <v-select
+          name="personal_type_id"
+          label="name"
+          placeholder="ประเภทบุคลากร"
+          :options="selectOptions.personal_types"
+          class="form-control"
+          :clearable="false"
+          v-model="item.personal_type_id"
+        >
+        </v-select>
+      </div>
+
+      <div class="mb-7 col-12 col-lg-12">
         <label for="history" class="required form-label"
           >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ</label
         >
@@ -272,6 +288,8 @@ export default defineComponent({
       departments: <any>[],
       paper_types: <any>[],
       paper_kinds: <any>[],
+      personal_types: <any>[],
+      conditions: <any>[],
     });
 
     // Event
@@ -297,6 +315,16 @@ export default defineComponent({
       });
 
       selectOptions.value.paper_kinds = await useMasterData().fetchPaperKinds({
+        is_active: 1,
+        perPage: 500,
+      });
+
+      selectOptions.value.personal_types = await useMasterData().fetchPersonalTypes({
+        is_active: 1,
+        perPage: 500,
+      });
+
+      selectOptions.value.conditions = await useMasterData().fetchConditions({
         is_active: 1,
         perPage: 500,
       });

@@ -42,11 +42,29 @@ export default () => {
     return data.data;
   };
 
+  const fetchPersonalTypes = async (params: any) => {
+    const { data } = await ApiService.query("personal-type", {
+      params: params,
+    });
+
+    return data.data;
+  };
+
+  const fetchConditions = async (params: any) => {
+    const { data } = await ApiService.query("condition", {
+      params: params,
+    });
+
+    return data.data;
+  };
+
   return {
     fetchPrefixName,
     fetchState,
     fetchDepartments,
     fetchPaperTypes,
     fetchPaperKinds,
+    fetchPersonalTypes,
+    fetchConditions,
   };
 };

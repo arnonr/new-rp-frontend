@@ -92,6 +92,49 @@
         >
         </v-select>
       </div>
+
+      <div class="mb-7 col-12 col-lg-12">
+        <label for="personal_type_id" class="required form-label"
+          >ประเภทบุคลากร</label
+        >
+        <v-select
+          name="personal_type_id"
+          label="name"
+          placeholder="ประเภทบุคลากร"
+          :options="selectOptions.personal_types"
+          class="form-control"
+          :clearable="false"
+          v-model="item.personal_type_id"
+        >
+        </v-select>
+      </div>
+
+      <div class="mb-7 col-12 col-lg-12" v-if="item.personal_type_id">
+        <label for="condition_id" class="required form-label"
+          >เงื่อนไขการปิดทุน</label
+        >
+        <!-- อยากให้เป็น radio button มาจาก selectOptions.conditions -->
+        <div
+          class="form-check mt-4"
+          v-for="condition in selectOptions.filterConditions"
+          :key="condition.id"
+        >
+          <input
+            class="form-check-input"
+            type="radio"
+            name="condition_id"
+            :id="`condition_${condition.id}`"
+            :value="condition.id"
+            v-model="item.condition_id"
+          />
+          <label
+            class="form-check-label text-dark"
+            :for="`condition_${condition.id}`"
+            >{{ condition.name }}</label
+          >
+        </div>
+      </div>
+
       <div class="mb-7 col-12 col-lg-12">
         <label for="history" class="required form-label"
           >ความเป็นมาและความสำคัญของปัญหาการวิจัยที่ทำ</label
@@ -177,7 +220,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, toRefs, onBeforeUnmount } from "vue";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  toRefs,
+  onBeforeUnmount,
+  watch,
+} from "vue";
 // Import Vue-select
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
@@ -209,6 +259,10 @@ export default defineComponent({
     item: {
       type: Object,
       required: true,
+    },
+    isEdit: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -277,6 +331,9 @@ export default defineComponent({
       departments: [] as any[],
       paper_types: [] as any[],
       paper_kinds: [] as any[],
+      personal_types: [] as any[],
+      conditions: [] as any[],
+      filterConditions: [] as any[],
     });
 
     // Event
@@ -306,14 +363,45 @@ export default defineComponent({
         perPage: 500,
       });
 
+      selectOptions.value.personal_types =
+        await useMasterData().fetchPersonalTypes({
+          is_active: 1,
+          perPage: 500,
+        });
+
+      selectOptions.value.conditions = await useMasterData().fetchConditions({
+        is_active: 1,
+        perPage: 500,
+      });
+
       if (item.value.keyword != null && item.value.keyword != "") {
         tags.value = item.value.keyword.split(",");
       } else {
         tags.value = [];
       }
+
+      if (props.isEdit && item.value.personal_type_id) {
+        selectOptions.value.filterConditions =
+          selectOptions.value.conditions.filter((condition: any) => {
+            return condition.personal_type_id == item.value.personal_type_id.id;
+          });
+      }
     });
 
     onBeforeUnmount(() => {});
+
+    watch(
+      () => item.value.personal_type_id,
+      (newVal) => {
+        selectOptions.value.filterConditions =
+          selectOptions.value.conditions.filter((condition: any) => {
+            return condition.personal_type_id == newVal.id;
+          });
+
+        item.value.condition_id = null;
+      },
+      { deep: true }
+    );
 
     // Return
     return {
