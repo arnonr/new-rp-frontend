@@ -261,19 +261,59 @@ export default defineComponent({
       openHistoryDetailModal.value = true;
     };
 
+    const checkReviewer = () => {
+      console.log(user_item.name_bank);
+      if (
+        user_item.prefix_name == null ||
+        user_item.prefix_name == "" ||
+        user_item.firstname == null ||
+        user_item.firstname == "" ||
+        user_item.surname == null ||
+        user_item.surname == "" ||
+        user_item.organization_name == null ||
+        user_item.organization_name == "" ||
+        user_item.email == null ||
+        user_item.email == "" ||
+        user_item.address == null ||
+        user_item.address == "" ||
+        user_item.name_bank == null ||
+        user_item.name_bank == "" ||
+        user_item.name_account_bank == null ||
+        user_item.name_account_bank == "" ||
+        user_item.no_account_bank == null ||
+        user_item.no_account_bank == ""
+      ) {
+        useToast("กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน", "error");
+        onEditReviewerModal();
+        return false;
+      }
+
+      return true;
+    };
+
     // Mounted
     onMounted(async () => {
       await fetchUser();
+      console.log(user_item.name_bank);
       if (
         user_item.prefix_name == null ||
+        user_item.prefix_name == "" ||
         user_item.firstname == null ||
+        user_item.firstname == "" ||
         user_item.surname == null ||
+        user_item.surname == "" ||
         user_item.organization_name == null ||
+        user_item.organization_name == "" ||
         user_item.email == null ||
+        user_item.email == "" ||
         user_item.address == null ||
+        user_item.address == "" ||
         user_item.name_bank == null ||
+        user_item.name_bank == "" ||
         user_item.name_account_bank == null ||
-        user_item.no_account_bank == null
+        user_item.name_account_bank == "" ||
+        user_item.no_account_bank == null ||
+        user_item.no_account_bank == ""
       ) {
         useToast("กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วน", "error");
         onEditReviewerModal();
@@ -298,6 +338,7 @@ export default defineComponent({
     );
 
     const goToEditPage = (id: number) => {
+      if (!checkReviewer()) return;
       router.push({ name: "review-edit", params: { id: id } });
     };
 

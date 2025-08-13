@@ -162,10 +162,7 @@ export default defineComponent({
       title_en: "",
       abstract: "",
       keyword: "",
-      department_id: {
-        name: userData.department.name,
-        id: userData.department_id,
-      },
+      department_id: null,
       paper_type_id: null,
       paper_kind_id: null,
       history: "",
@@ -413,6 +410,11 @@ export default defineComponent({
                 }
               : null,
         });
+
+        item.department_id = {
+          name: data.data.department.name,
+          id: data.data.department_id,
+        };
       } catch (error) {
         console.log(error);
       }
