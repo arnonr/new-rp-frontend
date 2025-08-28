@@ -61,14 +61,13 @@
               <label class="form-label auth-label">
                 {{ TEXT.password }}
               </label>
-              <a
-                :href="TEXT.forgotUrl"
-                target="_blank"
-                class="auth-link"
+              <router-link
+                :to="TEXT.forgotUrl"
                 rel="noopener noreferrer"
+                class="auth-link"
               >
                 {{ TEXT.forgot }}
-              </a>
+              </router-link>
             </div>
             <div class="input-group auth-input-group">
               <span class="input-group-text">
@@ -141,7 +140,7 @@ const TEXT = {
   username: "Email",
   password: "Password",
   forgot: "ลืมรหัสผ่าน ?",
-  forgotUrl: "https://account.kmutnb.ac.th/web/recovery/password",
+  forgotUrl: "/reviewer-reset-password",
   submit: "Continue",
   loading: "Please wait...",
   back: "กลับหน้าหลัก",
@@ -191,7 +190,6 @@ const handleSubmit = async (values: any) => {
     const errors = Object.values(authStore.errors);
 
     console.log(authStore.errors);
-
 
     if (!errors.length) {
       await Swal.fire(successAlert);

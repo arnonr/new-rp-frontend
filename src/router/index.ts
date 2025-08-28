@@ -609,6 +609,16 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Reviewer Sign In",
         },
       },
+
+      {
+        path: "/reviewer-reset-password",
+        name: "reviewer-reset-password",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
+        meta: {
+          pageTitle: "Reviewer Reset Password",
+        },
+      },
     ],
   },
   {

@@ -72,13 +72,15 @@ export const useAuthStore = defineStore("auth", () => {
       });
   }
 
-  function forgotPassword(email: string) {
-    return ApiService.post("forgot_password", email)
+  async function forgotPassword(email: string) {
+    return await ApiService.post("reviewer/forgot-password", email)
       .then(() => {
         setError({});
       })
       .catch(({ response }) => {
-        setError(response.data.errors);
+        setError({
+          msg: response.data.msg,
+        });
       });
   }
 

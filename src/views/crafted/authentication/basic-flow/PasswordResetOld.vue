@@ -57,9 +57,7 @@
           </span>
         </button>
 
-        <router-link
-          to="/reviewer-sign-in"
-          class="btn btn-lg btn-light-primary fw-bold"
+        <router-link to="/sign-up" class="btn btn-lg btn-light-primary fw-bold"
           >Cancel</router-link
         >
       </div>
@@ -108,9 +106,10 @@ export default defineComponent({
       await store.forgotPassword(values);
 
       const error = Object.values(store.errors);
-      if (error.length === 0) {
+
+      if (!error) {
         Swal.fire({
-          text: "ระบบได้ส่งลิงค์การเปลี่ยนรหัสผ่านไปยังอีเมลของท่าน กรุณาตรวจสอบอีเมล",
+          text: "You have successfully logged in!",
           icon: "success",
           buttonsStyling: false,
           confirmButtonText: "Ok, got it!",
@@ -134,7 +133,7 @@ export default defineComponent({
 
       submitButton.value?.removeAttribute("data-kt-indicator");
       // eslint-disable-next-line
-      submitButton.value!.disabled = false;
+        submitButton.value!.disabled = false;
     };
 
     return {
