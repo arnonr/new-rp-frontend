@@ -78,7 +78,9 @@
                 <li>
                   <button
                     class="dropdown-item d-flex align-items-center"
-                    @click="handleDetail(item)"
+                    @click=" handleDetail({
+                          id: item.paper_id,
+                        })"
                   >
                     <i class="bi bi-eye me-2 text-info"></i>
                     รายละเอียด
@@ -87,7 +89,9 @@
                 <li>
                   <button
                     class="dropdown-item d-flex align-items-center"
-                    @click="handleEdit(item)"
+                    @click="  handleEdit({
+                          id: item.id,
+                        })"
                   >
                     <i class="bi bi-pencil-square me-2 text-primary"></i>
                     ประเมิน
