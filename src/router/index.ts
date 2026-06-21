@@ -569,6 +569,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/auth/callback",
+        name: "auth-callback",
+        component: () =>
+          import("@/views/crafted/authentication/basic-flow/Callback.vue"),
+        meta: {
+          pageTitle: "Sign In",
+        },
+      },
+      {
         path: "/sign-up",
         name: "sign-up",
         component: () =>
