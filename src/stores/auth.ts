@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
+import { ssoLogin as ssoLoginApi } from "../services/sso";
 
 export interface User {
   name: string;
@@ -56,6 +57,19 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  async function ssoLogin(code: string, redirectUri: string) {
+    try {
+      const data = await ssoLoginApi(code, redirectUri);
+      setAuth(data);
+      localStorage.setItem("userData", JSON.stringify({ ...data }));
+      localStorage.setItem("id_token", data.token);
+      return data;
+    } catch ({ response }: any) {
+      setError(response?.data ?? { error: "sso_login_failed" });
+      throw response;
+    }
+  }
+
   function logout() {
     purgeAuth();
     localStorage.removeItem("userData");
@@ -106,6 +120,7 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated,
     isAdmin,
     login,
+    ssoLogin,
     logout,
     register,
     forgotPassword,
