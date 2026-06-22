@@ -16,6 +16,11 @@ dist-ssr
 coverage
 *.local
 
+# Env files (contain secrets — never commit)
+.env
+.env.*
+!.env.example
+
 /cypress/videos/
 /cypress/screenshots/
 
