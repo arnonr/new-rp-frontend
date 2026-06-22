@@ -80,6 +80,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@esbuild/darwin-arm64": "^0.18.20",
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/array-sort": "^1.0.0",
     "@types/bootstrap": "^5.2.6",
