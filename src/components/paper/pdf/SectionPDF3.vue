@@ -124,7 +124,6 @@
       </div>
       <div v-html="item.references" class="text-justify custom-underline"></div>
     </div>
-
   </div>
 </template>
 

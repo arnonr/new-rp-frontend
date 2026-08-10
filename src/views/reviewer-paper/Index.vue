@@ -118,6 +118,7 @@
         <DetailPage
           v-if="openDetailModal == true"
           :paper_id="item.id"
+          :hide-reviewer-sections="true"
           @close-modal="
             () => {
               openDetailModal = false;

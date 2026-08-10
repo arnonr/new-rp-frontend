@@ -56,7 +56,6 @@ export const useAuthReviewerStore = defineStore("auth-reviewer", () => {
     }
   }
 
-
   function logout() {
     purgeAuth();
     localStorage.removeItem("userData");

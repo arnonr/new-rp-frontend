@@ -25,14 +25,14 @@
               <Section1 v-if="item.id != null" :item="item" />
 
               <Section2
-                v-if="item.id != null"
+                v-if="item.id != null && !hideReviewerSections"
                 :item="item"
                 :researcher="researcher"
                 :method_list="method_list"
               />
 
               <Section3
-                v-if="item.id != null"
+                v-if="item.id != null && !hideReviewerSections"
                 :item="item"
                 :budget="budget"
                 :budget2="budget2"
@@ -90,6 +90,10 @@ export default defineComponent({
     paper_id: {
       type: Number,
       required: true,
+    },
+    hideReviewerSections: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

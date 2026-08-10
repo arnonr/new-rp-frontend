@@ -65,7 +65,9 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                    <td colspan="3" class="text-center">ไม่พบการส่งกลับให้แก้ไข</td>
+                  <td colspan="3" class="text-center">
+                    ไม่พบการส่งกลับให้แก้ไข
+                  </td>
                 </tr>
               </tbody>
             </table>

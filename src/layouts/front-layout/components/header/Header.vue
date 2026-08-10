@@ -73,7 +73,8 @@ interface UserData {
   [key: string]: any;
 }
 
-const contactInfo = "โทร: 02 555 2000 ต่อ 4243 | อีเมล: kitsiya.c@sci.kmutnb.ac.th";
+const contactInfo =
+  "โทร: 02 555 2000 ต่อ 4243 | อีเมล: kitsiya.c@sci.kmutnb.ac.th";
 const appTitle = "ระบบเสนอโครงการวิจัย\nคณะวิทยาศาสตร์ประยุกต์";
 
 export default defineComponent({

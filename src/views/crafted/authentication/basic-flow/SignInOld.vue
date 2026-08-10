@@ -62,7 +62,9 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-gray-900 fs-6 mb-0">Password</label>
+          <label class="form-label fw-bold text-gray-900 fs-6 mb-0"
+            >Password</label
+          >
           <!--end::Label-->
 
           <!--begin::Link-->

@@ -5,14 +5,14 @@
         <Section1 v-if="item.id != null" :item="item" />
 
         <Section2
-          v-if="item.id != null"
+          v-if="item.id != null && !hideReviewerSections"
           :item="item"
           :researcher="researcher"
           :method_list="method_list"
         />
 
         <Section3
-          v-if="item.id != null"
+          v-if="item.id != null && !hideReviewerSections"
           :item="item"
           :budget="budget"
           :budget2="budget2"
@@ -55,7 +55,7 @@
 
           <!-- <div class="html2pdf__page-break"></div> -->
 
-          <div class="pdf-section">
+          <div class="pdf-section" v-if="!hideReviewerSections">
             <SectionPDF2
               :item="item"
               :researcher="researcher"
@@ -65,7 +65,7 @@
 
           <!-- <div class="html2pdf__page-break"></div> -->
 
-          <div class="pdf-section">
+          <div class="pdf-section" v-if="!hideReviewerSections">
             <SectionPDF3
               :item="item"
               :budget="budget"
@@ -107,6 +107,10 @@ export default defineComponent({
     paper_id: {
       type: Number,
       required: true,
+    },
+    hideReviewerSections: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -248,7 +252,6 @@ export default defineComponent({
 
     onUnmounted(() => {});
 
-  
     // Return
     return {
       isLoading,

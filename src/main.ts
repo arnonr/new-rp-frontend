@@ -29,7 +29,6 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import "froala-editor/css/froala_style.min.css";
 import VueFroala from "vue-froala-wysiwyg";
 
-
 declare global {
   interface Window {
     FroalaEditor: typeof FroalaEditor;

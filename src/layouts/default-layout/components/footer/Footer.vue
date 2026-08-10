@@ -11,7 +11,9 @@
     >
       <!--begin::Copyright-->
       <div class="text-gray-900 order-2 order-md-1">
-        <span class="text-muted fw-semibold me-1">2567 © คณะวิทยาศาสตร์ประยุกต์</span>
+        <span class="text-muted fw-semibold me-1"
+          >2567 © คณะวิทยาศาสตร์ประยุกต์</span
+        >
       </div>
     </div>
     <!--end::Footer container-->
@@ -21,7 +23,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { footerDisplay, footerWidthFluid } from "@/layouts/default-layout/config/helper";
+import {
+  footerDisplay,
+  footerWidthFluid,
+} from "@/layouts/default-layout/config/helper";
 
 export default defineComponent({
   name: "theme-footer",

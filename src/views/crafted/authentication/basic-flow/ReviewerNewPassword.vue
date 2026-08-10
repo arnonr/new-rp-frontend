@@ -21,7 +21,9 @@
       <!--begin::Heading-->
 
       <div class="mb-10 bg-light-warning p-4 rounded">
-        <div class="text-dark">ตั้งรหัสผ่านใหม่/เข้าใช้งานครั้งแรก/ลืมรหัสผ่าน</div>
+        <div class="text-dark">
+          ตั้งรหัสผ่านใหม่/เข้าใช้งานครั้งแรก/ลืมรหัสผ่าน
+        </div>
         <div class="text-dark mt-5">
           ไปยังหน้าเข้าสู่ระบบ
           <router-link to="/reviewer-sign-in">คลิก</router-link>

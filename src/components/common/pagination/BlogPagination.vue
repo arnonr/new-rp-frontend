@@ -10,7 +10,7 @@
       />
       <span class="ms-2">รายการ/หน้า</span>
     </div>
-    
+
     <nav aria-label="..." class="py-5">
       <ul class="pagination">
         <li :class="`page-item ${prevBtnClass}`">

@@ -497,6 +497,6 @@ export default () => {
     sections,
     positions,
     proceed_statuses,
-    researcher_types
+    researcher_types,
   };
 };
