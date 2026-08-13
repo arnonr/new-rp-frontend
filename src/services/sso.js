@@ -14,14 +14,22 @@ export const ssoLogin = async (code, redirectUri) => {
 };
 
 export const buildSsoAuthorizeUrl = (state) => {
+  const clientId = import.meta.env.VITE_APP_SSO_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_APP_SSO_REDIRECT_URI;
+  const authorizeUrl = import.meta.env.VITE_APP_SSO_AUTHORIZE_URL;
+
+  if (!authorizeUrl || !clientId || !redirectUri) {
+    throw new Error("SSO configuration is missing or invalid in environment variables.");
+  }
+
   const params = new URLSearchParams({
-    client_id: import.meta.env.VITE_APP_SSO_CLIENT_ID,
-    redirect_uri: import.meta.env.VITE_APP_SSO_REDIRECT_URI,
+    client_id: clientId,
+    redirect_uri: redirectUri,
     response_type: "code",
     scope: "openid profile email",
     state,
   });
-  return `${import.meta.env.VITE_APP_SSO_AUTHORIZE_URL}?${params.toString()}`;
+  return `${authorizeUrl}?${params.toString()}`;
 };
 
 export const generateState = () => {
