@@ -667,6 +667,17 @@ const routes: Array<RouteRecordRaw> = [
   },
 ];
 
+// Migrate legacy hash-based URLs (e.g. from previously sent emails with /#/review-new-password)
+if (
+  typeof window !== "undefined" &&
+  window.location.hash &&
+  window.location.hash.startsWith("#/")
+) {
+  const hashPath = window.location.hash.slice(1);
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  window.history.replaceState(null, "", base + hashPath);
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
