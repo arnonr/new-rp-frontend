@@ -141,21 +141,7 @@
                                   {{ rv.reviewer_id?.fullname }}
                                 </td>
                                 <td class="text-center">
-                                  {{
-                                    Number(rv.score_1) +
-                                    Number(rv.score_2) +
-                                    Number(rv.score_3) +
-                                    Number(rv.score_4) +
-                                    Number(rv.score_5) +
-                                    Number(rv.score_6) +
-                                    Number(rv.score_7) +
-                                    Number(rv.score_8) +
-                                    Number(rv.score_9) +
-                                    Number(rv.score_10) +
-                                    Number(rv.score_11) +
-                                    Number(rv.score_12) +
-                                    Number(rv.score_13)
-                                  }}
+                                  {{ calculateTotalScore(rv) }}
                                 </td>
                                 <td class="text-center">
                                   {{ rv.comment }}
@@ -679,6 +665,17 @@ export default defineComponent({
       isLoading.value = false;
     });
 
+    const calculateTotalScore = (rv: any) => {
+      let total = 0;
+      for (let i = 1; i <= 13; i++) {
+        const val = rv[`score_${i}`];
+        if (val !== null && val !== undefined && !isNaN(Number(val))) {
+          total += Number(val);
+        }
+      }
+      return total;
+    };
+
     onUnmounted(() => {
       if (mainModalRef.value) {
         mainModalRef.value.addEventListener("hidden.bs.modal", () =>
@@ -708,6 +705,7 @@ export default defineComponent({
       openDetailScoreModal,
       item_rv,
       onCloseDetail,
+      calculateTotalScore,
     };
   },
 });
