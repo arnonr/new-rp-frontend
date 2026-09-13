@@ -11,6 +11,22 @@
         <h4 class="card-title">รายการกรรมการ</h4>
         <div class="card-toolbar">
           <button
+            class="btn btn-outline btn-outline-success me-2 pe-sm-3 ps-sm-5"
+            :disabled="isExporting"
+            @click="onExport()"
+          >
+            <span
+              v-if="isExporting"
+              class="spinner-border spinner-border-sm me-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <i v-else class="bi bi-file-earmark-excel-fill fs-4"></i>
+            <span class="d-none d-lg-inline-block ms-2">{{
+              isExporting ? "กำลังส่งออกข้อมูล..." : "ส่งออกข้อมูล (Excel)"
+            }}</span>
+          </button>
+          <button
             class="btn btn-outline btn-outline-primary me-2 pe-sm-3 ps-sm-5"
             @click="goToAddPage()"
           >
@@ -98,6 +114,7 @@ import EditReviewerPage from "@/views/admin-reviewer/EditReviewerModal.vue";
 import AddReviewerPage from "@/views/admin-reviewer/AddReviewerModal.vue";
 // Use Toast Composables
 import useToast from "@/composables/useToast";
+import { exportReviewerExcel } from "@/utils/exportReviewerExcel";
 
 export default defineComponent({
   name: "admin-reviewer",
@@ -113,6 +130,7 @@ export default defineComponent({
   setup() {
     // UI Variable
     const isLoading = ref<any>(false);
+    const isExporting = ref(false);
     const sortKey = ref<any>("");
     const sortOrder = ref<any>(-1);
 
@@ -156,6 +174,34 @@ export default defineComponent({
     };
 
     // Event
+    const onExport = async () => {
+      try {
+        isExporting.value = true;
+        const params = {
+          ...search,
+          perPage: 100000,
+          currentPage: 1,
+        };
+
+        const { data } = await ApiService.query("reviewer/", {
+          params: params,
+        });
+
+        if (!data.data || data.data.length === 0) {
+          useToast("ไม่พบข้อมูลที่ต้องการส่งออก", "warning");
+          return;
+        }
+
+        await exportReviewerExcel(data.data);
+        useToast("ส่งออกข้อมูลสำเร็จ", "success");
+      } catch (error) {
+        console.error("Export error:", error);
+        useToast("เกิดข้อผิดพลาดในการส่งออกข้อมูล", "error");
+      } finally {
+        isExporting.value = false;
+      }
+    };
+
     const onClear = () => {
       Object.keys(search).forEach((key) => {
         if (typeof search[key] === "object" && search[key] !== null) {
@@ -248,6 +294,8 @@ export default defineComponent({
       item,
       paginationData,
       isLoading,
+      isExporting,
+      onExport,
       onClear,
       fetchItems,
       goToEditPage,
