@@ -28,7 +28,7 @@
         <div class="separator separator-dotted my-2"></div>
         <div class="col-md-12 px-5 py-3">
           <span class="fw-bold">ที่อยู่ตามบัตรประชาชน : </span>
-          <span class="fst-italic">{{ user_item.organization_name }}</span>
+          <span class="fst-italic">{{ user_item.address }}</span>
         </div>
 
         <div class="separator separator-dotted my-2"></div>

@@ -62,14 +62,14 @@
               />
             </div>
             <div class="mb-7 col-12 col-lg-12">
-              <label for="department_id" class="form-label required"
+              <label for="organization_name" class="form-label required"
                 >หน่วยงาน</label
               >
               <input
                 type="text"
                 class="form-control"
-                placeholder="นามสกุล"
-                aria-label="นามสกุล"
+                placeholder="หน่วยงาน"
+                aria-label="หน่วยงาน"
                 v-model="item_edit.organization_name"
               />
             </div>
