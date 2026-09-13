@@ -47,6 +47,7 @@
     "deepmerge": "^4.2.2",
     "dropzone": "^5.9.3",
     "element-plus": "^2.2.4",
+    "exceljs": "^4.4.0",
     "froala-editor": "^4.2.1",
     "html-to-pdfmake": "^2.5.12",
     "html2pdf.js": "^0.10.2",
