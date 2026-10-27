@@ -69,7 +69,7 @@
               <div class="mb-7 col-12 col-lg-12">
                 <label for="" class="form-label">หมายเหตุ</label>
                 <textarea
-                  v-model="approved_item.detail"
+                  v-model="approved_item.approved_detail"
                   rows="10"
                   type="text"
                   class="form-control"

@@ -148,7 +148,7 @@ export default defineComponent({
         if (item.status_id == 4 || item.status_id == 5) {
           history_items.value.push({
             date_at: item.approved_at,
-            status_name: item.status_id == 5 ? "ตอบรับข้อเสนอ" : "ยกเลิก",
+            status_name: item.status_id == 4 ? "ไม่มีการแก้ไข" : "ยกเลิก",
             detail: item.approved_detail,
           });
         }
